@@ -6,6 +6,8 @@ import { TechStackSection } from "@/components/sections/tech-stack-section";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/shared/site-header";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <>

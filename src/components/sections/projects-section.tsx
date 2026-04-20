@@ -14,11 +14,18 @@ type DisplayProject = {
 };
 
 export async function ProjectsSection() {
-  const publishedProjects = await prisma.project.findMany({
-    where: { status: "PUBLISHED" },
-    orderBy: { updatedAt: "desc" },
-    take: 6,
-  });
+  let publishedProjects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
+  try {
+    publishedProjects = await prisma.project.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { updatedAt: "desc" },
+      take: 6,
+    });
+  } catch {
+    // During early deploy/setup, DB might be unavailable.
+    // Fallback to static project data so build/runtime still works.
+    publishedProjects = [];
+  }
 
   const displayProjects: DisplayProject[] =
     publishedProjects.length > 0
