@@ -1,9 +1,10 @@
 import Image from "next/image";
+import type { Project } from "@prisma/client";
 import { FiExternalLink } from "react-icons/fi";
 
 import { SectionShell } from "@/components/shared/section-shell";
 import { projects } from "@/data/site-content";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 
 type DisplayProject = {
   title: string;
@@ -14,9 +15,9 @@ type DisplayProject = {
 };
 
 export async function ProjectsSection() {
-  let publishedProjects: Awaited<ReturnType<typeof prisma.project.findMany>> = [];
+  let publishedProjects: Project[] = [];
   try {
-    publishedProjects = await prisma.project.findMany({
+    publishedProjects = await getPrisma().project.findMany({
       where: { status: "PUBLISHED" },
       orderBy: { updatedAt: "desc" },
       take: 6,

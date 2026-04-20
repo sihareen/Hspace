@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
+import { PrismaClient } from "@prisma/client";
 
-import { prisma } from "../src/lib/prisma";
+const prisma = new PrismaClient();
 
 async function ensureSchema() {
   await prisma.$executeRawUnsafe(`
