@@ -87,10 +87,9 @@ export function ProjectForm({ action, submitLabel, defaults }: ProjectFormProps)
           accept="image/png,image/jpeg,image/webp,image/gif"
           className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 file:mr-4 file:rounded-md file:border-0 file:bg-cyan-300/15 file:px-3 file:py-2 file:text-cyan-100 focus:ring"
         />
+        <p className="text-xs text-slate-400">Allowed: png, jpg, jpeg, webp, gif. Max size: 5MB.</p>
         {defaults?.coverImage ? (
-          <p className="text-xs text-slate-400">
-            Current image is set. Upload a new file only if you want to replace it.
-          </p>
+          <p className="text-xs text-slate-400">Current image is set. Upload a new file only if you want to replace it.</p>
         ) : null}
       </label>
 

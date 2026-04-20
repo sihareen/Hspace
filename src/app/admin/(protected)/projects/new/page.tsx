@@ -7,6 +7,18 @@ type NewProjectPageProps = {
 
 export default async function NewProjectPage({ searchParams }: NewProjectPageProps) {
   const params = await searchParams;
+  const errorMessage =
+    params.error === "invalid_type"
+      ? "Format file tidak didukung. Gunakan png/jpg/jpeg/webp/gif."
+      : params.error === "too_large"
+        ? "Ukuran file terlalu besar. Maksimum 5MB."
+        : params.error === "missing_token"
+          ? "Storage belum terkonfigurasi. Set BLOB_READ_WRITE_TOKEN di environment Vercel."
+          : params.error === "upload_failed"
+            ? "Upload gagal di storage. Coba ulang atau periksa konfigurasi Blob."
+            : params.error
+              ? "Invalid input. Please review all fields."
+              : null;
 
   return (
     <main className="space-y-4">
@@ -17,11 +29,9 @@ export default async function NewProjectPage({ searchParams }: NewProjectPagePro
         </a>
       </div>
 
-      {params.error ? (
+      {errorMessage ? (
         <p className="rounded-md border border-rose-400/40 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
-          {params.error === "invalid_cover"
-            ? "Cover image upload failed. Check file type (png/jpg/webp/gif) and max size 5MB."
-            : "Invalid input. Please review all fields."}
+          {errorMessage}
         </p>
       ) : null}
 

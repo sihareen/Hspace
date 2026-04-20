@@ -12,6 +12,18 @@ type EditProjectPageProps = {
 export default async function EditProjectPage({ params, searchParams }: EditProjectPageProps) {
   const { id } = await params;
   const query = await searchParams;
+  const errorMessage =
+    query.error === "invalid_type"
+      ? "Format file tidak didukung. Gunakan png/jpg/jpeg/webp/gif."
+      : query.error === "too_large"
+        ? "Ukuran file terlalu besar. Maksimum 5MB."
+        : query.error === "missing_token"
+          ? "Storage belum terkonfigurasi. Set BLOB_READ_WRITE_TOKEN di environment Vercel."
+          : query.error === "upload_failed"
+            ? "Upload gagal di storage. Coba ulang atau periksa konfigurasi Blob."
+            : query.error
+              ? "Invalid input. Please review all fields."
+              : null;
 
   const project = await getPrisma().project.findUnique({ where: { id } });
   if (!project) {
@@ -30,11 +42,9 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
         </a>
       </div>
 
-      {query.error ? (
+      {errorMessage ? (
         <p className="rounded-md border border-rose-400/40 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
-          {query.error === "invalid_cover"
-            ? "Cover image upload failed. Check file type (png/jpg/webp/gif) and max size 5MB."
-            : "Invalid input. Please review all fields."}
+          {errorMessage}
         </p>
       ) : null}
 

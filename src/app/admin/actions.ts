@@ -14,6 +14,7 @@ import { loginSchema, projectFormSchema } from "@/lib/validation";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]);
+const ALLOWED_IMAGE_EXTENSIONS = new Set(["png", "jpg", "jpeg", "webp", "gif"]);
 
 function readFormData(formData: FormData) {
   return {
@@ -26,25 +27,44 @@ function readFormData(formData: FormData) {
   };
 }
 
-async function uploadCoverIfProvided(formData: FormData, fallbackCoverImage: string | null) {
+type UploadResult =
+  | { ok: true; url: string | null }
+  | { ok: false; reason: "invalid_type" | "too_large" | "missing_token" | "upload_failed" };
+
+function hasAllowedImageExtension(fileName: string) {
+  const ext = fileName.toLowerCase().split(".").pop() ?? "";
+  return ALLOWED_IMAGE_EXTENSIONS.has(ext);
+}
+
+async function uploadCoverIfProvided(
+  formData: FormData,
+  fallbackCoverImage: string | null,
+): Promise<UploadResult> {
   const rawFile = formData.get("coverImageFile");
 
   if (!(rawFile instanceof File) || rawFile.size === 0) {
-    return fallbackCoverImage;
+    return { ok: true, url: fallbackCoverImage };
   }
 
-  if (!ALLOWED_IMAGE_TYPES.has(rawFile.type)) {
-    return null;
+  const byMime = ALLOWED_IMAGE_TYPES.has(rawFile.type);
+  const byExtension = hasAllowedImageExtension(rawFile.name);
+  if (!byMime && !byExtension) {
+    return { ok: false, reason: "invalid_type" };
   }
 
   if (rawFile.size > MAX_FILE_SIZE) {
-    return null;
+    return { ok: false, reason: "too_large" };
+  }
+
+  if (!process.env.BLOB_READ_WRITE_TOKEN && process.env.NODE_ENV !== "development") {
+    return { ok: false, reason: "missing_token" };
   }
 
   try {
-    return await uploadProjectCover(rawFile);
+    const url = await uploadProjectCover(rawFile);
+    return { ok: true, url };
   } catch {
-    return null;
+    return { ok: false, reason: "upload_failed" };
   }
 }
 
@@ -98,8 +118,8 @@ export async function createProjectAction(formData: FormData) {
   const slug = await createUniqueProjectSlug(parsed.data.title);
 
   const uploadedCoverImage = await uploadCoverIfProvided(formData, null);
-  if (formData.get("coverImageFile") instanceof File && !uploadedCoverImage) {
-    redirect("/admin/projects/new?error=invalid_cover");
+  if (!uploadedCoverImage.ok) {
+    redirect(`/admin/projects/new?error=${uploadedCoverImage.reason}`);
   }
 
   await getPrisma().project.create({
@@ -109,7 +129,7 @@ export async function createProjectAction(formData: FormData) {
       techStack: parsed.data.techStack,
       externalUrl: parsed.data.externalUrl,
       status: parsed.data.status,
-      coverImage: uploadedCoverImage,
+      coverImage: uploadedCoverImage.url,
       slug,
     },
   });
@@ -131,8 +151,8 @@ export async function updateProjectAction(projectId: string, formData: FormData)
 
   const fallbackCoverImage = parsed.data.existingCoverImage || null;
   const uploadedCoverImage = await uploadCoverIfProvided(formData, fallbackCoverImage);
-  if (formData.get("coverImageFile") instanceof File && !uploadedCoverImage) {
-    redirect(`/admin/projects/${projectId}/edit?error=invalid_cover`);
+  if (!uploadedCoverImage.ok) {
+    redirect(`/admin/projects/${projectId}/edit?error=${uploadedCoverImage.reason}`);
   }
 
   await getPrisma().project.update({
@@ -143,7 +163,7 @@ export async function updateProjectAction(projectId: string, formData: FormData)
       techStack: parsed.data.techStack,
       externalUrl: parsed.data.externalUrl,
       status: parsed.data.status,
-      coverImage: uploadedCoverImage,
+      coverImage: uploadedCoverImage.url,
       slug,
     },
   });
