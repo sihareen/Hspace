@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { logoutAdminAction } from "@/app/admin/actions";
 import { requireAdminSession } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProtectedAdminLayout({ children }: { children: ReactNode }) {
   const session = await requireAdminSession();
 

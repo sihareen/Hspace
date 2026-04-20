@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 
 export function toSlug(text: string): string {
   return text
@@ -15,7 +15,7 @@ export async function createUniqueProjectSlug(title: string, excludeId?: string)
   let count = 2;
 
   while (true) {
-    const existing = await prisma.project.findUnique({
+    const existing = await getPrisma().project.findUnique({
       where: { slug: candidate },
       select: { id: true },
     });

@@ -2,11 +2,11 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { ADMIN_SESSION_COOKIE, verifyAdminSession } from "@/lib/session";
 
 export async function authenticateAdmin(email: string, password: string) {
-  const user = await prisma.adminUser.findUnique({ where: { email } });
+  const user = await getPrisma().adminUser.findUnique({ where: { email } });
   if (!user) {
     return null;
   }

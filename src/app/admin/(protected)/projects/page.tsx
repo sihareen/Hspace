@@ -1,7 +1,7 @@
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 
 export default async function AdminProjectsPage() {
-  const projects = await prisma.project.findMany({
+  const projects = await getPrisma().project.findMany({
     orderBy: { updatedAt: "desc" },
   });
 

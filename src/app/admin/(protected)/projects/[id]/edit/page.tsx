@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { deleteProjectAction, updateProjectAction } from "@/app/admin/actions";
 import { ProjectForm } from "@/components/admin/project-form";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 
 type EditProjectPageProps = {
   params: Promise<{ id: string }>;
@@ -13,7 +13,7 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
   const { id } = await params;
   const query = await searchParams;
 
-  const project = await prisma.project.findUnique({ where: { id } });
+  const project = await getPrisma().project.findUnique({ where: { id } });
   if (!project) {
     notFound();
   }

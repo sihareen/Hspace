@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { authenticateAdmin, requireAdminSession } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { createUniqueProjectSlug } from "@/lib/slug";
 import { ADMIN_SESSION_COOKIE, signAdminSession } from "@/lib/session";
 import { loginSchema, projectFormSchema } from "@/lib/validation";
@@ -71,7 +71,7 @@ export async function createProjectAction(formData: FormData) {
 
   const slug = await createUniqueProjectSlug(parsed.data.title);
 
-  await prisma.project.create({
+  await getPrisma().project.create({
     data: {
       ...parsed.data,
       slug,
@@ -93,7 +93,7 @@ export async function updateProjectAction(projectId: string, formData: FormData)
 
   const slug = await createUniqueProjectSlug(parsed.data.title, projectId);
 
-  await prisma.project.update({
+  await getPrisma().project.update({
     where: { id: projectId },
     data: {
       ...parsed.data,
@@ -109,7 +109,7 @@ export async function updateProjectAction(projectId: string, formData: FormData)
 export async function deleteProjectAction(projectId: string) {
   await requireAdminSession();
 
-  await prisma.project.delete({
+  await getPrisma().project.delete({
     where: { id: projectId },
   });
 
