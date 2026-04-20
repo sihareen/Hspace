@@ -77,14 +77,21 @@ export function ProjectForm({ action, submitLabel, defaults }: ProjectFormProps)
         </label>
       </div>
 
+      <input type="hidden" name="existingCoverImage" value={defaults?.coverImage ?? ""} />
+
       <label className="space-y-2 text-sm text-slate-200">
-        Cover Image URL (optional)
+        Cover Image (upload file)
         <input
-          name="coverImage"
-          type="url"
-          defaultValue={defaults?.coverImage}
-          className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
+          name="coverImageFile"
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/gif"
+          className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 file:mr-4 file:rounded-md file:border-0 file:bg-cyan-300/15 file:px-3 file:py-2 file:text-cyan-100 focus:ring"
         />
+        {defaults?.coverImage ? (
+          <p className="text-xs text-slate-400">
+            Current image is set. Upload a new file only if you want to replace it.
+          </p>
+        ) : null}
       </label>
 
       <button

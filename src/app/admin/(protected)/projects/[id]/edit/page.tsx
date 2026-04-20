@@ -32,7 +32,9 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
 
       {query.error ? (
         <p className="rounded-md border border-rose-400/40 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
-          Invalid input. Please review all fields.
+          {query.error === "invalid_cover"
+            ? "Cover image upload failed. Check file type (png/jpg/webp/gif) and max size 5MB."
+            : "Invalid input. Please review all fields."}
         </p>
       ) : null}
 

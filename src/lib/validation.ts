@@ -13,12 +13,7 @@ export const projectFormSchema = z.object({
   description: z.string().trim().min(20).max(1400),
   techStack: z.string().trim().min(2).max(300),
   externalUrl: z.string().trim().url(urlError),
-  coverImage: z
-    .string()
-    .trim()
-    .url(urlError)
-    .or(z.literal(""))
-    .transform((value) => (value === "" ? null : value)),
+  existingCoverImage: z.string().trim().optional().nullable(),
   status: z.enum(ProjectStatus),
 });
 

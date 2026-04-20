@@ -9,7 +9,11 @@ import { authenticateAdmin, requireAdminSession } from "@/lib/auth";
 import { getPrisma } from "@/lib/prisma";
 import { createUniqueProjectSlug } from "@/lib/slug";
 import { ADMIN_SESSION_COOKIE, signAdminSession } from "@/lib/session";
+import { uploadProjectCover } from "@/lib/storage";
 import { loginSchema, projectFormSchema } from "@/lib/validation";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]);
 
 function readFormData(formData: FormData) {
   return {
@@ -17,9 +21,31 @@ function readFormData(formData: FormData) {
     description: String(formData.get("description") ?? ""),
     techStack: String(formData.get("techStack") ?? ""),
     externalUrl: String(formData.get("externalUrl") ?? ""),
-    coverImage: String(formData.get("coverImage") ?? ""),
+    existingCoverImage: String(formData.get("existingCoverImage") ?? ""),
     status: String(formData.get("status") ?? ProjectStatus.DRAFT),
   };
+}
+
+async function uploadCoverIfProvided(formData: FormData, fallbackCoverImage: string | null) {
+  const rawFile = formData.get("coverImageFile");
+
+  if (!(rawFile instanceof File) || rawFile.size === 0) {
+    return fallbackCoverImage;
+  }
+
+  if (!ALLOWED_IMAGE_TYPES.has(rawFile.type)) {
+    return null;
+  }
+
+  if (rawFile.size > MAX_FILE_SIZE) {
+    return null;
+  }
+
+  try {
+    return await uploadProjectCover(rawFile);
+  } catch {
+    return null;
+  }
 }
 
 export async function loginAdminAction(formData: FormData) {
@@ -71,9 +97,19 @@ export async function createProjectAction(formData: FormData) {
 
   const slug = await createUniqueProjectSlug(parsed.data.title);
 
+  const uploadedCoverImage = await uploadCoverIfProvided(formData, null);
+  if (formData.get("coverImageFile") instanceof File && !uploadedCoverImage) {
+    redirect("/admin/projects/new?error=invalid_cover");
+  }
+
   await getPrisma().project.create({
     data: {
-      ...parsed.data,
+      title: parsed.data.title,
+      description: parsed.data.description,
+      techStack: parsed.data.techStack,
+      externalUrl: parsed.data.externalUrl,
+      status: parsed.data.status,
+      coverImage: uploadedCoverImage,
       slug,
     },
   });
@@ -93,10 +129,21 @@ export async function updateProjectAction(projectId: string, formData: FormData)
 
   const slug = await createUniqueProjectSlug(parsed.data.title, projectId);
 
+  const fallbackCoverImage = parsed.data.existingCoverImage || null;
+  const uploadedCoverImage = await uploadCoverIfProvided(formData, fallbackCoverImage);
+  if (formData.get("coverImageFile") instanceof File && !uploadedCoverImage) {
+    redirect(`/admin/projects/${projectId}/edit?error=invalid_cover`);
+  }
+
   await getPrisma().project.update({
     where: { id: projectId },
     data: {
-      ...parsed.data,
+      title: parsed.data.title,
+      description: parsed.data.description,
+      techStack: parsed.data.techStack,
+      externalUrl: parsed.data.externalUrl,
+      status: parsed.data.status,
+      coverImage: uploadedCoverImage,
       slug,
     },
   });
