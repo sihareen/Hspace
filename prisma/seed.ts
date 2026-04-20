@@ -3,45 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function ensureSchema() {
-  await prisma.$executeRawUnsafe(`
-    CREATE TABLE IF NOT EXISTS "AdminUser" (
-      "id" TEXT NOT NULL PRIMARY KEY,
-      "email" TEXT NOT NULL,
-      "passwordHash" TEXT NOT NULL,
-      "name" TEXT NOT NULL,
-      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      "updatedAt" DATETIME NOT NULL
-    );
-  `);
-
-  await prisma.$executeRawUnsafe(`
-    CREATE UNIQUE INDEX IF NOT EXISTS "AdminUser_email_key" ON "AdminUser"("email");
-  `);
-
-  await prisma.$executeRawUnsafe(`
-    CREATE TABLE IF NOT EXISTS "Project" (
-      "id" TEXT NOT NULL PRIMARY KEY,
-      "title" TEXT NOT NULL,
-      "slug" TEXT NOT NULL,
-      "description" TEXT NOT NULL,
-      "techStack" TEXT NOT NULL,
-      "externalUrl" TEXT NOT NULL,
-      "coverImage" TEXT,
-      "status" TEXT NOT NULL DEFAULT 'DRAFT',
-      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      "updatedAt" DATETIME NOT NULL
-    );
-  `);
-
-  await prisma.$executeRawUnsafe(`
-    CREATE UNIQUE INDEX IF NOT EXISTS "Project_slug_key" ON "Project"("slug");
-  `);
-}
-
 async function main() {
-  await ensureSchema();
-
   const email = process.env.ADMIN_EMAIL ?? "admin@hspace.local";
   const password = process.env.ADMIN_PASSWORD ?? "ChangeThisPassword123!";
   const name = process.env.ADMIN_NAME ?? "Admin Hspace";
