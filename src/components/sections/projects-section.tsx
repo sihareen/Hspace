@@ -22,9 +22,10 @@ export async function ProjectsSection() {
       orderBy: { updatedAt: "desc" },
       take: 6,
     });
-  } catch {
+  } catch (error) {
     // During early deploy/setup, DB might be unavailable.
     // Fallback to static project data so build/runtime still works.
+    console.error("Failed to load published projects from database.", error);
     publishedProjects = [];
   }
 

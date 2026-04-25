@@ -36,14 +36,37 @@ function hasAllowedImageExtension(fileName: string) {
   return ALLOWED_IMAGE_EXTENSIONS.has(ext);
 }
 
+function isValidFallbackCoverImageUrl(value: string | null): value is string {
+  if (!value) {
+    return false;
+  }
+
+  try {
+    const parsed = new URL(value);
+    if (parsed.protocol !== "https:") {
+      return false;
+    }
+
+    return (
+      parsed.hostname.endsWith(".public.blob.vercel-storage.com") ||
+      parsed.hostname === "public.blob.vercel-storage.com"
+    );
+  } catch {
+    return false;
+  }
+}
+
 async function uploadCoverIfProvided(
   formData: FormData,
   fallbackCoverImage: string | null,
 ): Promise<UploadResult> {
+  const safeFallbackCoverImage = isValidFallbackCoverImageUrl(fallbackCoverImage)
+    ? fallbackCoverImage
+    : null;
   const rawFile = formData.get("coverImageFile");
 
   if (!(rawFile instanceof File) || rawFile.size === 0) {
-    return { ok: true, url: fallbackCoverImage };
+    return { ok: true, url: safeFallbackCoverImage };
   }
 
   const byMime = ALLOWED_IMAGE_TYPES.has(rawFile.type);
@@ -56,7 +79,7 @@ async function uploadCoverIfProvided(
     return { ok: false, reason: "too_large" };
   }
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN && process.env.NODE_ENV !== "development") {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return { ok: false, reason: "missing_token" };
   }
 

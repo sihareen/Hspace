@@ -17,7 +17,11 @@ type ProjectFormProps = {
 
 export function ProjectForm({ action, submitLabel, defaults }: ProjectFormProps) {
   return (
-    <form action={action} className="space-y-5 rounded-2xl border border-cyan-300/15 bg-slate-900/70 p-6">
+    <form
+      action={action}
+      encType="multipart/form-data"
+      className="space-y-5 rounded-2xl border border-cyan-300/15 bg-slate-900/70 p-6"
+    >
       <div className="grid gap-5 md:grid-cols-2">
         <label className="space-y-2 text-sm text-slate-200">
           Title
