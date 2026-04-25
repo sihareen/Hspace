@@ -37,7 +37,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
   }, [activeFilter, projects]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div className="flex flex-wrap gap-2">
         {filters.map((filter) => (
           <button
@@ -55,13 +55,13 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
         ))}
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {filteredProjects.map((project) => (
           <article
             key={`${project.title}-${project.category}`}
-            className="group overflow-hidden rounded-2xl border border-white/10 bg-black transition duration-300 hover:-translate-y-1 hover:border-cyan-300/35"
+            className="group overflow-hidden rounded-3xl border border-white/10 bg-black transition duration-300 hover:-translate-y-1 hover:border-cyan-300/35"
           >
-            <div className="relative h-44 overflow-hidden border-b border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.01))]">
+            <div className="relative h-48 overflow-hidden border-b border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.01))]">
               {project.coverImage ? (
                 <Image
                   src={project.coverImage}
@@ -80,9 +80,9 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
               </span>
             </div>
 
-            <div className="space-y-4 p-5">
-              <h3 className="text-lg font-semibold text-white">{project.title}</h3>
-              <p className="text-sm leading-7 text-white/70">{project.description}</p>
+            <div className="space-y-5 p-6">
+              <h3 className="text-xl font-semibold text-white">{project.title}</h3>
+              <p className="min-h-24 text-sm leading-7 text-white/70">{project.description}</p>
 
               <ul className="flex flex-wrap gap-2">
                 {project.techStack.map((stack) => (

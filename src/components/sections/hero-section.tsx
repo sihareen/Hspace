@@ -8,7 +8,8 @@ export function HeroSection() {
         <div className="z-10 flex max-w-[660px] flex-col items-start gap-6 lg:gap-7">
           <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">IoT Portfolio</p>
           <h1 className="font-[family-name:var(--font-heading)] text-5xl leading-[0.98] text-white sm:text-6xl lg:text-7xl xl:text-[6.25rem]">
-            Muhammad Rizkan Harin Faza
+            <span className="block">Muhammad Rizkan</span>
+            <span className="block">Harin Faza</span>
           </h1>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">
             IoT & Embedded Systems Engineer
