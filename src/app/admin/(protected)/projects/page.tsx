@@ -1,9 +1,18 @@
+import type { Project } from "@prisma/client";
 import { getPrisma } from "@/lib/prisma";
 
 export default async function AdminProjectsPage() {
-  const projects = await getPrisma().project.findMany({
-    orderBy: { updatedAt: "desc" },
-  });
+  let projects: Project[] = [];
+  let hasDbError = false;
+
+  try {
+    projects = await getPrisma().project.findMany({
+      orderBy: { updatedAt: "desc" },
+    });
+  } catch (error) {
+    console.error("Failed to load admin projects list.", error);
+    hasDbError = true;
+  }
 
   return (
     <main className="space-y-5">
@@ -18,6 +27,11 @@ export default async function AdminProjectsPage() {
       </div>
 
       <div className="space-y-3">
+        {hasDbError ? (
+          <p className="rounded-xl border border-rose-400/30 bg-rose-500/10 p-4 text-sm text-rose-200">
+            Gagal memuat data project dari database. Periksa konfigurasi `DATABASE_URL`.
+          </p>
+        ) : null}
         {projects.length === 0 ? (
           <p className="rounded-xl border border-cyan-300/15 bg-slate-900/60 p-4 text-sm text-slate-300">
             No projects yet. Create your first one.

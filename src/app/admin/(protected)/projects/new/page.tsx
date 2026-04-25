@@ -16,6 +16,8 @@ export default async function NewProjectPage({ searchParams }: NewProjectPagePro
           ? "Storage belum terkonfigurasi. Set BLOB_READ_WRITE_TOKEN di environment Vercel."
           : params.error === "upload_failed"
             ? "Upload gagal di storage. Coba ulang atau periksa konfigurasi Blob."
+            : params.error === "db_error"
+              ? "Gagal menyimpan project ke database. Cek koneksi DATABASE_URL dan coba ulang."
             : params.error
               ? "Invalid input. Please review all fields."
               : null;

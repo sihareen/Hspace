@@ -21,6 +21,8 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
           ? "Storage belum terkonfigurasi. Set BLOB_READ_WRITE_TOKEN di environment Vercel."
           : query.error === "upload_failed"
             ? "Upload gagal di storage. Coba ulang atau periksa konfigurasi Blob."
+            : query.error === "db_error"
+              ? "Gagal update/delete ke database. Cek koneksi DATABASE_URL lalu coba ulang."
             : query.error
               ? "Invalid input. Please review all fields."
               : null;

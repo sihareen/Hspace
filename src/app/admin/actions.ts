@@ -86,7 +86,13 @@ async function uploadCoverIfProvided(
   try {
     const url = await uploadProjectCover(rawFile);
     return { ok: true, url };
-  } catch {
+  } catch (error) {
+    console.error("Failed to upload project cover.", {
+      fileName: rawFile.name,
+      fileType: rawFile.type,
+      fileSize: rawFile.size,
+      error,
+    });
     return { ok: false, reason: "upload_failed" };
   }
 }
@@ -145,17 +151,22 @@ export async function createProjectAction(formData: FormData) {
     redirect(`/admin/projects/new?error=${uploadedCoverImage.reason}`);
   }
 
-  await getPrisma().project.create({
-    data: {
-      title: parsed.data.title,
-      description: parsed.data.description,
-      techStack: parsed.data.techStack,
-      externalUrl: parsed.data.externalUrl,
-      status: parsed.data.status,
-      coverImage: uploadedCoverImage.url,
-      slug,
-    },
-  });
+  try {
+    await getPrisma().project.create({
+      data: {
+        title: parsed.data.title,
+        description: parsed.data.description,
+        techStack: parsed.data.techStack,
+        externalUrl: parsed.data.externalUrl,
+        status: parsed.data.status,
+        coverImage: uploadedCoverImage.url,
+        slug,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to create project.", error);
+    redirect("/admin/projects/new?error=db_error");
+  }
 
   revalidatePath("/");
   revalidatePath("/admin/projects");
@@ -178,18 +189,23 @@ export async function updateProjectAction(projectId: string, formData: FormData)
     redirect(`/admin/projects/${projectId}/edit?error=${uploadedCoverImage.reason}`);
   }
 
-  await getPrisma().project.update({
-    where: { id: projectId },
-    data: {
-      title: parsed.data.title,
-      description: parsed.data.description,
-      techStack: parsed.data.techStack,
-      externalUrl: parsed.data.externalUrl,
-      status: parsed.data.status,
-      coverImage: uploadedCoverImage.url,
-      slug,
-    },
-  });
+  try {
+    await getPrisma().project.update({
+      where: { id: projectId },
+      data: {
+        title: parsed.data.title,
+        description: parsed.data.description,
+        techStack: parsed.data.techStack,
+        externalUrl: parsed.data.externalUrl,
+        status: parsed.data.status,
+        coverImage: uploadedCoverImage.url,
+        slug,
+      },
+    });
+  } catch (error) {
+    console.error(`Failed to update project: ${projectId}`, error);
+    redirect(`/admin/projects/${projectId}/edit?error=db_error`);
+  }
 
   revalidatePath("/");
   revalidatePath("/admin/projects");
@@ -199,9 +215,14 @@ export async function updateProjectAction(projectId: string, formData: FormData)
 export async function deleteProjectAction(projectId: string) {
   await requireAdminSession();
 
-  await getPrisma().project.delete({
-    where: { id: projectId },
-  });
+  try {
+    await getPrisma().project.delete({
+      where: { id: projectId },
+    });
+  } catch (error) {
+    console.error(`Failed to delete project: ${projectId}`, error);
+    redirect(`/admin/projects/${projectId}/edit?error=db_error`);
+  }
 
   revalidatePath("/");
   revalidatePath("/admin/projects");
