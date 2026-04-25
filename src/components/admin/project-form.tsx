@@ -3,6 +3,7 @@ import { ProjectStatus } from "@prisma/client";
 type ProjectFormDefaults = {
   title?: string;
   description?: string;
+  projectLabels?: string[];
   techStack?: string;
   externalUrl?: string;
   coverImageFileName?: string;
@@ -17,6 +18,8 @@ type ProjectFormProps = {
   coverFiles: string[];
   defaults?: ProjectFormDefaults;
 };
+
+const PROJECT_LABELS = ["IoT", "Embedded", "AI", "Data"] as const;
 
 export function ProjectForm({ action, submitLabel, coverFiles, defaults }: ProjectFormProps) {
   return (
@@ -56,6 +59,23 @@ export function ProjectForm({ action, submitLabel, coverFiles, defaults }: Proje
       </label>
 
       <div className="grid gap-5 md:grid-cols-3">
+        <label className="space-y-2 text-sm text-slate-200">
+          Labels
+          <select
+            name="projectLabels"
+            multiple
+            defaultValue={defaults?.projectLabels ?? []}
+            className="h-28 w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
+          >
+            {PROJECT_LABELS.map((label) => (
+              <option key={label} value={label}>
+                {label}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-slate-400">Pilih lebih dari satu label dengan Ctrl/Cmd + klik.</p>
+        </label>
+
         <label className="space-y-2 text-sm text-slate-200 md:col-span-2">
           Tech Stack (comma separated)
           <input

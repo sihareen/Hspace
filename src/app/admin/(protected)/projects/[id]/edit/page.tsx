@@ -31,6 +31,12 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
   const currentCoverFileNames = parseLocalCoverFileNamesFromStoredImages(project.coverImage);
   const currentCoverFileName = currentCoverFileNames[0] ?? "";
   const currentGalleryFileNames = currentCoverFileNames.slice(1);
+  const currentProjectLabels = project.labels
+    ? project.labels
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : [];
 
   const boundUpdateAction = updateProjectAction.bind(null, project.id);
   const boundDeleteAction = deleteProjectAction.bind(null, project.id);
@@ -57,6 +63,7 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
         defaults={{
           title: project.title,
           description: project.description,
+          projectLabels: currentProjectLabels,
           techStack: project.techStack,
           externalUrl: project.externalUrl,
           coverImageFileName: currentCoverFileName,

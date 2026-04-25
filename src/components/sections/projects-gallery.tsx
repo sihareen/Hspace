@@ -12,7 +12,7 @@ export type ProjectCardItem = {
   techStack: string[];
   externalUrl: string;
   coverImages: string[];
-  category: ProjectCategory;
+  labels: ProjectCategory[];
 };
 
 type ProjectsGalleryProps = {
@@ -35,7 +35,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
       return projects;
     }
 
-    return projects.filter((project) => project.category === activeFilter);
+    return projects.filter((project) => project.labels.includes(activeFilter));
   }, [activeFilter, projects]);
 
   const activeProjectImages = activeProject?.coverImages ?? [];
@@ -120,7 +120,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
 
             return (
               <article
-                key={`${project.title}-${project.category}`}
+                key={`${project.title}-${project.labels.join("-")}`}
                 role="button"
                 tabIndex={0}
                 onClick={() => openProject(project)}
@@ -143,12 +143,19 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-xs uppercase tracking-[0.18em] text-white/55">
-                      {project.category} Project
+                      {project.labels[0] ?? "Project"} Project
                     </div>
                   )}
-                  <span className="absolute left-3 top-3 rounded-full border border-cyan-300/40 bg-black/60 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-cyan-300">
-                    {project.category}
-                  </span>
+                  <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+                    {project.labels.map((label) => (
+                      <span
+                        key={`${project.title}-label-${label}`}
+                        className="rounded-full border border-cyan-300/40 bg-black/60 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-cyan-300"
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="space-y-5 p-6">
@@ -244,7 +251,13 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
             </div>
 
             <div className="p-6 sm:p-7">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-cyan-300">{activeProject.category}</p>
+              <div className="flex flex-wrap gap-2">
+                {activeProject.labels.map((label) => (
+                  <p key={`${activeProject.title}-popup-label-${label}`} className="text-[11px] uppercase tracking-[0.18em] text-cyan-300">
+                    {label}
+                  </p>
+                ))}
+              </div>
               <h3 className="mt-3 text-2xl font-semibold text-white">{activeProject.title}</h3>
               <p className="mt-4 text-sm leading-7 text-white/75">{activeProject.description}</p>
 

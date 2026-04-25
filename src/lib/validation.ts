@@ -11,6 +11,7 @@ export const loginSchema = z.object({
 export const projectFormSchema = z.object({
   title: z.string().trim().min(3).max(120),
   description: z.string().trim().min(20).max(1400),
+  projectLabels: z.array(z.string().trim()).default([]),
   techStack: z.string().trim().min(2).max(300),
   externalUrl: z.string().trim().url(urlError),
   coverImageFileName: z.string().trim().optional().nullable(),

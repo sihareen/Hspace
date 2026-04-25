@@ -12,15 +12,23 @@ import { createUniqueProjectSlug } from "@/lib/slug";
 import { ADMIN_SESSION_COOKIE, signAdminSession } from "@/lib/session";
 import { experienceFormSchema, loginSchema, projectFormSchema } from "@/lib/validation";
 
+const PROJECT_LABELS = ["IoT", "Embedded", "AI", "Data"] as const;
+const PROJECT_LABEL_SET = new Set<string>(PROJECT_LABELS);
+
 function readFormData(formData: FormData) {
   const galleryImageFileNames = formData
     .getAll("galleryImageFileNames")
+    .map((value) => String(value ?? "").trim())
+    .filter(Boolean);
+  const projectLabels = formData
+    .getAll("projectLabels")
     .map((value) => String(value ?? "").trim())
     .filter(Boolean);
 
   return {
     title: String(formData.get("title") ?? ""),
     description: String(formData.get("description") ?? ""),
+    projectLabels,
     techStack: String(formData.get("techStack") ?? ""),
     externalUrl: String(formData.get("externalUrl") ?? ""),
     coverImageFileName: String(formData.get("coverImageFileName") ?? ""),
@@ -28,6 +36,18 @@ function readFormData(formData: FormData) {
     existingCoverImagesRaw: String(formData.get("existingCoverImagesRaw") ?? ""),
     status: String(formData.get("status") ?? ProjectStatus.DRAFT),
   };
+}
+
+function sanitizeProjectLabels(labels: string[]) {
+  const unique = new Set<string>();
+
+  for (const label of labels) {
+    if (PROJECT_LABEL_SET.has(label)) {
+      unique.add(label);
+    }
+  }
+
+  return [...unique];
 }
 
 function readExperienceFormData(formData: FormData) {
@@ -118,6 +138,7 @@ export async function createProjectAction(formData: FormData) {
   }
 
   const slug = await createUniqueProjectSlug(parsed.data.title);
+  const projectLabels = sanitizeProjectLabels(parsed.data.projectLabels);
   const coverImages = resolveCoverImagesValue(
     parsed.data.coverImageFileName,
     parsed.data.galleryImageFileNames,
@@ -131,6 +152,7 @@ export async function createProjectAction(formData: FormData) {
       data: {
         title: parsed.data.title,
         description: parsed.data.description,
+        labels: projectLabels.length > 0 ? projectLabels.join(",") : null,
         techStack: parsed.data.techStack,
         externalUrl: parsed.data.externalUrl,
         status: parsed.data.status,
@@ -157,6 +179,7 @@ export async function updateProjectAction(projectId: string, formData: FormData)
   }
 
   const slug = await createUniqueProjectSlug(parsed.data.title, projectId);
+  const projectLabels = sanitizeProjectLabels(parsed.data.projectLabels);
   const coverImages = resolveCoverImagesValue(
     parsed.data.coverImageFileName,
     parsed.data.galleryImageFileNames,
@@ -172,6 +195,7 @@ export async function updateProjectAction(projectId: string, formData: FormData)
       data: {
         title: parsed.data.title,
         description: parsed.data.description,
+        labels: projectLabels.length > 0 ? projectLabels.join(",") : null,
         techStack: parsed.data.techStack,
         externalUrl: parsed.data.externalUrl,
         status: parsed.data.status,

@@ -47,6 +47,14 @@ export async function ProjectsSection() {
             .filter(Boolean);
 
           const coverImages = parseProjectCoverImages(project.coverImage);
+          const storedLabels = project.labels
+            ? project.labels
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean) as ProjectCategory[]
+            : [];
+          const inferredLabel = inferProjectCategory(project.title, techStack);
+          const labels = storedLabels.length > 0 ? storedLabels : [inferredLabel];
 
           return {
             title: project.title,
@@ -54,13 +62,13 @@ export async function ProjectsSection() {
             techStack,
             externalUrl: project.externalUrl,
             coverImages,
-            category: inferProjectCategory(project.title, techStack),
+            labels,
           };
         })
       : projects.map((project) => ({
           ...project,
           coverImages: [],
-          category: inferProjectCategory(project.title, project.techStack),
+          labels: [inferProjectCategory(project.title, project.techStack)],
         }));
 
   return (
