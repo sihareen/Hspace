@@ -39,9 +39,9 @@ main {
 }
 
 .truncate-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  display: block;
+  line-height: 1.75rem;
+  max-height: calc(1.75rem * 3);
   overflow: hidden;
 }
 
