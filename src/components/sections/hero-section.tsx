@@ -8,7 +8,7 @@ export function HeroSection() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_10%,rgba(255,255,255,0.08),transparent_36%)]" />
       <div className="mx-auto grid min-h-[calc(100vh-72px)] w-full max-w-[1320px] gap-12 px-6 py-14 sm:px-10 lg:grid-cols-[1.08fr_1fr] lg:items-center lg:px-12 lg:py-16">
         <div className="z-10 flex max-w-[660px] flex-col items-start gap-6 lg:gap-7">
-          <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">IoT Portfolio</p>
+          <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">Portfolio</p>
           <h1 className="font-[family-name:var(--font-heading)] text-5xl leading-[0.98] text-white sm:text-6xl lg:text-7xl xl:text-[6.25rem]">
             <span className="block">Muhammad Rizkan</span>
             <span className="block">Harin Faza</span>
@@ -37,7 +37,7 @@ export function HeroSection() {
         </div>
 
         <div className="relative mx-auto flex w-full max-w-[620px] flex-col items-center justify-center gap-6">
-          <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300">Contact</p>
+          {/* <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300">Contact</p> */}
           <div className="flex items-center justify-center gap-5">
             <a
               href={`mailto:${contactContent.email}`}

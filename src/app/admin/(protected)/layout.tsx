@@ -22,6 +22,12 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
           >
             Projects
           </a>
+          <a
+            href="/admin/experiences"
+            className="rounded-md border border-cyan-300/20 px-3 py-2 text-xs uppercase tracking-[0.14em] text-slate-200"
+          >
+            Experience
+          </a>
           <form action={logoutAdminAction}>
             <button
               type="submit"

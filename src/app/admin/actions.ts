@@ -1,6 +1,6 @@
 "use server";
 
-import { ProjectStatus } from "@prisma/client";
+import { ExperienceCategory, ProjectStatus } from "@prisma/client";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -10,7 +10,7 @@ import { normalizeProjectCoverFileNames, serializeProjectCoverImagesFromFileName
 import { getPrisma } from "@/lib/prisma";
 import { createUniqueProjectSlug } from "@/lib/slug";
 import { ADMIN_SESSION_COOKIE, signAdminSession } from "@/lib/session";
-import { loginSchema, projectFormSchema } from "@/lib/validation";
+import { experienceFormSchema, loginSchema, projectFormSchema } from "@/lib/validation";
 
 function readFormData(formData: FormData) {
   const coverImageFileNames = formData
@@ -26,6 +26,17 @@ function readFormData(formData: FormData) {
     coverImageFileNames,
     existingCoverImagesRaw: String(formData.get("existingCoverImagesRaw") ?? ""),
     status: String(formData.get("status") ?? ProjectStatus.DRAFT),
+  };
+}
+
+function readExperienceFormData(formData: FormData) {
+  return {
+    period: String(formData.get("period") ?? ""),
+    title: String(formData.get("title") ?? ""),
+    description: String(formData.get("description") ?? ""),
+    tags: String(formData.get("tags") ?? ""),
+    category: String(formData.get("category") ?? ExperienceCategory.EXPERIENCE),
+    displayOrder: String(formData.get("displayOrder") ?? "0"),
   };
 }
 
@@ -178,4 +189,80 @@ export async function deleteProjectAction(projectId: string) {
   revalidatePath("/");
   revalidatePath("/admin/projects");
   redirect("/admin/projects");
+}
+
+export async function createExperienceAction(formData: FormData) {
+  await requireAdminSession();
+  const parsed = experienceFormSchema.safeParse(readExperienceFormData(formData));
+
+  if (!parsed.success) {
+    redirect("/admin/experiences/new?error=invalid_input");
+  }
+
+  try {
+    await getPrisma().experienceEntry.create({
+      data: {
+        period: parsed.data.period,
+        title: parsed.data.title,
+        description: parsed.data.description,
+        tags: parsed.data.tags,
+        category: parsed.data.category,
+        displayOrder: parsed.data.displayOrder,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to create experience entry.", error);
+    redirect("/admin/experiences/new?error=db_error");
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/experiences");
+  redirect("/admin/experiences");
+}
+
+export async function updateExperienceAction(experienceId: string, formData: FormData) {
+  await requireAdminSession();
+  const parsed = experienceFormSchema.safeParse(readExperienceFormData(formData));
+
+  if (!parsed.success) {
+    redirect(`/admin/experiences/${experienceId}/edit?error=invalid_input`);
+  }
+
+  try {
+    await getPrisma().experienceEntry.update({
+      where: { id: experienceId },
+      data: {
+        period: parsed.data.period,
+        title: parsed.data.title,
+        description: parsed.data.description,
+        tags: parsed.data.tags,
+        category: parsed.data.category,
+        displayOrder: parsed.data.displayOrder,
+      },
+    });
+  } catch (error) {
+    console.error(`Failed to update experience entry: ${experienceId}`, error);
+    redirect(`/admin/experiences/${experienceId}/edit?error=db_error`);
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/experiences");
+  redirect("/admin/experiences");
+}
+
+export async function deleteExperienceAction(experienceId: string) {
+  await requireAdminSession();
+
+  try {
+    await getPrisma().experienceEntry.delete({
+      where: { id: experienceId },
+    });
+  } catch (error) {
+    console.error(`Failed to delete experience entry: ${experienceId}`, error);
+    redirect(`/admin/experiences/${experienceId}/edit?error=db_error`);
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin/experiences");
+  redirect("/admin/experiences");
 }
