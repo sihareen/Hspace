@@ -49,7 +49,7 @@ export function SiteHeader() {
           href="#hero"
           className="font-[family-name:var(--font-heading)] text-xs uppercase tracking-[0.35em] text-white"
         >
-          Portfolio
+          Hspace
         </a>
         <nav aria-label="Primary" className="overflow-x-auto">
           <ul className="flex min-w-max items-center gap-4 lg:gap-7">
