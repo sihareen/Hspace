@@ -6,6 +6,7 @@ import { getPrisma } from "@/lib/prisma";
 type TimelineItem = {
   period: string;
   title: string;
+  company: string | null;
   description: string;
   tags: string[];
   category: ExperienceCategory;
@@ -15,6 +16,7 @@ const fallbackTimelineItems: TimelineItem[] = [
   {
     period: "2024 - Present",
     title: "IoT & AI Engineer",
+    company: "Industrial / Field Deployment",
     description:
       "Developing connected sensing systems and analytics workflows for monitoring, automation, and decision support.",
     tags: ["IoT", "Embedded", "AI"],
@@ -23,6 +25,7 @@ const fallbackTimelineItems: TimelineItem[] = [
   {
     period: "2023 - 2024",
     title: "Engineering Project Implementation",
+    company: "Applied Engineering Projects",
     description:
       "Delivered field-oriented embedded and telemetry projects with end-to-end integration from hardware to dashboard.",
     tags: ["Telemetry", "System Integration", "Deployment"],
@@ -31,6 +34,7 @@ const fallbackTimelineItems: TimelineItem[] = [
   {
     period: "Electrical Engineering Graduate",
     title: "Bachelor of Electrical Engineering",
+    company: "University of Lampung",
     description:
       "Academic foundation in control systems, electronics, instrumentation, and practical engineering research.",
     tags: ["Control Systems", "Electronics", "Research"],
@@ -42,6 +46,7 @@ function mapEntriesToTimeline(entries: ExperienceEntry[]): TimelineItem[] {
   return entries.map((entry) => ({
     period: entry.period,
     title: entry.title,
+    company: entry.company,
     description: entry.description,
     tags: entry.tags
       .split(",")
@@ -75,6 +80,7 @@ export async function ExperienceSection() {
           >
             <p className="text-[11px] uppercase tracking-[0.2em] text-cyan-300">{item.period}</p>
             <h3 className="mt-3 text-lg font-semibold text-white">{item.title}</h3>
+            {item.company ? <p className="mt-1 text-sm text-slate-300">{item.company}</p> : null}
             <p className="mt-3 text-sm leading-7 text-white/70">{item.description}</p>
             <ul className="mt-4 flex flex-wrap gap-2">
               {item.tags.map((tag) => (

@@ -3,6 +3,7 @@ import { ExperienceCategory } from "@prisma/client";
 type ExperienceFormDefaults = {
   period?: string;
   title?: string;
+  company?: string;
   description?: string;
   tags?: string;
   category?: ExperienceCategory;
@@ -50,6 +51,16 @@ export function ExperienceForm({ action, submitLabel, defaults }: ExperienceForm
           required
           defaultValue={defaults?.title}
           placeholder="IoT & AI Engineer"
+          className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
+        />
+      </label>
+
+      <label className="space-y-2 text-sm text-slate-200">
+        Company / Institution
+        <input
+          name="company"
+          defaultValue={defaults?.company}
+          placeholder="PT Example / University Name"
           className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
         />
       </label>

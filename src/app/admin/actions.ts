@@ -33,6 +33,7 @@ function readExperienceFormData(formData: FormData) {
   return {
     period: String(formData.get("period") ?? ""),
     title: String(formData.get("title") ?? ""),
+    company: String(formData.get("company") ?? ""),
     description: String(formData.get("description") ?? ""),
     tags: String(formData.get("tags") ?? ""),
     category: String(formData.get("category") ?? ExperienceCategory.EXPERIENCE),
@@ -204,6 +205,7 @@ export async function createExperienceAction(formData: FormData) {
       data: {
         period: parsed.data.period,
         title: parsed.data.title,
+        company: parsed.data.company || null,
         description: parsed.data.description,
         tags: parsed.data.tags,
         category: parsed.data.category,
@@ -234,6 +236,7 @@ export async function updateExperienceAction(experienceId: string, formData: For
       data: {
         period: parsed.data.period,
         title: parsed.data.title,
+        company: parsed.data.company || null,
         description: parsed.data.description,
         tags: parsed.data.tags,
         category: parsed.data.category,

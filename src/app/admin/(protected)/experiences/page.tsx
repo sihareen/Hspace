@@ -47,6 +47,7 @@ export default async function AdminExperiencesPage() {
               <div>
                 <p className="text-xs uppercase tracking-[0.12em] text-cyan-200">{entry.category}</p>
                 <h2 className="mt-1 text-lg text-slate-100">{entry.title}</h2>
+                {entry.company ? <p className="mt-1 text-sm text-slate-300">{entry.company}</p> : null}
                 <p className="mt-1 text-sm text-slate-400">{entry.period}</p>
                 <p className="mt-2 text-xs uppercase tracking-[0.12em] text-slate-500">Order: {entry.displayOrder}</p>
               </div>

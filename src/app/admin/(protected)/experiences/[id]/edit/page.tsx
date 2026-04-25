@@ -48,6 +48,7 @@ export default async function EditExperiencePage({ params, searchParams }: EditE
         defaults={{
           period: entry.period,
           title: entry.title,
+          company: entry.company ?? "",
           description: entry.description,
           tags: entry.tags,
           category: entry.category,

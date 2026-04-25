@@ -21,6 +21,7 @@ export const projectFormSchema = z.object({
 export const experienceFormSchema = z.object({
   period: z.string().trim().min(3).max(80),
   title: z.string().trim().min(3).max(120),
+  company: z.string().trim().max(120).optional().nullable(),
   description: z.string().trim().min(20).max(1000),
   tags: z.string().trim().min(2).max(220),
   category: z.enum(ExperienceCategory),

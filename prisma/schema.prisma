@@ -43,10 +43,11 @@ model ExperienceEntry {
   id          String             @id @default(cuid())
   period      String
   title       String
+  company     String?
   description String
   tags        String
   category    ExperienceCategory @default(EXPERIENCE)
-  displayOrder Int              @default(0)
+  displayOrder Int               @default(0)
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
 }
