@@ -8,7 +8,7 @@ export function AboutSection() {
       <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black">
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-          <div className="aspect-[4/5] grayscale">
+          <div className="aspect-[4/5]">
             <Image
               src="/profile/me.jpg"
               alt="Professional portrait"

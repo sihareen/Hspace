@@ -53,13 +53,13 @@ export async function ProjectsSection() {
             description: project.description,
             techStack,
             externalUrl: project.externalUrl,
-            coverImage: coverImages[0] ?? null,
+            coverImages,
             category: inferProjectCategory(project.title, techStack),
           };
         })
       : projects.map((project) => ({
           ...project,
-          coverImage: null,
+          coverImages: [],
           category: inferProjectCategory(project.title, project.techStack),
         }));
 
