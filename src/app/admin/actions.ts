@@ -6,34 +6,46 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { authenticateAdmin, requireAdminSession } from "@/lib/auth";
-import { isValidProjectCoverFileName, toPublicCoverPath } from "@/lib/project-covers";
+import { normalizeProjectCoverFileNames, serializeProjectCoverImagesFromFileNames } from "@/lib/project-covers";
 import { getPrisma } from "@/lib/prisma";
 import { createUniqueProjectSlug } from "@/lib/slug";
 import { ADMIN_SESSION_COOKIE, signAdminSession } from "@/lib/session";
 import { loginSchema, projectFormSchema } from "@/lib/validation";
 
 function readFormData(formData: FormData) {
+  const coverImageFileNames = formData
+    .getAll("coverImageFileNames")
+    .map((value) => String(value ?? "").trim())
+    .filter(Boolean);
+
   return {
     title: String(formData.get("title") ?? ""),
     description: String(formData.get("description") ?? ""),
     techStack: String(formData.get("techStack") ?? ""),
     externalUrl: String(formData.get("externalUrl") ?? ""),
-    coverImageFileName: String(formData.get("coverImageFileName") ?? ""),
+    coverImageFileNames,
+    existingCoverImagesRaw: String(formData.get("existingCoverImagesRaw") ?? ""),
     status: String(formData.get("status") ?? ProjectStatus.DRAFT),
   };
 }
 
-function resolveCoverImagePath(fileName: string | null | undefined): string | null {
-  const normalizedFileName = fileName?.trim() || null;
-  if (!normalizedFileName) {
-    return null;
+function resolveCoverImagesValue(
+  selectedCoverImageFileNames: string[],
+  existingCoverImagesRaw?: string | null,
+) {
+  const normalizedFileNames = normalizeProjectCoverFileNames(selectedCoverImageFileNames);
+  const hasInvalidSelection = selectedCoverImageFileNames.length > 0 && normalizedFileNames.length === 0;
+
+  if (hasInvalidSelection) {
+    return { ok: false as const, value: null };
   }
 
-  if (!isValidProjectCoverFileName(normalizedFileName)) {
-    return null;
+  const serialized = serializeProjectCoverImagesFromFileNames(normalizedFileNames);
+  if (serialized) {
+    return { ok: true as const, value: serialized };
   }
 
-  return toPublicCoverPath(normalizedFileName);
+  return { ok: true as const, value: existingCoverImagesRaw?.trim() || null };
 }
 
 export async function loginAdminAction(formData: FormData) {
@@ -84,8 +96,8 @@ export async function createProjectAction(formData: FormData) {
   }
 
   const slug = await createUniqueProjectSlug(parsed.data.title);
-  const coverImage = resolveCoverImagePath(parsed.data.coverImageFileName);
-  if (parsed.data.coverImageFileName && !coverImage) {
+  const coverImages = resolveCoverImagesValue(parsed.data.coverImageFileNames);
+  if (!coverImages.ok) {
     redirect("/admin/projects/new?error=invalid_cover");
   }
 
@@ -97,7 +109,7 @@ export async function createProjectAction(formData: FormData) {
         techStack: parsed.data.techStack,
         externalUrl: parsed.data.externalUrl,
         status: parsed.data.status,
-        coverImage,
+        coverImage: coverImages.value,
         slug,
       },
     });
@@ -120,8 +132,11 @@ export async function updateProjectAction(projectId: string, formData: FormData)
   }
 
   const slug = await createUniqueProjectSlug(parsed.data.title, projectId);
-  const coverImage = resolveCoverImagePath(parsed.data.coverImageFileName);
-  if (parsed.data.coverImageFileName && !coverImage) {
+  const coverImages = resolveCoverImagesValue(
+    parsed.data.coverImageFileNames,
+    parsed.data.existingCoverImagesRaw,
+  );
+  if (!coverImages.ok) {
     redirect(`/admin/projects/${projectId}/edit?error=invalid_cover`);
   }
 
@@ -134,7 +149,7 @@ export async function updateProjectAction(projectId: string, formData: FormData)
         techStack: parsed.data.techStack,
         externalUrl: parsed.data.externalUrl,
         status: parsed.data.status,
-        coverImage,
+        coverImage: coverImages.value,
         slug,
       },
     });

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { deleteProjectAction, updateProjectAction } from "@/app/admin/actions";
 import { ProjectForm } from "@/components/admin/project-form";
-import { listProjectCoverFiles } from "@/lib/project-covers";
+import { listProjectCoverFiles, parseLocalCoverFileNamesFromStoredImages } from "@/lib/project-covers";
 import { getPrisma } from "@/lib/prisma";
 
 type EditProjectPageProps = {
@@ -28,10 +28,7 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
     notFound();
   }
 
-  const currentCoverFileName =
-    project.coverImage?.startsWith("/project-covers/") === true
-      ? project.coverImage.replace("/project-covers/", "")
-      : "";
+  const currentCoverFileNames = parseLocalCoverFileNamesFromStoredImages(project.coverImage);
 
   const boundUpdateAction = updateProjectAction.bind(null, project.id);
   const boundDeleteAction = deleteProjectAction.bind(null, project.id);
@@ -60,7 +57,8 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
           description: project.description,
           techStack: project.techStack,
           externalUrl: project.externalUrl,
-          coverImageFileName: currentCoverFileName,
+          coverImageFileNames: currentCoverFileNames,
+          existingCoverImagesRaw: project.coverImage ?? "",
           status: project.status,
         }}
       />

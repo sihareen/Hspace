@@ -5,7 +5,8 @@ type ProjectFormDefaults = {
   description?: string;
   techStack?: string;
   externalUrl?: string;
-  coverImageFileName?: string;
+  coverImageFileNames?: string[];
+  existingCoverImagesRaw?: string;
   status?: ProjectStatus;
 };
 
@@ -81,11 +82,12 @@ export function ProjectForm({ action, submitLabel, coverFiles, defaults }: Proje
       <label className="space-y-2 text-sm text-slate-200">
         Cover Image (from `public/project-covers`)
         <select
-          name="coverImageFileName"
-          defaultValue={defaults?.coverImageFileName ?? ""}
-          className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 file:mr-4 file:rounded-md file:border-0 file:bg-cyan-300/15 file:px-3 file:py-2 file:text-cyan-100 focus:ring"
+          name="coverImageFileNames"
+          multiple
+          defaultValue={defaults?.coverImageFileNames ?? []}
+          disabled={coverFiles.length === 0}
+          className="h-44 w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
         >
-          <option value="">No cover image</option>
           {coverFiles.map((fileName) => (
             <option key={fileName} value={fileName}>
               {fileName}
@@ -93,9 +95,17 @@ export function ProjectForm({ action, submitLabel, coverFiles, defaults }: Proje
           ))}
         </select>
         <p className="text-xs text-slate-400">
-          Tambah gambar baru dengan commit file ke `public/project-covers`, lalu pilih namanya di sini.
+          Gunakan Ctrl/Cmd + klik untuk pilih banyak gambar. Tambah gambar baru dengan commit file ke
+          `public/project-covers`.
         </p>
+        {coverFiles.length === 0 ? (
+          <p className="text-xs text-amber-200">
+            Belum ada file gambar. Tambahkan file ke `public/project-covers` lalu refresh halaman.
+          </p>
+        ) : null}
       </label>
+
+      <input type="hidden" name="existingCoverImagesRaw" value={defaults?.existingCoverImagesRaw ?? ""} />
 
       <button
         type="submit"
