@@ -28,10 +28,11 @@ export function HeroSection() {
               View Portfolio
             </a>
             <a
-              href="#contact"
-              className="text-sm uppercase tracking-[0.16em] text-white/85 underline underline-offset-4 transition hover:text-cyan-300"
+              href="/cv.pdf"
+              download
+              className="inline-flex items-center rounded-md border border-white/20 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/85 transition hover:-translate-y-0.5 hover:border-cyan-300 hover:text-cyan-300"
             >
-              Contact Me
+              Download CV
             </a>
           </div>
         </div>
