@@ -1,5 +1,6 @@
 import { createProjectAction } from "@/app/admin/actions";
 import { ProjectForm } from "@/components/admin/project-form";
+import { listProjectCoverFiles } from "@/lib/project-covers";
 
 type NewProjectPageProps = {
   searchParams: Promise<{ error?: string }>;
@@ -7,20 +8,15 @@ type NewProjectPageProps = {
 
 export default async function NewProjectPage({ searchParams }: NewProjectPageProps) {
   const params = await searchParams;
+  const coverFiles = await listProjectCoverFiles();
   const errorMessage =
-    params.error === "invalid_type"
-      ? "Format file tidak didukung. Gunakan png/jpg/jpeg/webp/gif."
-      : params.error === "too_large"
-        ? "Ukuran file terlalu besar. Maksimum 5MB."
-        : params.error === "missing_token"
-          ? "Storage belum terkonfigurasi. Set BLOB_READ_WRITE_TOKEN di environment Vercel."
-          : params.error === "upload_failed"
-            ? "Upload gagal di storage. Coba ulang atau periksa konfigurasi Blob."
-            : params.error === "db_error"
-              ? "Gagal menyimpan project ke database. Cek koneksi DATABASE_URL dan coba ulang."
-            : params.error
-              ? "Invalid input. Please review all fields."
-              : null;
+    params.error === "invalid_cover"
+      ? "Nama file cover tidak valid. Pilih dari daftar gambar yang tersedia."
+      : params.error === "db_error"
+        ? "Gagal menyimpan project ke database. Cek koneksi DATABASE_URL dan coba ulang."
+        : params.error
+          ? "Invalid input. Please review all fields."
+          : null;
 
   return (
     <main className="space-y-4">
@@ -37,7 +33,7 @@ export default async function NewProjectPage({ searchParams }: NewProjectPagePro
         </p>
       ) : null}
 
-      <ProjectForm action={createProjectAction} submitLabel="Create Project" />
+      <ProjectForm action={createProjectAction} submitLabel="Create Project" coverFiles={coverFiles} />
     </main>
   );
 }

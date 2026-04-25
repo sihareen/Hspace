@@ -5,23 +5,20 @@ type ProjectFormDefaults = {
   description?: string;
   techStack?: string;
   externalUrl?: string;
-  coverImage?: string;
+  coverImageFileName?: string;
   status?: ProjectStatus;
 };
 
 type ProjectFormProps = {
   action: (formData: FormData) => void | Promise<void>;
   submitLabel: string;
+  coverFiles: string[];
   defaults?: ProjectFormDefaults;
 };
 
-export function ProjectForm({ action, submitLabel, defaults }: ProjectFormProps) {
+export function ProjectForm({ action, submitLabel, coverFiles, defaults }: ProjectFormProps) {
   return (
-    <form
-      action={action}
-      encType="multipart/form-data"
-      className="space-y-5 rounded-2xl border border-cyan-300/15 bg-slate-900/70 p-6"
-    >
+    <form action={action} className="space-y-5 rounded-2xl border border-cyan-300/15 bg-slate-900/70 p-6">
       <div className="grid gap-5 md:grid-cols-2">
         <label className="space-y-2 text-sm text-slate-200">
           Title
@@ -81,20 +78,23 @@ export function ProjectForm({ action, submitLabel, defaults }: ProjectFormProps)
         </label>
       </div>
 
-      <input type="hidden" name="existingCoverImage" value={defaults?.coverImage ?? ""} />
-
       <label className="space-y-2 text-sm text-slate-200">
-        Cover Image (upload file)
-        <input
-          name="coverImageFile"
-          type="file"
-          accept="image/png,image/jpeg,image/webp,image/gif"
+        Cover Image (from `public/project-covers`)
+        <select
+          name="coverImageFileName"
+          defaultValue={defaults?.coverImageFileName ?? ""}
           className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 file:mr-4 file:rounded-md file:border-0 file:bg-cyan-300/15 file:px-3 file:py-2 file:text-cyan-100 focus:ring"
-        />
-        <p className="text-xs text-slate-400">Allowed: png, jpg, jpeg, webp, gif. Max size: 5MB.</p>
-        {defaults?.coverImage ? (
-          <p className="text-xs text-slate-400">Current image is set. Upload a new file only if you want to replace it.</p>
-        ) : null}
+        >
+          <option value="">No cover image</option>
+          {coverFiles.map((fileName) => (
+            <option key={fileName} value={fileName}>
+              {fileName}
+            </option>
+          ))}
+        </select>
+        <p className="text-xs text-slate-400">
+          Tambah gambar baru dengan commit file ke `public/project-covers`, lalu pilih namanya di sini.
+        </p>
       </label>
 
       <button

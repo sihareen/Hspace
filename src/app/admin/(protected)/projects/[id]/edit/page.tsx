@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { deleteProjectAction, updateProjectAction } from "@/app/admin/actions";
 import { ProjectForm } from "@/components/admin/project-form";
+import { listProjectCoverFiles } from "@/lib/project-covers";
 import { getPrisma } from "@/lib/prisma";
 
 type EditProjectPageProps = {
@@ -12,25 +13,25 @@ type EditProjectPageProps = {
 export default async function EditProjectPage({ params, searchParams }: EditProjectPageProps) {
   const { id } = await params;
   const query = await searchParams;
+  const coverFiles = await listProjectCoverFiles();
   const errorMessage =
-    query.error === "invalid_type"
-      ? "Format file tidak didukung. Gunakan png/jpg/jpeg/webp/gif."
-      : query.error === "too_large"
-        ? "Ukuran file terlalu besar. Maksimum 5MB."
-        : query.error === "missing_token"
-          ? "Storage belum terkonfigurasi. Set BLOB_READ_WRITE_TOKEN di environment Vercel."
-          : query.error === "upload_failed"
-            ? "Upload gagal di storage. Coba ulang atau periksa konfigurasi Blob."
-            : query.error === "db_error"
-              ? "Gagal update/delete ke database. Cek koneksi DATABASE_URL lalu coba ulang."
-            : query.error
-              ? "Invalid input. Please review all fields."
-              : null;
+    query.error === "invalid_cover"
+      ? "Nama file cover tidak valid. Pilih dari daftar gambar yang tersedia."
+      : query.error === "db_error"
+        ? "Gagal update/delete ke database. Cek koneksi DATABASE_URL lalu coba ulang."
+        : query.error
+          ? "Invalid input. Please review all fields."
+          : null;
 
   const project = await getPrisma().project.findUnique({ where: { id } });
   if (!project) {
     notFound();
   }
+
+  const currentCoverFileName =
+    project.coverImage?.startsWith("/project-covers/") === true
+      ? project.coverImage.replace("/project-covers/", "")
+      : "";
 
   const boundUpdateAction = updateProjectAction.bind(null, project.id);
   const boundDeleteAction = deleteProjectAction.bind(null, project.id);
@@ -53,12 +54,13 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
       <ProjectForm
         action={boundUpdateAction}
         submitLabel="Update Project"
+        coverFiles={coverFiles}
         defaults={{
           title: project.title,
           description: project.description,
           techStack: project.techStack,
           externalUrl: project.externalUrl,
-          coverImage: project.coverImage ?? "",
+          coverImageFileName: currentCoverFileName,
           status: project.status,
         }}
       />
