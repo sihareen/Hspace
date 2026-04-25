@@ -71,6 +71,7 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
           coverImageFileName: currentCoverFileName,
           galleryImageFileNames: currentGalleryFileNames,
           existingCoverImagesRaw: project.coverImage ?? "",
+          displayOrder: project.displayOrder,
           status: project.status,
         }}
       />

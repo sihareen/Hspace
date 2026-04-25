@@ -32,8 +32,7 @@ export async function ProjectsSection() {
   try {
     publishedProjects = await getPrisma().project.findMany({
       where: { status: "PUBLISHED" },
-      orderBy: { updatedAt: "desc" },
-      take: 8,
+      orderBy: [{ displayOrder: "asc" }, { updatedAt: "desc" }],
     });
   } catch (error) {
     console.error("Failed to load published projects from database.", error);

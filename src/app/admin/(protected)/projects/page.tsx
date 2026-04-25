@@ -7,7 +7,7 @@ export default async function AdminProjectsPage() {
 
   try {
     projects = await getPrisma().project.findMany({
-      orderBy: { updatedAt: "desc" },
+      orderBy: [{ displayOrder: "asc" }, { updatedAt: "desc" }],
     });
   } catch (error) {
     console.error("Failed to load admin projects list.", error);
@@ -45,6 +45,7 @@ export default async function AdminProjectsPage() {
               <div>
                 <h2 className="text-lg text-slate-100">{project.title}</h2>
                 <p className="text-xs uppercase tracking-[0.12em] text-slate-400">{project.status}</p>
+                <p className="text-xs text-cyan-200/80">Order: {project.displayOrder}</p>
                 <p className="mt-2 text-sm text-slate-300">/{project.slug}</p>
               </div>
               <a

@@ -34,6 +34,7 @@ function readFormData(formData: FormData) {
     coverImageFileName: String(formData.get("coverImageFileName") ?? ""),
     galleryImageFileNames,
     existingCoverImagesRaw: String(formData.get("existingCoverImagesRaw") ?? ""),
+    displayOrder: String(formData.get("displayOrder") ?? "0"),
     status: String(formData.get("status") ?? ProjectStatus.DRAFT),
   };
 }
@@ -156,6 +157,7 @@ export async function createProjectAction(formData: FormData) {
         labels: projectLabels.length > 0 ? projectLabels.join(",") : null,
         techStack: parsed.data.techStack,
         externalUrl: parsed.data.externalUrl,
+        displayOrder: parsed.data.displayOrder,
         status: parsed.data.status,
         coverImage: coverImages.value,
         slug,
@@ -199,6 +201,7 @@ export async function updateProjectAction(projectId: string, formData: FormData)
         labels: projectLabels.length > 0 ? projectLabels.join(",") : null,
         techStack: parsed.data.techStack,
         externalUrl: parsed.data.externalUrl,
+        displayOrder: parsed.data.displayOrder,
         status: parsed.data.status,
         coverImage: coverImages.value,
         slug,

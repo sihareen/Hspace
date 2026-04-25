@@ -27,6 +27,7 @@ function isGitHubUrl(url: string) {
 
 export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>("All");
+  const [showAll, setShowAll] = useState(false);
   const [activeProject, setActiveProject] = useState<ProjectCardItem | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
@@ -40,6 +41,9 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
 
   const activeProjectImages = activeProject?.coverImages ?? [];
   const activeImage = activeProjectImages[activeImageIndex] ?? null;
+  const DEFAULT_VISIBLE_COUNT = 8;
+  const visibleProjects = showAll ? filteredProjects : filteredProjects.slice(0, DEFAULT_VISIBLE_COUNT);
+  const hasMoreProjects = filteredProjects.length > DEFAULT_VISIBLE_COUNT;
 
   useEffect(() => {
     if (!activeProject) {
@@ -102,7 +106,10 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
             <button
               key={filter}
               type="button"
-              onClick={() => setActiveFilter(filter)}
+              onClick={() => {
+                setActiveFilter(filter);
+                setShowAll(false);
+              }}
               className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.15em] transition ${
                 activeFilter === filter
                   ? "border-cyan-300/60 bg-cyan-500/10 text-cyan-300"
@@ -114,8 +121,8 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
           ))}
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredProjects.map((project) => {
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {visibleProjects.map((project) => {
             const coverImage = project.coverImages[0] ?? null;
 
             return (
@@ -179,6 +186,18 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
             );
           })}
         </div>
+
+        {hasMoreProjects ? (
+          <div className="flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowAll((prev) => !prev)}
+              className="rounded-full border border-cyan-300/45 bg-cyan-500/10 px-5 py-2 text-xs uppercase tracking-[0.16em] text-cyan-300 transition hover:border-cyan-300"
+            >
+              {showAll ? "Less" : `More (${filteredProjects.length - DEFAULT_VISIBLE_COUNT})`}
+            </button>
+          </div>
+        ) : null}
       </div>
 
       {activeProject ? (

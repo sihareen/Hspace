@@ -9,6 +9,7 @@ type ProjectFormDefaults = {
   coverImageFileName?: string;
   galleryImageFileNames?: string[];
   existingCoverImagesRaw?: string;
+  displayOrder?: number;
   status?: ProjectStatus;
 };
 
@@ -85,6 +86,20 @@ export function ProjectForm({ action, submitLabel, coverFiles, defaults }: Proje
             placeholder="LoRa, MQTT, Node.js"
             className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
           />
+        </label>
+
+        <label className="space-y-2 text-sm text-slate-200">
+          Order
+          <input
+            name="displayOrder"
+            type="number"
+            min={0}
+            step={1}
+            required
+            defaultValue={defaults?.displayOrder ?? 0}
+            className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
+          />
+          <p className="text-xs text-slate-400">Semakin kecil, semakin atas di halaman utama.</p>
         </label>
 
         <label className="space-y-2 text-sm text-slate-200">

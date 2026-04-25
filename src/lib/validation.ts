@@ -17,6 +17,7 @@ export const projectFormSchema = z.object({
   coverImageFileName: z.string().trim().optional().nullable(),
   galleryImageFileNames: z.array(z.string().trim()).default([]),
   existingCoverImagesRaw: z.string().trim().optional().nullable(),
+  displayOrder: z.coerce.number().int().min(0).max(9999),
   status: z.enum(ProjectStatus),
 });
 
