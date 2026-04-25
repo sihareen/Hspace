@@ -13,8 +13,8 @@ import { ADMIN_SESSION_COOKIE, signAdminSession } from "@/lib/session";
 import { experienceFormSchema, loginSchema, projectFormSchema } from "@/lib/validation";
 
 function readFormData(formData: FormData) {
-  const coverImageFileNames = formData
-    .getAll("coverImageFileNames")
+  const galleryImageFileNames = formData
+    .getAll("galleryImageFileNames")
     .map((value) => String(value ?? "").trim())
     .filter(Boolean);
 
@@ -23,7 +23,8 @@ function readFormData(formData: FormData) {
     description: String(formData.get("description") ?? ""),
     techStack: String(formData.get("techStack") ?? ""),
     externalUrl: String(formData.get("externalUrl") ?? ""),
-    coverImageFileNames,
+    coverImageFileName: String(formData.get("coverImageFileName") ?? ""),
+    galleryImageFileNames,
     existingCoverImagesRaw: String(formData.get("existingCoverImagesRaw") ?? ""),
     status: String(formData.get("status") ?? ProjectStatus.DRAFT),
   };
@@ -42,17 +43,26 @@ function readExperienceFormData(formData: FormData) {
 }
 
 function resolveCoverImagesValue(
-  selectedCoverImageFileNames: string[],
+  coverImageFileName: string | null | undefined,
+  selectedGalleryImageFileNames: string[],
   existingCoverImagesRaw?: string | null,
 ) {
-  const normalizedFileNames = normalizeProjectCoverFileNames(selectedCoverImageFileNames);
-  const hasInvalidSelection = selectedCoverImageFileNames.length > 0 && normalizedFileNames.length === 0;
+  const normalizedCoverImage = normalizeProjectCoverFileNames([coverImageFileName ?? ""])[0] ?? null;
+  const normalizedGallery = normalizeProjectCoverFileNames(selectedGalleryImageFileNames);
 
-  if (hasInvalidSelection) {
+  if (coverImageFileName?.trim() && !normalizedCoverImage) {
     return { ok: false as const, value: null };
   }
 
-  const serialized = serializeProjectCoverImagesFromFileNames(normalizedFileNames);
+  if (selectedGalleryImageFileNames.length > 0 && normalizedGallery.length === 0) {
+    return { ok: false as const, value: null };
+  }
+
+  const ordered = normalizedCoverImage
+    ? [normalizedCoverImage, ...normalizedGallery.filter((fileName) => fileName !== normalizedCoverImage)]
+    : normalizedGallery;
+
+  const serialized = serializeProjectCoverImagesFromFileNames(ordered);
   if (serialized) {
     return { ok: true as const, value: serialized };
   }
@@ -108,7 +118,10 @@ export async function createProjectAction(formData: FormData) {
   }
 
   const slug = await createUniqueProjectSlug(parsed.data.title);
-  const coverImages = resolveCoverImagesValue(parsed.data.coverImageFileNames);
+  const coverImages = resolveCoverImagesValue(
+    parsed.data.coverImageFileName,
+    parsed.data.galleryImageFileNames,
+  );
   if (!coverImages.ok) {
     redirect("/admin/projects/new?error=invalid_cover");
   }
@@ -145,7 +158,8 @@ export async function updateProjectAction(projectId: string, formData: FormData)
 
   const slug = await createUniqueProjectSlug(parsed.data.title, projectId);
   const coverImages = resolveCoverImagesValue(
-    parsed.data.coverImageFileNames,
+    parsed.data.coverImageFileName,
+    parsed.data.galleryImageFileNames,
     parsed.data.existingCoverImagesRaw,
   );
   if (!coverImages.ok) {

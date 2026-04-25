@@ -195,7 +195,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
                     src={activeImage}
                     alt={`${activeProject.title} preview ${activeImageIndex + 1}`}
                     fill
-                    className="object-cover"
+                    className="object-contain p-4"
                     sizes="(max-width: 1024px) 100vw, 60vw"
                   />
 

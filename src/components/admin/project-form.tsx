@@ -5,7 +5,8 @@ type ProjectFormDefaults = {
   description?: string;
   techStack?: string;
   externalUrl?: string;
-  coverImageFileNames?: string[];
+  coverImageFileName?: string;
+  galleryImageFileNames?: string[];
   existingCoverImagesRaw?: string;
   status?: ProjectStatus;
 };
@@ -80,11 +81,28 @@ export function ProjectForm({ action, submitLabel, coverFiles, defaults }: Proje
       </div>
 
       <label className="space-y-2 text-sm text-slate-200">
-        Cover Image (from `public/project-covers`)
+        Cover Image (thumbnail)
         <select
-          name="coverImageFileNames"
+          name="coverImageFileName"
+          defaultValue={defaults?.coverImageFileName ?? ""}
+          disabled={coverFiles.length === 0}
+          className="w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
+        >
+          <option value="">Auto from gallery</option>
+          {coverFiles.map((fileName) => (
+            <option key={`cover-${fileName}`} value={fileName}>
+              {fileName}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="space-y-2 text-sm text-slate-200">
+        Gallery Images (popup slider)
+        <select
+          name="galleryImageFileNames"
           multiple
-          defaultValue={defaults?.coverImageFileNames ?? []}
+          defaultValue={defaults?.galleryImageFileNames ?? []}
           disabled={coverFiles.length === 0}
           className="h-44 w-full rounded-lg border border-cyan-300/20 bg-slate-950 px-3 py-2 text-slate-100 outline-none ring-cyan-300/40 focus:ring"
         >
@@ -95,8 +113,8 @@ export function ProjectForm({ action, submitLabel, coverFiles, defaults }: Proje
           ))}
         </select>
         <p className="text-xs text-slate-400">
-          Gunakan Ctrl/Cmd + klik untuk pilih banyak gambar. Tambah gambar baru dengan commit file ke
-          `public/project-covers`.
+          Gunakan Ctrl/Cmd + klik untuk pilih banyak gambar. Cover akan dipakai dari field Cover Image atau gambar
+          pertama gallery.
         </p>
         {coverFiles.length === 0 ? (
           <p className="text-xs text-amber-200">
