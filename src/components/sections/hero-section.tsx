@@ -1,57 +1,55 @@
 import Image from "next/image";
 
-import { heroContent } from "@/data/site-content";
-
 export function HeroSection() {
   return (
-    <section id="hero" className="relative overflow-hidden border-b border-cyan-400/10">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(45,212,255,0.22),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(99,102,241,0.2),transparent_36%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(34,211,238,0.7),transparent)]" />
-
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-20 sm:px-10 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:py-28">
-        <div className="flex flex-col gap-8">
-          <p className="max-w-fit rounded-full border border-cyan-300/30 bg-cyan-400/10 px-4 py-1 text-xs uppercase tracking-[0.28em] text-cyan-200">
-            Portfolio 2026
-          </p>
-
-          <h1 className="max-w-4xl font-[family-name:var(--font-heading)] text-4xl leading-[1.1] text-slate-50 sm:text-6xl lg:text-7xl">
-            {heroContent.headline}
+    <section id="hero" className="relative overflow-hidden border-b border-white/10">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_10%,rgba(255,255,255,0.08),transparent_36%)]" />
+      <div className="mx-auto grid min-h-[calc(100vh-72px)] w-full max-w-[1320px] gap-12 px-6 py-14 sm:px-10 lg:grid-cols-[1.08fr_1fr] lg:items-center lg:px-12 lg:py-16">
+        <div className="z-10 flex max-w-[660px] flex-col items-start gap-6 lg:gap-7">
+          <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">IoT Portfolio</p>
+          <h1 className="font-[family-name:var(--font-heading)] text-5xl leading-[0.98] text-white sm:text-6xl lg:text-7xl xl:text-[6.25rem]">
+            Muhammad Rizkan Harin Faza
           </h1>
-
-          <p className="max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">{heroContent.subtitle}</p>
-
-          <div className="flex flex-wrap items-center gap-4">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">
+            IoT & Embedded Systems Engineer
+          </p>
+          <p className="max-w-[560px] text-base leading-8 text-white/70 lg:text-lg">
+            Electrical Engineering graduate focused on intelligent connected systems, embedded technology, AI, and
+            data-driven solutions.
+          </p>
+          <div className="flex flex-wrap items-center gap-5">
             <a
-              href={heroContent.ctaTarget}
-              className="inline-flex items-center rounded-md border border-cyan-300/50 bg-cyan-300/10 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-100 transition hover:border-cyan-200 hover:bg-cyan-300/20"
+              href="#projects"
+              className="inline-flex items-center rounded-md border border-cyan-300/40 bg-cyan-400/10 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200 transition hover:-translate-y-0.5 hover:border-cyan-300"
             >
-              {heroContent.ctaLabel}
+              View Portfolio
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center rounded-md border border-indigo-300/45 px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-indigo-100 transition hover:border-indigo-200"
+              className="text-sm uppercase tracking-[0.16em] text-white/85 underline underline-offset-4 transition hover:text-cyan-300"
             >
-              Contact
+              Contact Me
             </a>
           </div>
         </div>
 
-        <div className="mx-auto w-full max-w-sm">
-          <div className="relative overflow-hidden rounded-3xl border border-cyan-300/35 bg-slate-950/60 p-2 shadow-[0_0_0_1px_rgba(34,211,238,0.22),0_25px_45px_rgba(2,6,23,0.6)]">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(45,212,255,0.22),transparent_48%)]" />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+        <div className="relative mx-auto w-full max-w-[620px]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_40px_90px_rgba(0,0,0,0.82)]">
+            <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-black via-black/50 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-0 z-10 bg-cyan-500/5" />
+            <div className="absolute inset-0 grayscale">
               <Image
                 src="/profile/me.jpg"
                 alt="Muhammad Rizkan Harin Faza"
                 fill
                 priority
-                className="object-cover object-[center_28%]"
-                sizes="(max-width: 1024px) 70vw, 360px"
+                className="object-cover object-[center_22%]"
+                sizes="(max-width: 1024px) 90vw, 560px"
               />
             </div>
-            <div className="relative mt-4 flex items-center justify-between rounded-xl border border-cyan-300/20 bg-slate-950/65 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.22em] text-cyan-100">Rizkan Harin</p>
-              <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.9)]" />
+            <div className="absolute bottom-5 left-5 z-20 rounded-full border border-cyan-300/35 bg-black/70 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-cyan-200">
+              Engineer Profile
             </div>
           </div>
         </div>

@@ -6,36 +6,36 @@ import { contactContent } from "@/data/site-content";
 export function ContactSection() {
   return (
     <SectionShell id="contact" title="Contact">
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3">
         <a
           href={`mailto:${contactContent.email}`}
-          className="group rounded-xl border border-cyan-300/20 bg-slate-900/70 p-5 text-sm text-slate-200 transition hover:border-cyan-300/50"
+          className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-white/70 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
         >
-          <FiMail className="h-5 w-5 text-cyan-200" aria-hidden />
-          <p className="mt-3 font-semibold uppercase tracking-[0.14em] text-slate-100">Email</p>
-          <p className="mt-1 break-all text-cyan-200">{contactContent.email}</p>
+          <FiMail className="h-5 w-5 text-cyan-300" aria-hidden />
+          <p className="mt-3 text-xs uppercase tracking-[0.16em] text-white">Email</p>
+          <p className="mt-2 break-all text-sm text-white/75">{contactContent.email}</p>
         </a>
 
         <a
           href={contactContent.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="group rounded-xl border border-cyan-300/20 bg-slate-900/70 p-5 text-sm text-slate-200 transition hover:border-cyan-300/50"
+          className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-white/70 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
         >
-          <FiLinkedin className="h-5 w-5 text-cyan-200" aria-hidden />
-          <p className="mt-3 font-semibold uppercase tracking-[0.14em] text-slate-100">LinkedIn</p>
-          <p className="mt-1 text-cyan-200">View profile</p>
+          <FiLinkedin className="h-5 w-5 text-cyan-300" aria-hidden />
+          <p className="mt-3 text-xs uppercase tracking-[0.16em] text-white">LinkedIn</p>
+          <p className="mt-2 text-sm text-white/75">Professional profile</p>
         </a>
 
         <a
           href={contactContent.github}
           target="_blank"
           rel="noopener noreferrer"
-          className="group rounded-xl border border-cyan-300/20 bg-slate-900/70 p-5 text-sm text-slate-200 transition hover:border-cyan-300/50"
+          className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-white/70 transition hover:-translate-y-0.5 hover:border-cyan-300/40"
         >
-          <FiGithub className="h-5 w-5 text-cyan-200" aria-hidden />
-          <p className="mt-3 font-semibold uppercase tracking-[0.14em] text-slate-100">GitHub</p>
-          <p className="mt-1 text-cyan-200">Open repositories</p>
+          <FiGithub className="h-5 w-5 text-cyan-300" aria-hidden />
+          <p className="mt-3 text-xs uppercase tracking-[0.16em] text-white">GitHub</p>
+          <p className="mt-2 text-sm text-white/75">Open repositories</p>
         </a>
       </div>
     </SectionShell>

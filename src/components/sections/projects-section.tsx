@@ -1,48 +1,71 @@
 import type { Project } from "@prisma/client";
 
-import { ProjectsShowcase } from "@/components/sections/projects-showcase";
+import { ProjectsGallery, type ProjectCategory, type ProjectCardItem } from "@/components/sections/projects-gallery";
 import { SectionShell } from "@/components/shared/section-shell";
 import { projects } from "@/data/site-content";
 import { parseProjectCoverImages } from "@/lib/project-covers";
 import { getPrisma } from "@/lib/prisma";
 
-type DisplayProject = {
-  title: string;
-  description: string;
-  techStack: string[];
-  externalUrl: string;
-  coverImages: string[];
-};
+function inferProjectCategory(title: string, techStack: string[]): ProjectCategory {
+  const source = `${title} ${techStack.join(" ")}`.toLowerCase();
+
+  if (/ai|ml|machine|yolo|tensorflow|vision/.test(source)) {
+    return "AI";
+  }
+
+  if (/data|analytics|dashboard|postgres|mysql|statistics|forecast/.test(source)) {
+    return "Data";
+  }
+
+  if (/embedded|firmware|microcontroller|rtos|raspberry|sbc/.test(source)) {
+    return "Embedded";
+  }
+
+  return "IoT";
+}
 
 export async function ProjectsSection() {
   let publishedProjects: Project[] = [];
+
   try {
     publishedProjects = await getPrisma().project.findMany({
       where: { status: "PUBLISHED" },
       orderBy: { updatedAt: "desc" },
-      take: 6,
+      take: 8,
     });
   } catch (error) {
-    // During early deploy/setup, DB might be unavailable.
-    // Fallback to static project data so build/runtime still works.
     console.error("Failed to load published projects from database.", error);
     publishedProjects = [];
   }
 
-  const displayProjects: DisplayProject[] =
+  const displayProjects: ProjectCardItem[] =
     publishedProjects.length > 0
-      ? publishedProjects.map((project) => ({
-          title: project.title,
-          description: project.description,
-          techStack: project.techStack.split(",").map((item) => item.trim()),
-          externalUrl: project.externalUrl,
-          coverImages: parseProjectCoverImages(project.coverImage),
-        }))
-      : projects.map((project) => ({ ...project, coverImages: [] }));
+      ? publishedProjects.map((project) => {
+          const techStack = project.techStack
+            .split(",")
+            .map((item) => item.trim())
+            .filter(Boolean);
+
+          const coverImages = parseProjectCoverImages(project.coverImage);
+
+          return {
+            title: project.title,
+            description: project.description,
+            techStack,
+            externalUrl: project.externalUrl,
+            coverImage: coverImages[0] ?? null,
+            category: inferProjectCategory(project.title, techStack),
+          };
+        })
+      : projects.map((project) => ({
+          ...project,
+          coverImage: null,
+          category: inferProjectCategory(project.title, project.techStack),
+        }));
 
   return (
-    <SectionShell id="projects" title="Projects">
-      <ProjectsShowcase projects={displayProjects} />
+    <SectionShell id="projects" title="Featured Projects">
+      <ProjectsGallery projects={displayProjects} />
     </SectionShell>
   );
 }

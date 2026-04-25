@@ -1,29 +1,30 @@
 const navItems = [
-  { label: "Hero", href: "#hero" },
+  { label: "Home", href: "#hero" },
   { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#projects" },
-  { label: "Tech Stack", href: "#tech-stack" },
   { label: "Contact", href: "#contact" },
 ];
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-30 border-b border-cyan-300/10 bg-[#0b0f19]/80 backdrop-blur-lg">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-4 sm:px-10 md:flex-row md:items-center md:justify-between">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-black/70 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-[1320px] items-center justify-between px-6 py-4 sm:px-10 lg:px-12">
         <a
           href="#hero"
-          className="inline-flex items-center gap-2 font-[family-name:var(--font-heading)] text-sm uppercase tracking-[0.25em] text-cyan-100"
+          className="font-[family-name:var(--font-heading)] text-xs uppercase tracking-[0.35em] text-white"
         >
-          <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.9)]" />
-          Rizkan Harin
+          Portfolio
         </a>
-        <nav aria-label="Primary" className="-mx-2 overflow-x-auto px-2">
-          <ul className="flex min-w-max items-center gap-2 md:gap-3">
+        <nav aria-label="Primary" className="overflow-x-auto">
+          <ul className="flex min-w-max items-center gap-4 lg:gap-7">
             {navItems.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="block rounded-full border border-cyan-300/20 px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-slate-300 transition hover:border-cyan-300/45 hover:text-cyan-100"
+                  className={`text-[11px] uppercase tracking-[0.2em] transition ${
+                    item.label === "Home" ? "text-cyan-300" : "text-white/75 hover:text-cyan-300"
+                  }`}
                 >
                   {item.label}
                 </a>

@@ -1,11 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #0b0f19;
-  --bg-secondary: #121a2a;
-  --fg-primary: #e8f0ff;
-  --neon-cyan: #34d9ff;
-  --neon-purple: #726bff;
+  --bg: #050608;
+  --fg: #f5f7fa;
+  --accent: #22d3ee;
 }
 
 * {
@@ -19,12 +17,12 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  color: var(--fg-primary);
+  color: var(--fg);
   font-family: var(--font-body), sans-serif;
   background:
-    radial-gradient(circle at 10% -20%, rgba(52, 217, 255, 0.16), transparent 32%),
-    radial-gradient(circle at 90% -10%, rgba(114, 107, 255, 0.18), transparent 30%),
-    linear-gradient(180deg, var(--bg-primary), #090d17 30%, #0b1020 100%);
+    radial-gradient(circle at 80% -10%, rgba(255, 255, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 10% 120%, rgba(34, 211, 238, 0.07), transparent 32%),
+    linear-gradient(180deg, #07090c 0%, #040507 100%);
 }
 
 body::before {
@@ -32,33 +30,18 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.16;
-  background-image: linear-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06), transparent 42%);
+  opacity: 0.55;
 }
 
 main {
-  animation: rise-in 500ms ease-out;
+  animation: fade-up 420ms ease-out;
 }
 
-.section-shell {
-  position: relative;
-}
-
-.section-shell::after {
-  content: "";
-  position: absolute;
-  inset: 14% -8% auto -8%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.25), transparent);
-}
-
-@keyframes rise-in {
+@keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
