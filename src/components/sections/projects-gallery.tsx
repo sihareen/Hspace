@@ -153,7 +153,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
 
                 <div className="space-y-5 p-6">
                   <h3 className="text-xl font-semibold text-white">{project.title}</h3>
-                  <p className="min-h-24 text-sm leading-7 text-white/70">{project.description}</p>
+                  <p className="truncate-3 min-h-24 text-sm leading-7 text-white/70">{project.description}</p>
 
                   <ul className="flex flex-wrap gap-2">
                     {project.techStack.map((stack) => (

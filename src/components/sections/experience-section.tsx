@@ -1,5 +1,6 @@
 import { ExperienceCategory, type ExperienceEntry } from "@prisma/client";
 
+import { ExperienceGallery } from "@/components/sections/experience-gallery";
 import { SectionShell } from "@/components/shared/section-shell";
 import { getPrisma } from "@/lib/prisma";
 
@@ -72,30 +73,7 @@ export async function ExperienceSection() {
 
   return (
     <SectionShell id="experience" title="Experience / Education">
-      <div className="grid gap-4 lg:grid-cols-3">
-        {timelineItems.map((item) => (
-          <article
-            key={`${item.period}-${item.title}`}
-            className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition duration-300 hover:border-cyan-300/35"
-          >
-            <p className="text-[11px] uppercase tracking-[0.2em] text-cyan-300">{item.period}</p>
-            <h3 className="mt-3 text-lg font-semibold text-white">{item.title}</h3>
-            {item.company ? <p className="mt-1 text-sm text-slate-300">{item.company}</p> : null}
-            <p className="mt-3 text-sm leading-7 text-white/70">{item.description}</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {item.tags.map((tag) => (
-                <li
-                  key={`${item.title}-${tag}`}
-                  className="rounded-full border border-white/15 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-white/65"
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 text-[10px] uppercase tracking-[0.2em] text-white/45">{item.category}</p>
-          </article>
-        ))}
-      </div>
+      <ExperienceGallery items={timelineItems} />
     </SectionShell>
   );
 }

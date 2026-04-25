@@ -38,6 +38,13 @@ main {
   animation: fade-up 420ms ease-out;
 }
 
+.truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
