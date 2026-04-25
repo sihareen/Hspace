@@ -17,11 +17,13 @@ function inferProjectCategory(title: string, techStack: string[]): ProjectCatego
     return "Data";
   }
 
-  if (/embedded|firmware|microcontroller|rtos|raspberry|sbc/.test(source)) {
-    return "Embedded";
-  }
-
   return "IoT";
+}
+
+function normalizeProjectLabels(rawLabels: string[]): ProjectCategory[] {
+  const normalized = rawLabels.map((label) => (label === "Embedded" ? "IoT" : label));
+  const deduplicated = [...new Set(normalized)];
+  return deduplicated.filter((label): label is ProjectCategory => label === "IoT" || label === "AI" || label === "Data");
 }
 
 export async function ProjectsSection() {
@@ -51,10 +53,11 @@ export async function ProjectsSection() {
             ? project.labels
                 .split(",")
                 .map((item) => item.trim())
-                .filter(Boolean) as ProjectCategory[]
+                .filter(Boolean)
             : [];
           const inferredLabel = inferProjectCategory(project.title, techStack);
-          const labels = storedLabels.length > 0 ? storedLabels : [inferredLabel];
+          const labels = normalizeProjectLabels(storedLabels);
+          const normalizedLabels = labels.length > 0 ? labels : [inferredLabel];
 
           return {
             title: project.title,
@@ -62,7 +65,7 @@ export async function ProjectsSection() {
             techStack,
             externalUrl: project.externalUrl,
             coverImages,
-            labels,
+            labels: normalizedLabels,
           };
         })
       : projects.map((project) => ({

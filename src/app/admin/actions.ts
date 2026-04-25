@@ -12,7 +12,7 @@ import { createUniqueProjectSlug } from "@/lib/slug";
 import { ADMIN_SESSION_COOKIE, signAdminSession } from "@/lib/session";
 import { experienceFormSchema, loginSchema, projectFormSchema } from "@/lib/validation";
 
-const PROJECT_LABELS = ["IoT", "Embedded", "AI", "Data"] as const;
+const PROJECT_LABELS = ["IoT", "AI", "Data"] as const;
 const PROJECT_LABEL_SET = new Set<string>(PROJECT_LABELS);
 
 function readFormData(formData: FormData) {
@@ -42,8 +42,9 @@ function sanitizeProjectLabels(labels: string[]) {
   const unique = new Set<string>();
 
   for (const label of labels) {
-    if (PROJECT_LABEL_SET.has(label)) {
-      unique.add(label);
+    const normalizedLabel = label === "Embedded" ? "IoT" : label;
+    if (PROJECT_LABEL_SET.has(normalizedLabel)) {
+      unique.add(normalizedLabel);
     }
   }
 

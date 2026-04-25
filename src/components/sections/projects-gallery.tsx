@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { FiChevronLeft, FiChevronRight, FiExternalLink, FiGithub, FiX } from "react-icons/fi";
 
-export type ProjectCategory = "IoT" | "Embedded" | "AI" | "Data";
+export type ProjectCategory = "IoT" | "AI" | "Data";
 
 export type ProjectCardItem = {
   title: string;
@@ -19,7 +19,7 @@ type ProjectsGalleryProps = {
   projects: ProjectCardItem[];
 };
 
-const filters: Array<"All" | ProjectCategory> = ["All", "IoT", "Embedded", "AI", "Data"];
+const filters: Array<"All" | ProjectCategory> = ["All", "IoT", "AI", "Data"];
 
 function isGitHubUrl(url: string) {
   return /github\.com/i.test(url);

@@ -36,6 +36,8 @@ export default async function EditProjectPage({ params, searchParams }: EditProj
         .split(",")
         .map((item) => item.trim())
         .filter(Boolean)
+        .map((label) => (label === "Embedded" ? "IoT" : label))
+        .filter((label, index, arr) => arr.indexOf(label) === index)
     : [];
 
   const boundUpdateAction = updateProjectAction.bind(null, project.id);

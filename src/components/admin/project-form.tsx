@@ -19,7 +19,7 @@ type ProjectFormProps = {
   defaults?: ProjectFormDefaults;
 };
 
-const PROJECT_LABELS = ["IoT", "Embedded", "AI", "Data"] as const;
+const PROJECT_LABELS = ["IoT", "AI", "Data"] as const;
 
 export function ProjectForm({ action, submitLabel, coverFiles, defaults }: ProjectFormProps) {
   return (
