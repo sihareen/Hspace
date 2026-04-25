@@ -166,28 +166,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
                     ))}
                   </ul>
 
-                  <div className="flex items-center gap-3 pt-1">
-                    <a
-                      href={project.externalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(event) => event.stopPropagation()}
-                      className="inline-flex items-center gap-2 rounded-md border border-cyan-300/45 bg-cyan-500/10 px-3 py-2 text-[11px] uppercase tracking-[0.14em] text-cyan-300 transition hover:border-cyan-300"
-                    >
-                      {isGitHubUrl(project.externalUrl) ? <FiGithub aria-hidden /> : <FiExternalLink aria-hidden />}
-                      Demo
-                    </a>
-                    <button
-                      type="button"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        openProject(project);
-                      }}
-                      className="text-[11px] uppercase tracking-[0.16em] text-white/70 underline underline-offset-4 transition hover:text-cyan-300"
-                    >
-                      View
-                    </button>
-                  </div>
+                  <p className="pt-1 text-[11px] uppercase tracking-[0.16em] text-cyan-300/85">Click card to view</p>
                 </div>
               </article>
             );
@@ -287,7 +266,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
                 className="mt-7 inline-flex items-center gap-2 rounded-md border border-cyan-300/45 bg-cyan-500/10 px-4 py-2.5 text-xs uppercase tracking-[0.15em] text-cyan-300 transition hover:border-cyan-300"
               >
                 {isGitHubUrl(activeProject.externalUrl) ? <FiGithub aria-hidden /> : <FiExternalLink aria-hidden />}
-                {isGitHubUrl(activeProject.externalUrl) ? "Open GitHub" : "Open Demo"}
+                View
               </a>
             </div>
           </article>
