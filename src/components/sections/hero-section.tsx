@@ -36,37 +36,34 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-[620px] items-center justify-center">
-          <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.02] p-10 shadow-[0_40px_90px_rgba(0,0,0,0.82)]">
-            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_50%_10%,rgba(34,211,238,0.12),transparent_40%)]" />
-            <p className="relative mb-6 text-center text-xs uppercase tracking-[0.24em] text-cyan-300">Contact</p>
-            <div className="relative flex items-center justify-center gap-5">
-              <a
-                href={`mailto:${contactContent.email}`}
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:text-cyan-300"
-                aria-label="Email"
-              >
-                <FiMail className="h-5 w-5" />
-              </a>
-              <a
-                href={contactContent.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:text-cyan-300"
-                aria-label="LinkedIn"
-              >
-                <FiLinkedin className="h-5 w-5" />
-              </a>
-              <a
-                href={contactContent.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:text-cyan-300"
-                aria-label="GitHub"
-              >
-                <FiGithub className="h-5 w-5" />
-              </a>
-            </div>
+        <div className="relative mx-auto flex w-full max-w-[620px] flex-col items-center justify-center gap-6">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300">Contact</p>
+          <div className="flex items-center justify-center gap-5">
+            <a
+              href={`mailto:${contactContent.email}`}
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:text-cyan-300"
+              aria-label="Email"
+            >
+              <FiMail className="h-5 w-5" />
+            </a>
+            <a
+              href={contactContent.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:text-cyan-300"
+              aria-label="LinkedIn"
+            >
+              <FiLinkedin className="h-5 w-5" />
+            </a>
+            <a
+              href={contactContent.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/80 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:text-cyan-300"
+              aria-label="GitHub"
+            >
+              <FiGithub className="h-5 w-5" />
+            </a>
           </div>
         </div>
       </div>
