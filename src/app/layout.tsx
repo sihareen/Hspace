@@ -43,9 +43,6 @@ export const metadata: Metadata = {
     "Portfolio",
     "Rizkan Harin",
   ],
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     title: "Rizkan Harin | IoT & AI Engineer",
     description:
