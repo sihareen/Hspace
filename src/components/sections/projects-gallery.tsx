@@ -2,23 +2,9 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
-import type { IconType } from "react-icons";
-import {
-  FiArrowUpRight,
-  FiBarChart2,
-  FiChevronLeft,
-  FiChevronRight,
-  FiCpu,
-  FiExternalLink,
-  FiEye,
-  FiGithub,
-  FiImage,
-  FiX,
-} from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiExternalLink, FiGithub, FiX } from "react-icons/fi";
 
 import { Button } from "@/components/ui/button";
-import { CategoryBadge } from "@/components/ui/category-badge";
-import { Chip } from "@/components/ui/chip";
 import { cn } from "@/components/ui/cn";
 import { prefersReducedMotion } from "@/components/ui/scroll-to";
 
@@ -40,21 +26,11 @@ type ProjectsGalleryProps = {
 type Filter = "All" | ProjectCategory;
 
 const CATEGORIES: ProjectCategory[] = ["IoT", "AI", "Data"];
-/** md+: number of cards shown before "Show all" (featured card counts as one). */
+/** Number of cards shown before "Show all" (all breakpoints). */
 const INITIAL_VISIBLE = 6;
-
-const categoryIcons: Record<ProjectCategory, IconType> = {
-  IoT: FiCpu,
-  AI: FiEye,
-  Data: FiBarChart2,
-};
 
 function isGitHubUrl(url: string) {
   return /github\.com/i.test(url);
-}
-
-function pad(n: number) {
-  return String(n).padStart(2, "0");
 }
 
 /* ------------------------------------------------------------------ */
@@ -62,106 +38,47 @@ function pad(n: number) {
 /* ------------------------------------------------------------------ */
 
 function ProjectPlaceholder({ category }: { category: ProjectCategory }) {
-  const Icon = categoryIcons[category];
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-surface-2 text-ink-3">
-      <Icon aria-hidden="true" className="size-8" />
-      <span className="font-mono text-lg tracking-[0.08em] uppercase">{category}</span>
-    </div>
-  );
+  return <div className="absolute inset-0 flex items-end bg-surface-2 p-4 t-small text-ink-3">{category}</div>;
 }
 
 type ProjectCardProps = {
   project: ProjectCardItem;
-  /** "P-01" style index within the current filter. */
-  code: string;
-  featured: boolean;
   onOpen: (trigger: HTMLButtonElement) => void;
 };
 
-function ProjectCard({ project, code, featured, onOpen }: ProjectCardProps) {
+function ProjectCard({ project, onOpen }: ProjectCardProps) {
   const cover = project.coverImages[0];
-  const imageCount = project.coverImages.length;
-  const chips = project.techStack.slice(0, 3);
-  const extraChips = project.techStack.length - chips.length;
 
   return (
-    <article
-      className={cn(
-        "group relative flex h-full flex-col overflow-hidden rounded-sm border border-line bg-surface",
-        "transition-[translate,border-color,box-shadow] duration-(--dur-base) ease-out",
-        "hover:border-line-strong hover:shadow-(--shadow-card) motion-safe:hover:-translate-y-0.5 active:translate-y-0",
-        "has-[button:focus-visible]:outline-2 has-[button:focus-visible]:outline-offset-2 has-[button:focus-visible]:outline-focus",
-      )}
-    >
-      <div
-        className={cn(
-          "relative shrink-0 overflow-hidden border-b border-line bg-surface-2",
-          featured ? "aspect-[4/3] lg:aspect-[16/9]" : "aspect-[4/3]",
-        )}
-      >
+    <article className="group relative rounded-sm has-[button:focus-visible]:outline-2 has-[button:focus-visible]:outline-offset-4 has-[button:focus-visible]:outline-focus">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-surface-2">
         {cover ? (
           <Image
             src={cover}
             alt=""
             fill
-            sizes={featured ? "(min-width:1024px) 780px, (min-width:768px) 50vw, 85vw" : "(min-width:1024px) 380px, (min-width:768px) 50vw, 85vw"}
-            className="object-cover motion-safe:transition-transform motion-safe:duration-(--dur-slow) motion-safe:group-hover:scale-[1.03]"
+            sizes="(min-width:1024px) 390px, (min-width:640px) 50vw, 100vw"
+            className="object-cover"
           />
         ) : (
           <ProjectPlaceholder category={project.labels[0] ?? "IoT"} />
         )}
-        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-          {project.labels.slice(0, 2).map((label) => (
-            <CategoryBadge key={label} category={label} />
-          ))}
-        </div>
-        <span className="absolute top-3 right-3 rounded-xs bg-surface/90 px-1.5 py-0.5 font-mono text-[0.6875rem] text-ink-2">
-          {code}
-        </span>
-        {imageCount > 1 ? (
-          <span className="absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-xs bg-surface/90 px-1.5 py-0.5 font-mono text-[0.6875rem] text-ink-2">
-            <FiImage aria-hidden="true" className="size-3" />
-            {imageCount}
-            <span className="sr-only"> images</span>
-          </span>
-        ) : null}
       </div>
-
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <h3 className="t-h3 text-ink">
-          {/* Stretched button: the whole card is the hit area, the accessible name is the title. */}
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            onClick={(event) => onOpen(event.currentTarget)}
-            className="block w-full cursor-pointer text-left outline-none after:absolute after:inset-0 after:content-['']"
-          >
-            <span className="line-clamp-2">{project.title}</span>
-          </button>
-        </h3>
-        <p className="line-clamp-3 t-small text-ink-2">{project.description}</p>
-        {chips.length > 0 ? (
-          <div className="mt-auto flex flex-wrap gap-1.5">
-            {chips.map((tech) => (
-              <Chip key={tech}>{tech}</Chip>
-            ))}
-            {extraChips > 0 ? (
-              <Chip>
-                +{extraChips}
-                <span className="sr-only"> more</span>
-              </Chip>
-            ) : null}
-          </div>
-        ) : null}
-        <div
-          aria-hidden="true"
-          className={cn("flex items-center justify-between border-t border-line pt-3", chips.length === 0 && "mt-auto")}
+      <h3 className="mt-4 t-h3 text-ink">
+        {/* Stretched button: the whole card is the hit area, the accessible name is the title. */}
+        <button
+          type="button"
+          aria-haspopup="dialog"
+          onClick={(event) => onOpen(event.currentTarget)}
+          className="w-full cursor-pointer text-left decoration-1 underline-offset-4 outline-none group-hover:underline after:absolute after:inset-0 after:content-['']"
         >
-          <span className="font-mono text-xs text-ink-3">Details</span>
-          <FiArrowUpRight className="size-4 text-accent transition-transform duration-(--dur-base) motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5" />
-        </div>
-      </div>
+          {project.title}
+        </button>
+      </h3>
+      <p className="mt-1.5 line-clamp-2 text-[0.9375rem] text-ink-2">{project.description}</p>
+      {project.techStack.length > 0 ? (
+        <p className="mt-2 t-small text-ink-3">{project.techStack.slice(0, 3).join(", ")}</p>
+      ) : null}
     </article>
   );
 }
@@ -173,11 +90,10 @@ function ProjectCard({ project, code, featured, onOpen }: ProjectCardProps) {
 
 type ProjectDialogProps = {
   project: ProjectCardItem;
-  code: string;
   onClosed: () => void;
 };
 
-function ProjectDialog({ project, code, onClosed }: ProjectDialogProps) {
+function ProjectDialog({ project, onClosed }: ProjectDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -253,8 +169,7 @@ function ProjectDialog({ project, code, onClosed }: ProjectDialogProps) {
       <div className="flex h-dvh flex-col md:h-auto md:max-h-[88dvh]">
         {/* Sticky top bar: always-visible close button */}
         <div className="flex shrink-0 items-center gap-3 border-b border-line bg-surface py-1.5 pr-1.5 pl-4 md:pl-6">
-          <span className="font-mono text-xs text-ink-3">{code}</span>
-          <span aria-hidden="true" className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">
+          <span aria-hidden="true" className="min-w-0 flex-1 truncate text-sm font-semibold text-ink lg:invisible">
             {project.title}
           </span>
           <button
@@ -302,7 +217,7 @@ function ProjectDialog({ project, code, onClosed }: ProjectDialogProps) {
                         type="button"
                         onClick={() => goTo(activeIndex - 1)}
                         aria-label="Previous image"
-                        className="absolute top-1/2 left-3 hidden size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-sm border border-line-strong bg-surface text-ink transition-colors duration-(--dur-fast) hover:bg-surface-2 md:inline-flex"
+                        className="absolute top-1/2 left-3 hidden size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-sm border border-line bg-surface text-ink shadow-none transition-colors duration-(--dur-fast) hover:bg-surface-2 md:inline-flex"
                       >
                         <FiChevronLeft aria-hidden="true" className="size-5" />
                       </button>
@@ -310,7 +225,7 @@ function ProjectDialog({ project, code, onClosed }: ProjectDialogProps) {
                         type="button"
                         onClick={() => goTo(activeIndex + 1)}
                         aria-label="Next image"
-                        className="absolute top-1/2 right-3 hidden size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-sm border border-line-strong bg-surface text-ink transition-colors duration-(--dur-fast) hover:bg-surface-2 md:inline-flex"
+                        className="absolute top-1/2 right-3 hidden size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-sm border border-line bg-surface text-ink shadow-none transition-colors duration-(--dur-fast) hover:bg-surface-2 md:inline-flex"
                       >
                         <FiChevronRight aria-hidden="true" className="size-5" />
                       </button>
@@ -330,14 +245,14 @@ function ProjectDialog({ project, code, onClosed }: ProjectDialogProps) {
                           aria-current={index === activeIndex ? "true" : undefined}
                           className={cn(
                             "relative h-14 w-20 shrink-0 cursor-pointer overflow-hidden rounded-xs border border-line bg-surface-2",
-                            index === activeIndex ? "outline-2 outline-offset-1 outline-accent" : "opacity-70 hover:opacity-100",
+                            index === activeIndex ? "outline-2 outline-offset-1 outline-ink" : "opacity-70 hover:opacity-100",
                           )}
                         >
                           <Image src={src} alt="" fill sizes="80px" className="object-cover" />
                         </button>
                       ))}
                     </div>
-                    <span className="shrink-0 font-mono text-xs text-ink-3" aria-live="polite">
+                    <span className="shrink-0 t-small tabular-nums text-ink-3" aria-live="polite">
                       {activeIndex + 1} / {total}
                     </span>
                   </div>
@@ -348,26 +263,16 @@ function ProjectDialog({ project, code, onClosed }: ProjectDialogProps) {
 
           {/* Content */}
           <div className="p-6 lg:overflow-y-auto lg:p-8">
-            {project.labels.length > 0 ? (
-              <div className="flex flex-wrap gap-1.5">
-                {project.labels.map((label) => (
-                  <CategoryBadge key={label} category={label} withIcon />
-                ))}
-              </div>
-            ) : null}
-            <h2 id={titleId} className="mt-4 t-h2 text-[1.75rem] text-ink">
+            {project.labels.length > 0 ? <p className="t-small text-ink-3">{project.labels.join(" · ")}</p> : null}
+            <h2 id={titleId} className="mt-2 text-2xl leading-tight font-semibold tracking-[-0.01em] text-ink">
               {project.title}
             </h2>
-            <p className="mt-4 whitespace-pre-line text-ink-2">{project.description}</p>
+            <p className="mt-4 max-w-[62ch] whitespace-pre-line text-ink-2">{project.description}</p>
 
             {project.techStack.length > 0 ? (
               <>
-                <p className="mt-6 t-eyebrow text-ink-3">Stack</p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {project.techStack.map((tech) => (
-                    <Chip key={tech}>{tech}</Chip>
-                  ))}
-                </div>
+                <h3 className="mt-8 text-sm font-semibold text-ink">Built with</h3>
+                <p className="mt-1 text-[0.9375rem] text-ink-2">{project.techStack.join(", ")}</p>
               </>
             ) : null}
 
@@ -390,16 +295,14 @@ function ProjectDialog({ project, code, onClosed }: ProjectDialogProps) {
 /* Gallery                                                              */
 /* ------------------------------------------------------------------ */
 
-type ActiveProject = { project: ProjectCardItem; code: string };
+type ActiveProject = { project: ProjectCardItem; key: string };
 
 export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
   const [filter, setFilter] = useState<Filter>("All");
   const [showAll, setShowAll] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const [active, setActive] = useState<ActiveProject | null>(null);
-  const [railIndex, setRailIndex] = useState(0);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const railRef = useRef<HTMLUListElement>(null);
   const listId = useId();
 
   const counts = CATEGORIES.map((category) => ({
@@ -408,20 +311,13 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
   })).filter(({ count }) => count > 0);
 
   const filtered = filter === "All" ? projects : projects.filter((project) => project.labels.includes(filter));
-  const hasFeatured = filter === "All" && filtered.length > 1;
-  // md+: show the first INITIAL_VISIBLE; on lg the featured card spans 2 columns, so show one less
-  // to keep two full rows. The mobile rail always shows everything.
-  const lgLimit = hasFeatured ? INITIAL_VISIBLE - 1 : INITIAL_VISIBLE;
-  const moreMd = filtered.length > INITIAL_VISIBLE;
-  const moreLg = filtered.length > lgLimit;
+  const hasMore = filtered.length > INITIAL_VISIBLE;
 
   const selectFilter = (next: Filter) => {
     if (next === filter) return;
     const count = next === "All" ? projects.length : projects.filter((project) => project.labels.includes(next)).length;
     setFilter(next);
     setShowAll(false);
-    setRailIndex(0);
-    railRef.current?.scrollTo({ left: 0 });
     setAnnouncement(
       next === "All"
         ? `Showing all ${count} projects`
@@ -429,29 +325,9 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
     );
   };
 
-  // Mobile rail counter: the card that is ≥60% visible inside the rail.
-  useEffect(() => {
-    const rail = railRef.current;
-    if (!rail || typeof IntersectionObserver === "undefined") return;
-    const items = Array.from(rail.querySelectorAll<HTMLElement>("[data-rail-item]"));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const index = Number((entry.target as HTMLElement).dataset.railItem);
-            if (!Number.isNaN(index)) setRailIndex(index);
-          }
-        }
-      },
-      { root: rail, threshold: 0.6 },
-    );
-    items.forEach((item) => observer.observe(item));
-    return () => observer.disconnect();
-  }, [filter, projects]);
-
-  const openProject = useCallback((project: ProjectCardItem, code: string, trigger: HTMLButtonElement) => {
+  const openProject = useCallback((project: ProjectCardItem, key: string, trigger: HTMLButtonElement) => {
     triggerRef.current = trigger;
-    setActive({ project, code });
+    setActive({ project, key });
   }, []);
 
   const handleClosed = useCallback(() => {
@@ -460,17 +336,8 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
   }, []);
 
   if (projects.length === 0) {
-    return <p className="text-ink-2">Projects are being documented. Check back soon.</p>;
+    return <p className="text-ink-2">No projects published yet.</p>;
   }
-
-  const chipClass = (selected: boolean) =>
-    cn(
-      "inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-sm border px-3 font-mono text-xs tracking-[0.08em] uppercase",
-      "transition-colors duration-(--dur-fast)",
-      selected
-        ? "border-ink bg-ink text-bg dark:border-primary dark:bg-primary dark:text-on-primary"
-        : "border-line-strong text-ink-2 hover:border-ink hover:text-ink",
-    );
 
   const filters: { value: Filter; count: number }[] = [
     { value: "All", count: projects.length },
@@ -480,87 +347,59 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
   return (
     <div>
       {filters.length > 2 ? (
-        <div
-          role="group"
-          aria-label="Filter projects"
-          className="no-scrollbar -mx-4 mb-6 flex gap-2 overflow-x-auto px-4 py-1 sm:-mx-6 sm:px-6 md:mx-0 md:mb-8 md:flex-wrap md:px-0"
-        >
-          {filters.map(({ value, count }) => (
-            <button
-              key={value}
-              type="button"
-              aria-pressed={filter === value}
-              aria-controls={listId}
-              onClick={() => selectFilter(value)}
-              className={chipClass(filter === value)}
-            >
-              {value}
-              <span>({count})</span>
-            </button>
-          ))}
+        <div role="group" aria-label="Filter projects" className="mb-8 flex flex-wrap gap-x-6">
+          {filters.map(({ value, count }) => {
+            const selected = filter === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={selected}
+                aria-controls={listId}
+                onClick={() => selectFilter(value)}
+                className={cn(
+                  "inline-flex min-h-11 cursor-pointer items-center text-[0.9375rem] transition-colors duration-(--dur-fast)",
+                  selected ? "text-ink" : "text-ink-3 hover:text-ink",
+                )}
+              >
+                {/* One inline box so the underline runs unbroken under label + count. */}
+                <span className={cn(selected && "underline decoration-accent decoration-2 underline-offset-[10px]")}>
+                  {value} <span className="text-ink-3 tabular-nums">{count}</span>
+                </span>
+              </button>
+            );
+          })}
         </div>
       ) : null}
       <p className="sr-only" aria-live="polite">
         {announcement}
       </p>
 
-      {/* One list: swipe rail below md, grid from md. */}
-      <ul
-        id={listId}
-        ref={railRef}
-        className={cn(
-          "no-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto overscroll-x-contain px-4 pt-1 pb-4",
-          "sm:-mx-6 sm:scroll-px-6 sm:px-6",
-          "md:mx-0 md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:p-0 lg:grid-cols-3",
-        )}
-      >
+      <ul id={listId} className="grid gap-x-8 gap-y-12 sm:grid-cols-2">
         {filtered.map((project, index) => {
-          const featured = hasFeatured && index === 0;
-          const code = `P-${pad(index + 1)}`;
-          const hiddenMd = !showAll && index >= INITIAL_VISIBLE;
-          const hiddenLg = !showAll && index >= lgLimit;
+          const key = `${index}-${project.title}`;
+          const hidden = !showAll && index >= INITIAL_VISIBLE;
           return (
-            <li
-              key={`${project.title}-${index}`}
-              data-rail-item={index}
-              className={cn(
-                "w-[85%] max-w-[360px] shrink-0 snap-start md:w-auto md:max-w-none",
-                featured && "lg:col-span-2",
-                hiddenMd && "md:hidden",
-                hiddenLg && "lg:hidden",
-              )}
-            >
-              <ProjectCard
-                project={project}
-                code={code}
-                featured={featured}
-                onOpen={(trigger) => openProject(project, code, trigger)}
-              />
+            <li key={key} className={hidden ? "hidden" : undefined}>
+              <ProjectCard project={project} onOpen={(trigger) => openProject(project, key, trigger)} />
             </li>
           );
         })}
       </ul>
 
-      {filtered.length > 1 ? (
-        <p aria-hidden="true" className="mt-2 font-mono text-xs text-ink-3 md:hidden">
-          {pad(Math.min(railIndex + 1, filtered.length))} / {pad(filtered.length)}
-        </p>
+      {hasMore ? (
+        <button
+          type="button"
+          aria-expanded={showAll}
+          aria-controls={listId}
+          onClick={() => setShowAll((value) => !value)}
+          className="mt-10 inline-flex min-h-11 cursor-pointer items-center text-[0.9375rem] text-accent underline decoration-1 underline-offset-4 hover:decoration-2"
+        >
+          {showAll ? "Show fewer projects" : `Show all ${filtered.length} projects`}
+        </button>
       ) : null}
 
-      {moreLg ? (
-        <div className={cn("mt-10 hidden justify-center", moreMd && "md:flex", "lg:flex")}>
-          <Button
-            variant="secondary"
-            aria-expanded={showAll}
-            aria-controls={listId}
-            onClick={() => setShowAll((value) => !value)}
-          >
-            {showAll ? "Show fewer projects" : `Show all ${filtered.length} projects`}
-          </Button>
-        </div>
-      ) : null}
-
-      {active ? <ProjectDialog key={active.code} project={active.project} code={active.code} onClosed={handleClosed} /> : null}
+      {active ? <ProjectDialog key={active.key} project={active.project} onClosed={handleClosed} /> : null}
     </div>
   );
 }

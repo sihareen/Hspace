@@ -1,71 +1,34 @@
-import { FiArrowRight } from "react-icons/fi";
-
 import { SectionShell } from "@/components/shared/section-shell";
-import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/ui/reveal";
+import { textLink } from "@/components/ui/text-link";
 
-const datasheet: { key: string; value: string }[] = [
-  { key: "Discipline", value: "Electrical Engineering" },
-  { key: "Degree", value: "B.Eng, Universitas Lampung" },
-  { key: "Thesis", value: "Python-based telemetry for remote ocean monitoring" },
-  { key: "Focus", value: "IoT · Embedded · Telemetry · Edge AI" },
-  { key: "Domains", value: "Disaster early warning, environmental monitoring, industrial QC" },
-];
-
-const strong = "font-semibold text-ink";
-
+/* Facts mirror the live DB entries (experience + projects). Update manually if those change. */
 export function AboutSection() {
   return (
-    <SectionShell
-      id="about"
-      number="05"
-      eyebrow="About"
-      title="Engineer for the field, not just the lab."
-      tone="band"
-    >
-      <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
-        <Reveal className="min-w-0 max-w-[65ch] space-y-5 text-ink-2">
-          <p className="t-lede text-ink">
-            Electrical Engineer specializing in IoT architecture, embedded systems, and telemetry networks. My work
-            spans the complete engineering stack: electronic circuit interfacing, firmware development, communication
-            protocols, instrumentation systems, and edge AI deployment.
-          </p>
-          <p>
-            Projects include <strong className={strong}>tsunami early warning buoy systems</strong>,{" "}
-            <strong className={strong}>emergency VoIP communication networks</strong>,{" "}
-            <strong className={strong}>AI-powered quality control systems</strong>, and autonomous connected devices.
-            Each implementation emphasizes reliable field operation, robust electronic design, and measurable outcomes.
-          </p>
-          <p>
-            Bachelor of Electrical Engineering from Universitas Lampung. Thesis focused on Python-based telemetry
-            transmission systems for remote ocean monitoring platforms.
-          </p>
-        </Reveal>
-
-        <Reveal as="aside" delay={60} className="min-w-0 self-start">
-          <div aria-labelledby="datasheet-title" role="group" className="rounded-sm border border-line bg-bg">
-            <p id="datasheet-title" className="border-b border-line px-5 py-3 t-eyebrow text-ink-3">
-              Datasheet: RHF-01
-            </p>
-            <dl>
-              {datasheet.map((row) => (
-                <div
-                  key={row.key}
-                  className="grid grid-cols-[88px_1fr] gap-3 border-b border-line px-5 py-3 text-sm sm:grid-cols-[110px_1fr] sm:gap-4"
-                >
-                  <dt className="font-mono text-ink-3">{row.key}</dt>
-                  <dd className="min-w-0 text-ink">{row.value}</dd>
-                </div>
-              ))}
-            </dl>
-            <div className="px-4 py-1.5">
-              <Button href="/cv.pdf" download variant="ghost">
-                Download full CV <span className="sr-only">(PDF)</span>
-                <FiArrowRight aria-hidden="true" />
-              </Button>
-            </div>
-          </div>
-        </Reveal>
+    <SectionShell id="about" title="About">
+      <div className="max-w-[62ch] space-y-5 text-ink-2">
+        <p>
+          I studied electrical engineering at Universitas Lampung (2021–2025). My thesis was the Python software for
+          data transmission and remote access on the U-TEWS tsunami buoy.
+        </p>
+        <p>
+          From 2023 to 2025 I was an IoT engineer at Drone Nirwana Bentala (DRONILA), working on the Buoy and PUMMA
+          tsunami early-warning systems and on environmental monitoring stations: sensor data, MQTT and TCP/IP
+          transmission, Node-RED flows and Laravel dashboards.
+        </p>
+        <p>
+          Since 2025 I&apos;ve been programming Raspberry Pi and other embedded devices at PT Indomaker Indonesia
+          Mandiri. That work includes disaster early-warning systems, an embedded VoIP emergency-call server, AI for
+          the Raspbot trainer kit and the PRISCOP print-scan-copy vending machine.
+        </p>
+        <p>
+          In 2024 I took part in IBM SkillsBuild for AI &amp; Cybersecurity (Kampus Merdeka, batch 6), where I built a
+          YOLOv8 and TensorFlow model to classify lemon quality.
+        </p>
+        <p>
+          <a href="/cv.pdf" download className={textLink}>
+            Download my CV (PDF)
+          </a>
+        </p>
       </div>
     </SectionShell>
   );

@@ -74,14 +74,7 @@ export async function ProjectsSection() {
         }));
 
   return (
-    <SectionShell
-      id="projects"
-      number="02"
-      eyebrow="Work"
-      title="Selected projects"
-      intro="Field deployments, embedded devices and AI systems: hardware to dashboard."
-      meta={`${displayProjects.length} project${displayProjects.length === 1 ? "" : "s"}`}
-    >
+    <SectionShell id="projects" title="Projects">
       <ProjectsGallery projects={displayProjects} />
     </SectionShell>
   );

@@ -1,18 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
-import { FiDownload, FiMenu, FiX } from "react-icons/fi";
+import { FiMenu, FiX } from "react-icons/fi";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/components/ui/cn";
 import { scrollToSection } from "@/components/ui/scroll-to";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 /** Section ids must match the `id` on each section in page.tsx. */
 const navItems = [
-  { label: "Work", id: "projects" },
+  { label: "Projects", id: "projects" },
   { label: "Experience", id: "experience" },
-  { label: "Expertise", id: "skills" },
+  { label: "Skills", id: "skills" },
   { label: "About", id: "about" },
   { label: "Contact", id: "contact" },
 ] as const;
@@ -50,7 +49,19 @@ export function SiteHeader() {
     );
 
     sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+
+    // The last section is too short to reach the reading line; mark it active at page bottom.
+    const lastId = observedIds[observedIds.length - 1];
+    const onScroll = () => {
+      const root = document.documentElement;
+      if (window.innerHeight + window.scrollY >= root.scrollHeight - 2) setActiveSection(lastId);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   const closeMenu = useCallback((restoreFocus: boolean) => {
@@ -127,29 +138,20 @@ export function SiteHeader() {
         Skip to content
       </a>
 
-      {/* Bar. Note: backdrop-filter creates a containing block for fixed children,
-          so the mobile panel lives outside this element. */}
-      <div className="h-16 border-b border-line bg-surface/85 backdrop-blur-md supports-[backdrop-filter]:bg-surface/70">
+      {/* Bar. The mobile panel lives outside this element (fixed positioning stays viewport-relative). */}
+      <div className="h-14 border-b border-line bg-bg">
         <div className="container-page flex h-full items-center justify-between gap-4">
           <a
             href="#hero"
             onClick={(event) => handleNavClick(event, "hero")}
-            className="-ml-1 flex min-h-11 items-center gap-2.5 rounded-sm px-1"
+            className="-ml-1 flex min-h-11 items-center rounded-sm px-1 text-[0.9375rem] font-semibold text-ink"
             aria-label="Rizkan Harin, back to top"
           >
-            <span
-              aria-hidden="true"
-              className="grid size-7 place-items-center rounded-xs bg-primary font-mono text-xs font-semibold text-on-primary"
-            >
-              RH
-            </span>
-            <span aria-hidden="true" className="hidden font-display font-semibold text-ink min-[360px]:inline">
-              Rizkan Harin
-            </span>
+            Rizkan Harin
           </a>
 
           <nav aria-label="Primary" className="hidden md:block">
-            <ul className="flex items-center gap-5 lg:gap-7">
+            <ul className="flex items-center gap-6">
               {navItems.map((item) => {
                 const isActive = item.id === activeSection;
                 return (
@@ -159,9 +161,8 @@ export function SiteHeader() {
                       onClick={(event) => handleNavClick(event, item.id)}
                       aria-current={isActive ? "true" : undefined}
                       className={cn(
-                        "relative inline-flex min-h-11 items-center px-1 text-sm font-medium transition-colors duration-(--dur-fast)",
-                        "after:absolute after:inset-x-0 after:-bottom-[10px] after:h-0.5 after:bg-accent after:transition-opacity after:duration-(--dur-fast)",
-                        isActive ? "text-ink after:opacity-100" : "text-ink-2 after:opacity-0 hover:text-ink",
+                        "inline-flex min-h-11 items-center px-1 text-sm transition-colors duration-(--dur-fast)",
+                        isActive ? "text-ink" : "text-ink-3 hover:text-ink",
                       )}
                     >
                       {item.label}
@@ -174,18 +175,11 @@ export function SiteHeader() {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            {/* Wrapper handles visibility: Button already sets display (no class merging). */}
-            <div className="hidden lg:block">
-              <Button href={CV_HREF} download variant="secondary" size="sm">
-                CV
-                <FiDownload aria-hidden="true" />
-              </Button>
-            </div>
             <button
               ref={toggleRef}
               type="button"
               onClick={() => (menuOpen ? closeMenu(true) : setMenuOpen(true))}
-              className="inline-grid size-11 place-items-center rounded-sm border border-line-strong text-ink transition-colors duration-(--dur-fast) hover:border-ink hover:bg-surface-2 md:hidden"
+              className="inline-grid size-11 place-items-center rounded-sm text-ink transition-colors duration-(--dur-fast) hover:bg-surface-2 md:hidden"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               aria-controls={MENU_ID}
@@ -200,11 +194,11 @@ export function SiteHeader() {
         ref={panelRef}
         id={MENU_ID}
         hidden={!menuOpen}
-        className="fixed inset-x-0 top-16 bottom-0 overflow-y-auto overscroll-contain bg-surface md:hidden"
+        className="fixed inset-x-0 top-14 bottom-0 overflow-y-auto overscroll-contain bg-bg md:hidden"
       >
         <nav aria-label="Mobile" className="container-page flex min-h-full flex-col pt-2 pb-8">
-          <ul className="mb-8">
-            {navItems.map((item, index) => {
+          <ul>
+            {navItems.map((item) => {
               const isActive = item.id === activeSection;
               return (
                 <li key={item.id} className="border-b border-line">
@@ -213,23 +207,23 @@ export function SiteHeader() {
                     onClick={(event) => handleNavClick(event, item.id)}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "flex min-h-14 items-center gap-4 py-3 text-lg font-medium",
+                      "flex min-h-12 items-center text-base font-medium",
                       isActive ? "text-ink" : "text-ink-2 hover:text-ink",
                     )}
                   >
-                    <span aria-hidden="true" className={cn("t-chip", isActive ? "text-accent" : "text-ink-3")}>
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
                     {item.label}
                   </a>
                 </li>
               );
             })}
           </ul>
-          <Button href={CV_HREF} download variant="primary" className="mt-auto w-full">
-            <FiDownload aria-hidden="true" />
-            Download CV
-          </Button>
+          <a
+            href={CV_HREF}
+            download
+            className="mt-8 inline-flex min-h-11 items-center self-start text-accent underline underline-offset-4"
+          >
+            Download CV (PDF)
+          </a>
         </nav>
       </div>
     </header>

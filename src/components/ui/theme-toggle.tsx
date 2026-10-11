@@ -34,12 +34,10 @@ export function setTheme(theme: Theme) {
 
 type ThemeToggleProps = {
   className?: string;
-  /** "md" = 44px (default, mobile-safe), "sm" = 40px (desktop header per spec). */
-  size?: "md" | "sm";
 };
 
 /** Icon button that flips data-theme on <html> and persists to localStorage.theme. */
-export function ThemeToggle({ className, size = "md" }: ThemeToggleProps) {
+export function ThemeToggle({ className }: ThemeToggleProps) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const next: Theme = theme === "dark" ? "light" : "dark";
 
@@ -49,9 +47,8 @@ export function ThemeToggle({ className, size = "md" }: ThemeToggleProps) {
       onClick={() => setTheme(next)}
       aria-label={theme ? `Switch to ${next} theme` : "Toggle theme"}
       className={cn(
-        "inline-grid shrink-0 place-items-center rounded-sm border border-line-strong text-ink",
-        "transition-colors duration-(--dur-fast) hover:border-ink hover:bg-surface-2",
-        size === "md" ? "size-11" : "size-10",
+        "inline-grid size-11 shrink-0 place-items-center rounded-sm text-ink-2",
+        "transition-colors duration-(--dur-fast) hover:bg-surface-2 hover:text-ink",
         className,
       )}
     >
