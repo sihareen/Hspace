@@ -1,25 +1,79 @@
 import type { ReactNode } from "react";
 
+import { cn } from "@/components/ui/cn";
+import { Eyebrow } from "@/components/ui/eyebrow";
+
+export type SectionTone = "bg" | "band";
+
 type SectionShellProps = {
   id: string;
-  title: string;
-  sectionNumber: string;
+  /** Section title, rendered as authored (sentence case) in an h2. */
+  title: ReactNode;
+  /** Two-digit section number, e.g. "02". */
+  number?: string;
+  /** @deprecated Use `number`. Kept so phase-A call sites still compile. */
+  sectionNumber?: string;
+  /** Short eyebrow label after the number, e.g. "Work" → "02 / Work". Defaults to `title` when it is a string. */
+  eyebrow?: string;
+  /** Optional lede under the title. */
+  intro?: ReactNode;
+  /** Optional right-aligned slot on md+ (same baseline as the h2), e.g. "10 projects". */
+  meta?: ReactNode;
+  /** "bg" = page background (default); "band" = surface band with top/bottom border. */
+  tone?: SectionTone;
+  /** Extra classes on the inner container (e.g. "max-w-[880px]"). */
+  containerClassName?: string;
+  className?: string;
   children: ReactNode;
 };
 
-export function SectionShell({ id, title, sectionNumber, children }: SectionShellProps) {
+export function SectionShell({
+  id,
+  title,
+  number,
+  sectionNumber,
+  eyebrow,
+  intro,
+  meta,
+  tone = "bg",
+  containerClassName,
+  className,
+  children,
+}: SectionShellProps) {
+  const num = number ?? sectionNumber;
+  const eyebrowLabel = eyebrow ?? (typeof title === "string" ? title : undefined);
+  const headingId = `${id}-title`;
+
   return (
-    <section id={id} className="mx-auto w-full max-w-[1320px] px-6 py-24 sm:px-10 lg:px-12 lg:py-32">
-      <div className="mb-20 space-y-8">
-        <div className="flex items-center gap-6">
-          <span className="section-number text-base font-bold">{sectionNumber}</span>
-          <h2 className="text-[clamp(2.25rem,4.5vw,3.5rem)] font-bold tracking-tight uppercase text-[var(--primary)] leading-[0.95]">
-            {title}
-          </h2>
-        </div>
-        <div className="section-divider" />
+    <section
+      id={id}
+      aria-labelledby={headingId}
+      className={cn(
+        "scroll-mt-20 py-20 md:py-28",
+        tone === "band" ? "border-y border-line bg-surface" : "bg-bg",
+        className,
+      )}
+    >
+      <div className={cn("container-page", containerClassName)}>
+        <header className="mb-10 md:mb-14">
+          <div className="md:flex md:items-end md:justify-between md:gap-8">
+            <div className="min-w-0">
+              {eyebrowLabel || num ? (
+                <Eyebrow number={num} className="mb-4">
+                  {eyebrowLabel}
+                </Eyebrow>
+              ) : null}
+              <h2 id={headingId} className="t-h2 text-balance text-ink">
+                {title}
+              </h2>
+            </div>
+            {meta ? <div className="mt-3 shrink-0 t-chip text-ink-3 md:mt-0 md:pb-1.5">{meta}</div> : null}
+          </div>
+          {intro ? <div className="mt-4 max-w-[60ch] t-lede text-ink-2">{intro}</div> : null}
+          <div aria-hidden="true" className="mt-6 h-px w-12 bg-accent" />
+        </header>
+        {children}
       </div>
-      {children}
     </section>
   );
 }

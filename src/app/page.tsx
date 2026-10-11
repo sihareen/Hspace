@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
-      <main className="relative">
+      <main id="main" tabIndex={-1}>
         <HeroSection />
         <ProjectsSection />
         <ExperienceSection />

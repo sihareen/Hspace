@@ -4,18 +4,15 @@ const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
 };
 
+/**
+ * Single PrismaClient per runtime instance. Cached on globalThis in every
+ * environment: in dev it survives HMR, in production it prevents a new client
+ * (and connection pool) per call.
+ */
 export function getPrisma() {
-  if (globalForPrisma.prisma) {
-    return globalForPrisma.prisma;
-  }
-
-  const client = new PrismaClient({
+  globalForPrisma.prisma ??= new PrismaClient({
     log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
   });
 
-  if (process.env.NODE_ENV !== "production") {
-    globalForPrisma.prisma = client;
-  }
-
-  return client;
+  return globalForPrisma.prisma;
 }

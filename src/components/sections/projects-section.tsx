@@ -9,7 +9,7 @@ import { getPrisma } from "@/lib/prisma";
 function inferProjectCategory(title: string, techStack: string[]): ProjectCategory {
   const source = `${title} ${techStack.join(" ")}`.toLowerCase();
 
-  if (/ai|ml|machine|yolo|tensorflow|vision/.test(source)) {
+  if (/\b(ai|ml)\b|machine|yolo|tensorflow|vision/.test(source)) {
     return "AI";
   }
 
@@ -74,7 +74,14 @@ export async function ProjectsSection() {
         }));
 
   return (
-    <SectionShell id="projects" sectionNumber="02" title="Featured Projects">
+    <SectionShell
+      id="projects"
+      number="02"
+      eyebrow="Work"
+      title="Selected projects"
+      intro="Field deployments, embedded devices and AI systems: hardware to dashboard."
+      meta={`${displayProjects.length} project${displayProjects.length === 1 ? "" : "s"}`}
+    >
       <ProjectsGallery projects={displayProjects} />
     </SectionShell>
   );

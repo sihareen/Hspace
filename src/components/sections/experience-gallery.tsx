@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { FiX, FiCalendar, FiBriefcase, FiBookOpen } from "react-icons/fi";
+import { useId, useState } from "react";
+import { FiBookOpen, FiBriefcase } from "react-icons/fi";
+
+import { Button } from "@/components/ui/button";
+import { Chip } from "@/components/ui/chip";
+import { cn } from "@/components/ui/cn";
+import { Reveal } from "@/components/ui/reveal";
 
 type ExperienceCardItem = {
   period: string;
@@ -16,174 +21,112 @@ type ExperienceGalleryProps = {
   items: ExperienceCardItem[];
 };
 
-export function ExperienceGallery({ items }: ExperienceGalleryProps) {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+/** Descriptions longer than this are clamped to 4 lines with an inline "Read more". */
+const CLAMP_THRESHOLD = 280;
+const CURRENT_PATTERN = /\b(present|now|current|sekarang)\b/i;
 
-  const selectedItem = selectedIndex !== null ? items[selectedIndex] : null;
+type TimelineEntryProps = {
+  item: ExperienceCardItem;
+  index: number;
+};
+
+function TimelineEntry({ item, index }: TimelineEntryProps) {
+  const [expanded, setExpanded] = useState(false);
+  const descriptionId = useId();
+  const isEducation = item.category === "EDUCATION";
+  const isCurrent = CURRENT_PATTERN.test(item.period);
+  const isLong = item.description.length > CLAMP_THRESHOLD;
+  const CategoryIcon = isEducation ? FiBookOpen : FiBriefcase;
 
   return (
-    <>
-      <div className="max-w-[1472px] mx-auto">
-        <div className="hidden md:grid md:grid-cols-4 gap-6">
-          {items.map((item, actualIndex) => {
-            const milestoneNumber = String(actualIndex + 1).padStart(2, '0');
-            return (
-              <div key={actualIndex} className="relative">
-                <article 
-                  className="group relative border border-[var(--border)] bg-white p-7 h-[302px] transition-all duration-200 hover:border-[var(--accent)] hover:shadow-sm cursor-pointer flex flex-col overflow-hidden"
-                  onClick={() => setSelectedIndex(actualIndex)}
-                >
-                  <div className="flex-1 min-h-0 flex flex-col">
-                    <div className="flex items-start justify-between mb-4 flex-shrink-0">
-                      <span className="text-5xl font-black font-mono text-[var(--accent)] leading-none">
-                        {milestoneNumber}
-                      </span>
-                      {item.category === "EDUCATION" ? (
-                        <FiBookOpen className="h-7 w-7 text-[var(--accent)] flex-shrink-0" />
-                      ) : (
-                        <FiBriefcase className="h-7 w-7 text-[var(--accent)] flex-shrink-0" />
-                      )}
-                    </div>
+    <Reveal
+      as="li"
+      delay={Math.min(index, 5) * 60}
+      className="relative grid gap-2 pb-10 pl-8 last:pb-0 md:grid-cols-[160px_1fr] md:gap-x-12 md:gap-y-0 md:pl-0"
+    >
+      {/* Node on the rail: diamond = work, circle = education, filled + pulse = current */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          "absolute top-1 left-0 size-[15px] border-2 md:left-[176px]",
+          isEducation ? "rounded-full" : "rotate-45",
+          isCurrent ? "border-signal-dot bg-signal-dot" : "border-accent bg-surface",
+        )}
+      >
+        {isCurrent ? (
+          <span
+            className={cn(
+              "absolute inset-0 bg-signal-dot opacity-60 motion-safe:animate-ping",
+              isEducation && "rounded-full",
+            )}
+          />
+        ) : null}
+      </span>
 
-                    <h3 className="text-[0.95rem] font-bold uppercase tracking-tight text-[var(--primary)] mb-2 leading-tight break-words overflow-wrap-anywhere">
-                      {item.title}
-                    </h3>
-                  </div>
+      <p
+        className={cn(
+          "font-mono text-sm md:pt-0.5 md:text-right",
+          isCurrent ? "font-medium text-signal" : "text-ink-3",
+        )}
+      >
+        {item.period}
+        {isCurrent ? <span className="ml-2 t-eyebrow">· Now</span> : null}
+      </p>
 
-                  <div className="flex-shrink-0">
-                    {item.company && (
-                      <p className="text-sm text-[var(--accent)] break-words overflow-wrap-anywhere pb-3">
-                        {item.company}
-                      </p>
-                    )}
+      <div className="min-w-0 rounded-sm border border-line bg-bg p-5 transition-colors duration-(--dur-fast) hover:border-line-strong md:p-6">
+        <p className="flex items-center gap-3 font-mono text-xs text-ink-3">
+          <span>X-{String(index + 1).padStart(2, "0")}</span>
+          <span className="inline-flex items-center gap-1.5 tracking-[0.08em] uppercase">
+            <CategoryIcon aria-hidden="true" className="size-3.5" />
+            {isEducation ? "Education" : "Work"}
+          </span>
+        </p>
+        <h3 className="mt-2 t-h3 text-pretty wrap-break-word text-ink">{item.title}</h3>
+        {item.company ? <p className="mt-1 text-[0.9375rem] font-medium text-accent">{item.company}</p> : null}
 
-                    <div className="border-t border-[var(--border)] pt-3">
-                      <p className="text-xs font-semibold text-[var(--accent)] flex items-center gap-2">
-                        <FiCalendar className="h-3.5 w-3.5 flex-shrink-0" />
-                        {item.period}
-                      </p>
-                    </div>
-                  </div>
-                </article>
-
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="md:hidden space-y-4">
-          {items.map((item, actualIndex) => {
-            const milestoneNumber = String(actualIndex + 1).padStart(2, '0');
-
-            return (
-              <article 
-                key={actualIndex}
-                className="border border-[var(--border)] bg-white p-6 h-[252px] cursor-pointer hover:border-[var(--accent)] flex flex-col overflow-hidden"
-                onClick={() => setSelectedIndex(actualIndex)}
-              >
-                <div className="flex-1 min-h-0 flex flex-col">
-                  <div className="flex items-start justify-between mb-3 flex-shrink-0">
-                    <span className="text-4xl font-black font-mono text-[var(--accent)] leading-none">
-                      {milestoneNumber}
-                    </span>
-                    {item.category === "EDUCATION" ? (
-                      <FiBookOpen className="h-6 w-6 text-[var(--accent)] flex-shrink-0" />
-                    ) : (
-                      <FiBriefcase className="h-6 w-6 text-[var(--accent)] flex-shrink-0" />
-                    )}
-                  </div>
-
-                  <h3 className="text-[0.8325rem] font-bold uppercase tracking-tight text-[var(--primary)] mb-2 leading-tight break-words overflow-wrap-anywhere">
-                    {item.title}
-                  </h3>
-                </div>
-
-                <div className="flex-shrink-0">
-                  {item.company && (
-                    <p className="text-xs text-[var(--accent)] break-words overflow-wrap-anywhere pb-2">
-                      {item.company}
-                    </p>
-                  )}
-
-                  <div className="border-t border-[var(--border)] pt-2">
-                    <p className="text-xs font-semibold text-[var(--accent)] flex items-center gap-2">
-                      <FiCalendar className="h-3 w-3 flex-shrink-0" />
-                      {item.period}
-                    </p>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </div>
-
-      {selectedItem && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedIndex(null)}
-        >
-          <div 
-            className="bg-white border-2 border-[var(--accent)] max-w-2xl w-full max-h-[80vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
+        {item.description ? (
+          <p
+            id={descriptionId}
+            className={cn(
+              "mt-3 max-w-[62ch] leading-[1.65] whitespace-pre-line text-ink-2",
+              isLong && !expanded && "line-clamp-4",
+            )}
           >
-            <div className="sticky top-0 bg-white border-b border-[var(--border)] p-6 flex items-start justify-between">
-              <div className="flex-1">
-                <span className="text-3xl font-black font-mono text-[var(--accent)] block mb-4">
-                  {String(selectedIndex! + 1).padStart(2, '0')}
-                </span>
-                <h2 className="text-2xl font-bold uppercase tracking-tight text-[var(--primary)] mb-2">
-                  {selectedItem.title}
-                </h2>
-                {selectedItem.company && (
-                  <p className="text-lg font-semibold text-[var(--secondary)] mb-2">
-                    {selectedItem.company}
-                  </p>
-                )}
-                <p className="text-sm font-bold uppercase tracking-wider text-[var(--accent)]">
-                  {selectedItem.period}
-                </p>
-              </div>
-              <button 
-                onClick={() => setSelectedIndex(null)}
-                className="ml-4 p-2 hover:bg-[var(--border)] transition-colors"
-                aria-label="Close modal"
-              >
-                <FiX className="h-6 w-6 text-[var(--primary)]" />
-              </button>
-            </div>
+            {item.description}
+          </p>
+        ) : null}
+        {isLong ? (
+          <Button
+            variant="ghost"
+            className="mt-1 -ml-1"
+            aria-expanded={expanded}
+            aria-controls={descriptionId}
+            onClick={() => setExpanded((value) => !value)}
+          >
+            {expanded ? "Show less" : "Read more"}
+          </Button>
+        ) : null}
 
-            <div className="p-6">
-              <div className="mb-6">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">
-                  Description
-                </h3>
-                <p className="text-base leading-[1.7] text-[var(--text-secondary)]">
-                  {selectedItem.description}
-                </p>
-              </div>
-
-              {selectedItem.tags.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">
-                    Technologies
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedItem.tags.map((tag, index) => (
-                      <span 
-                        key={index}
-                        className="px-3 py-1 text-xs font-mono uppercase tracking-wider border border-[var(--border)] text-[var(--secondary)]"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+        {item.tags.length > 0 ? (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {item.tags.map((tag) => (
+              <Chip key={tag}>{tag}</Chip>
+            ))}
           </div>
-        </div>
-      )}
-    </>
+        ) : null}
+      </div>
+    </Reveal>
+  );
+}
+
+export function ExperienceGallery({ items }: ExperienceGalleryProps) {
+  if (items.length === 0) return null;
+
+  return (
+    <ol className="relative mx-auto max-w-[880px] before:absolute before:top-2 before:bottom-2 before:left-[7px] before:w-px before:bg-line-strong md:before:left-[183px]">
+      {items.map((item, index) => (
+        <TimelineEntry key={`${item.title}-${item.period}-${index}`} item={item} index={index} />
+      ))}
+    </ol>
   );
 }

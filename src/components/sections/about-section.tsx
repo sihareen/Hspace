@@ -1,44 +1,71 @@
-import Image from "next/image";
+import { FiArrowRight } from "react-icons/fi";
 
 import { SectionShell } from "@/components/shared/section-shell";
+import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/reveal";
+
+const datasheet: { key: string; value: string }[] = [
+  { key: "Discipline", value: "Electrical Engineering" },
+  { key: "Degree", value: "B.Eng, Universitas Lampung" },
+  { key: "Thesis", value: "Python-based telemetry for remote ocean monitoring" },
+  { key: "Focus", value: "IoT · Embedded · Telemetry · Edge AI" },
+  { key: "Domains", value: "Disaster early warning, environmental monitoring, industrial QC" },
+];
+
+const strong = "font-semibold text-ink";
 
 export function AboutSection() {
   return (
-    <SectionShell id="about" sectionNumber="05" title="About">
-      <div className="mx-auto grid max-w-[1100px] gap-12 lg:grid-cols-[0.6fr_1.4fr] lg:gap-16">
-        <div className="relative h-[500px] overflow-hidden border border-[var(--border)] bg-[var(--surface)] lg:h-[600px]">
-          <Image
-            src="/profile/me.jpg"
-            alt="Muhammad Rizkan Harin Faza"
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 1024px) 100vw, 600px"
-            priority
-          />
-        </div>
+    <SectionShell
+      id="about"
+      number="05"
+      eyebrow="About"
+      title="Engineer for the field, not just the lab."
+      tone="band"
+    >
+      <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+        <Reveal className="min-w-0 max-w-[65ch] space-y-5 text-ink-2">
+          <p className="t-lede text-ink">
+            Electrical Engineer specializing in IoT architecture, embedded systems, and telemetry networks. My work
+            spans the complete engineering stack: electronic circuit interfacing, firmware development, communication
+            protocols, instrumentation systems, and edge AI deployment.
+          </p>
+          <p>
+            Projects include <strong className={strong}>tsunami early warning buoy systems</strong>,{" "}
+            <strong className={strong}>emergency VoIP communication networks</strong>,{" "}
+            <strong className={strong}>AI-powered quality control systems</strong>, and autonomous connected devices.
+            Each implementation emphasizes reliable field operation, robust electronic design, and measurable outcomes.
+          </p>
+          <p>
+            Bachelor of Electrical Engineering from Universitas Lampung. Thesis focused on Python-based telemetry
+            transmission systems for remote ocean monitoring platforms.
+          </p>
+        </Reveal>
 
-        <div className="flex flex-col justify-center space-y-8">
-          <div className="space-y-6 text-lg leading-[1.8] text-[var(--text-primary)]">
-            <p>
-              Electrical Engineer specializing in IoT architecture, embedded systems, and telemetry networks. My work spans the complete engineering stack: electronic circuit interfacing, firmware development, communication protocols, instrumentation systems, and edge AI deployment.
+        <Reveal as="aside" delay={60} className="min-w-0 self-start">
+          <div aria-labelledby="datasheet-title" role="group" className="rounded-sm border border-line bg-bg">
+            <p id="datasheet-title" className="border-b border-line px-5 py-3 t-eyebrow text-ink-3">
+              Datasheet: RHF-01
             </p>
-            <p>
-              Projects include tsunami early warning buoy systems, emergency VoIP communication networks, AI-powered quality control systems, and autonomous connected devices. Each implementation emphasizes reliable field operation, robust electronic design, and measurable outcomes.
-            </p>
-            <p>
-              Bachelor of Electrical Engineering from Universitas Lampung. Thesis focused on Python-based telemetry transmission systems for remote ocean monitoring platforms.
-            </p>
+            <dl>
+              {datasheet.map((row) => (
+                <div
+                  key={row.key}
+                  className="grid grid-cols-[88px_1fr] gap-3 border-b border-line px-5 py-3 text-sm sm:grid-cols-[110px_1fr] sm:gap-4"
+                >
+                  <dt className="font-mono text-ink-3">{row.key}</dt>
+                  <dd className="min-w-0 text-ink">{row.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="px-4 py-1.5">
+              <Button href="/cv.pdf" download variant="ghost">
+                Download full CV <span className="sr-only">(PDF)</span>
+                <FiArrowRight aria-hidden="true" />
+              </Button>
+            </div>
           </div>
-
-          <div className="border-l-[3px] border-l-[var(--accent)] bg-[var(--surface)] p-6">
-            <p className="text-base font-bold text-[var(--primary)]">
-              Open to collaboration on IoT and embedded systems projects
-            </p>
-            <p className="mt-2 text-base leading-[1.7] text-[var(--secondary)]">
-              IoT architecture · Embedded development · Telemetry systems · Electronic instrumentation
-            </p>
-          </div>
-        </div>
+        </Reveal>
       </div>
     </SectionShell>
   );

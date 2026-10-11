@@ -59,3 +59,9 @@ export const contactContent = {
   linkedin: "https://www.linkedin.com/in/muhammad-rizkan-harin-faza/",
   github: "https://github.com/sihareen",
 };
+
+/** Single source for the "live" availability status (Hero, Contact). */
+export const availability = {
+  open: true,
+  label: "Available for projects",
+} as const;
