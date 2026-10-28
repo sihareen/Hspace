@@ -1,24 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const display = Archivo({
+// Archivo: display + body (Column Proof — one sans family, variable weight)
+const sans = Archivo({
   subsets: ["latin"],
   axes: ["wdth"],
   variable: "--font-archivo",
   display: "swap",
 });
 
-const body = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-plex",
-  display: "swap",
-});
-
 const mono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   variable: "--font-jetbrains",
   display: "swap",
 });
@@ -76,7 +70,7 @@ export default function RootLayout({
       lang="en"
       data-theme="light"
       suppressHydrationWarning
-      className={`${display.variable} ${body.variable} ${mono.variable} h-full antialiased`}
+      className={`${sans.variable} ${mono.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
