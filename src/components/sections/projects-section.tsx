@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Project } from "@prisma/client";
 
 import { SectionShell } from "@/components/shared/section-shell";
