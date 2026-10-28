@@ -1,4 +1,4 @@
-import { FiArrowUp, FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import { FiArrowUp, FiGithub, FiInstagram, FiLinkedin, FiMail } from "react-icons/fi";
 
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { contactContent } from "@/data/site-content";
@@ -6,6 +6,7 @@ import { contactContent } from "@/data/site-content";
 const footerLinks = [
   { label: "GitHub", href: contactContent.github, icon: FiGithub, external: true },
   { label: "LinkedIn", href: contactContent.linkedin, icon: FiLinkedin, external: true },
+  { label: "Instagram", href: contactContent.instagram, icon: FiInstagram, external: true },
   { label: "Email", href: `mailto:${contactContent.email}`, icon: FiMail, external: false },
 ] as const;
 
@@ -17,8 +18,8 @@ export function SiteFooter() {
       <div className="container-page py-8 md:py-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-1">
-            <p className="font-display font-bold text-ink tracking-tight">
-              RIZKAN<span className="text-accent">.</span>HARIN
+            <p className="font-display font-bold text-ink tracking-tight text-lg">
+              RH<span className="text-accent">.</span>
             </p>
             <p className="t-chip text-ink-3 font-mono">Electrical Engineer · IoT · Embedded · Edge AI</p>
           </div>

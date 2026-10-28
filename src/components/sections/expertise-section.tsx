@@ -15,38 +15,37 @@ type CapabilityDomain = {
 
 const capabilities: CapabilityDomain[] = [
   {
-    category: "IoT & Embedded Systems",
+    category: "IoT & Embedded",
     descriptor: "Microcontroller firmware and edge devices built for unattended field operation.",
     icon: TbCpu,
-    technologies: ["Embedded Development", "IoT Architecture", "Edge Computing", "Real-Time Systems", "Microcontrollers"],
+    technologies: ["Raspberry Pi", "ESP32", "Arduino", "Docker", "Edge Computing", "ThingsBoard"],
   },
   {
     category: "Electronic Systems",
-    descriptor: "Sensor front-ends, interfacing and instrumentation that measure reliably.",
+    descriptor: "From sensor front-ends to multi-layer PCB design and power routing.",
     icon: TbCircuitResistor,
-    technologies: ["Circuit Interfacing", "Sensor Integration", "Instrumentation", "Electronic Design", "Hardware Platforms"],
+    technologies: ["KiCad", "Sensor Calibration", "PCB Design", "Power Routing", "Hardware Integration"],
   },
   {
-    category: "Communication & Telemetry",
-    descriptor: "Getting data off-site: MQTT, LoRa, TCP/IP and VoIP links.",
+    category: "Communication",
+    descriptor: "Getting data off-site: MQTT, VoIP, Asterisk and telemetry links.",
     icon: TbAntenna,
-    technologies: ["MQTT", "TCP/IP", "LoRa", "Telemetry Systems", "VoIP", "Wireless Networks"],
+    technologies: ["MQTT", "VoIP/SIP", "Asterisk", "Telemetry", "LoRa", "TCP/IP"],
   },
   {
-    category: "Applied Artificial Intelligence",
-    descriptor: "Vision models trained and deployed on the edge.",
+    category: "Applied AI",
+    descriptor: "Vision models, local LLMs and RAG pipelines deployed on edge devices.",
     icon: TbBrain,
-    technologies: ["YOLOv8", "TensorFlow", "Computer Vision", "Edge AI", "Model Deployment"],
+    technologies: ["YOLOv8", "TensorFlow", "Ollama", "ChromaDB", "RAG", "Computer Vision"],
   },
   {
     category: "Engineering Tools",
     descriptor: "The languages, boards and platforms I ship with.",
     icon: TbTool,
-    technologies: ["Python", "C/C++", "Node.js", "Laravel", "Raspberry Pi", "ESP32", "PLC", "Linux"],
+    technologies: ["Python", "C/C++", "Laravel", "PHP", "Linux", "Docker Compose", "Git"],
   },
 ];
 
-/** Bento spans: items 1–3 take 2/6 at lg, items 4–5 take 3/6; the 5th spans both columns at md. */
 function spanFor(i: number, total: number): string {
   return cn(i < 3 ? "lg:col-span-2" : "lg:col-span-3", i === total - 1 && total % 2 === 1 && "md:col-span-2");
 }
@@ -60,12 +59,15 @@ export function ExpertiseSection() {
       title="Capabilities"
       intro="Five disciplines I work across, end to end."
     >
-      <ul className="grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-6">
+      <ul className="grid gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-6">
         {capabilities.map((domain, i) => {
           const Icon = domain.icon;
           return (
             <Reveal as="li" key={domain.category} delay={Math.min(i, 5) * 60} className={spanFor(i, capabilities.length)}>
-              <article className="group flex h-full flex-col gap-4 rounded-sm border border-line bg-surface p-5 md:p-6 transition-[border-color,box-shadow] duration-(--dur-base) hover:border-line-strong hover:shadow-(--shadow-card)">
+              <article className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-sm border border-line bg-surface p-5 md:p-6 transition-[border-color,box-shadow] duration-(--dur-base) hover:border-line-strong hover:shadow-(--shadow-card)">
+                {/* Accent top border */}
+                <div aria-hidden="true" className="absolute inset-x-0 top-0 h-[2px] bg-accent origin-left scale-x-0 transition-transform duration-(--dur-slow) group-hover:scale-x-100" />
+
                 <div className="flex items-start justify-between gap-4">
                   <span className="grid size-10 place-items-center rounded-sm bg-surface-2 text-accent transition-colors duration-(--dur-base) group-hover:bg-accent group-hover:text-on-primary">
                     <Icon aria-hidden="true" className="size-5" />

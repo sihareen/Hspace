@@ -41,31 +41,94 @@ export async function ProjectsSection() {
         }))
       : [
           {
-            title: "PUMMA U-TEWS",
+            title: "PRISCOP",
             description:
-              "Real-time sea level monitoring unit for tsunami early warning integration. Embedded firmware, LoRa mesh networking, and cloud ingestion pipeline for high-risk coastal zones.",
-            techStack: ["Embedded C", "Sensors", "Telemetry", "LoRa", "MQTT"],
-            externalUrl: "#",
+              "Smart kiosk and vending system integrated with QR printing, billing automation, and VoIP softphone services. Built on Raspberry Pi with Docker Compose for 24/7 operation.",
+            techStack: ["Raspberry Pi", "Docker", "Python", "PHP", "VoIP"],
+            externalUrl: "https://github.com/sihareen",
             coverImages: [],
             labels: ["IoT"] as ProjectCategory[],
           },
           {
-            title: "Dashboard Climate",
+            title: "Smart Lemon Insight",
             description:
-              "Environmental monitoring dashboard with real-time sensor data visualization, historical analysis, alerting and environmental decision support.",
-            techStack: ["Laravel", "MySQL", "Chart.js", "MQTT", "REST API"],
-            externalUrl: "#",
+              "AI-powered lemon quality assessment system using YOLOv8 object detection. Classifies lemons by color, size, and defects for real-time quality control.",
+            techStack: ["YOLOv8", "TensorFlow", "Keras", "Python", "Streamlit"],
+            externalUrl: "https://github.com/sihareen/capstone-skilvul39",
+            coverImages: [],
+            labels: ["AI"] as ProjectCategory[],
+          },
+          {
+            title: "Fuel & Engine Monitoring",
+            description:
+              "Field-deployed Fuel Monitoring Systems (FMS) and Engine Monitoring Systems with sensor calibration, real-time telemetry, and system integration.",
+            techStack: ["Embedded C", "Sensors", "Telemetry", "IoT"],
+            externalUrl: "https://github.com/sihareen",
+            coverImages: [],
+            labels: ["IoT"] as ProjectCategory[],
+          },
+          {
+            title: "Dashboard Microclimate",
+            description:
+              "Web dashboard for microclimate station data visualization and environmental monitoring at Petengoran-Panjang.",
+            techStack: ["Laravel", "PHP", "HTML/CSS", "MySQL"],
+            externalUrl: "https://github.com/sihareen/dashboard-microclimate",
             coverImages: [],
             labels: ["Data"] as ProjectCategory[],
           },
           {
-            title: "Rubus IOC",
+            title: "Softphone Emergency Call",
             description:
-              "LoRa-based soil moisture monitoring with solar-powered field deployment. IoT power monitoring and control system for distributed infrastructure with centralized management.",
-            techStack: ["LoRa", "IoT", "Power Systems", "ESP32", "Python"],
-            externalUrl: "#",
+              "Emergency VoIP softphone system for station-based communication, built on Asterisk PBX with totem hardware integration.",
+            techStack: ["Asterisk", "VoIP", "SIP", "Linux"],
+            externalUrl: "https://github.com/sihareen/Softphone-emergency-call",
             coverImages: [],
             labels: ["IoT"] as ProjectCategory[],
+          },
+          {
+            title: "IoT Sensor Platform",
+            description:
+              "ThingsBoard-based IoT platform measuring temperature, humidity, gas levels, and rainfall using DHT, MQ, and raindrop sensors with Arduino.",
+            techStack: ["Arduino", "ThingsBoard", "C++", "MQTT", "Sensors"],
+            externalUrl: "https://github.com/sihareen/IOT",
+            coverImages: [],
+            labels: ["IoT"] as ProjectCategory[],
+          },
+          {
+            title: "Buoy Tsunami Early Warning (U-TEWS)",
+            description:
+              "Python-based monitoring software for real-time sea surface observation on U-TEWS buoy platforms with DART tsunami detection algorithm integration.",
+            techStack: ["Python", "Raspberry Pi", "DART", "Node-RED", "MQTT"],
+            externalUrl: "https://github.com/sihareen",
+            coverImages: [],
+            labels: ["IoT"] as ProjectCategory[],
+          },
+          {
+            title: "PUMMA Tsunami Early Warning",
+            description:
+              "PUMMA systems integrated with microclimate stations in coastal environments. Node-RED monitoring for sea surface and climate data across multiple sites.",
+            techStack: ["Node-RED", "PUMMA", "Raspberry Pi", "MQTT"],
+            externalUrl: "https://github.com/sihareen",
+            coverImages: [],
+            labels: ["IoT"] as ProjectCategory[],
+          },
+          {
+            title: "Eddy Station Carbon Monitoring",
+            description:
+              "Node-RED monitoring systems for real-time carbon emission and climate observation in plantation environments with TCP/IP device integration.",
+            techStack: ["Node-RED", "MQTT", "TCP/IP", "Raspberry Pi"],
+            externalUrl: "https://github.com/sihareen",
+            coverImages: [],
+            labels: ["Data"] as ProjectCategory[],
+          },
+          {
+            title: "Mangrove Microclimate Station",
+            description:
+              "Climate monitoring software for mangrove ecosystem with end-to-end MQTT data transmission and Laravel dashboards for environmental analysis.",
+            techStack: ["Laravel", "MQTT", "Raspberry Pi", "Python"],
+            externalUrl: "https://github.com/sihareen",
+            coverImages: [],
+            labels: ["Data"] as ProjectCategory[],
           },
         ];
 

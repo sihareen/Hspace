@@ -15,30 +15,66 @@ type TimelineItem = {
 
 const fallbackTimelineItems: TimelineItem[] = [
   {
-    period: "2024 - Present",
-    title: "IoT & AI Engineer",
-    company: "Industrial / Field Deployment",
+    period: "Jul 2026 - Present",
+    title: "Electrical Engineer",
+    company: "Bhinneka Nusantara Mandiri",
     description:
-      "Developing connected sensing systems and analytics workflows for monitoring, automation, and decision support.",
-    tags: ["IoT", "Embedded", "AI"],
+      "FMS installation & maintenance, Engine Monitoring Systems, sensor/communication diagnostics, sensor testing & calibration, and IoT product development with hardware integration and field testing.",
+    tags: ["FMS", "IoT", "Sensors", "Field Testing"],
     category: ExperienceCategory.EXPERIENCE,
   },
   {
-    period: "2023 - 2024",
-    title: "Engineering Project Implementation",
-    company: "Applied Engineering Projects",
+    period: "Oct 2025 - Apr 2026",
+    title: "Programmer Raspberry Pi & Edge Devices",
+    company: "Indomaker Indonesia Mandiri",
     description:
-      "Delivered field-oriented embedded and telemetry projects with end-to-end integration from hardware to dashboard.",
-    tags: ["Telemetry", "System Integration", "Deployment"],
+      "Edge computing & IoT (Raspberry Pi, Orange Pi, Docker), local LLM & RAG (Ollama, ChromaDB), PRISCOP smart kiosk, computer vision, multi-layer PCB design in KiCad, and embedded disaster early warning systems.",
+    tags: ["Edge Computing", "Docker", "RAG", "KiCad", "CV"],
     category: ExperienceCategory.EXPERIENCE,
   },
   {
-    period: "Electrical Engineering Graduate",
-    title: "Bachelor of Electrical Engineering",
-    company: "University of Lampung",
+    period: "Apr 2023 - Apr 2025",
+    title: "IoT Engineer",
+    company: "Freelance",
     description:
-      "Academic foundation in control systems, electronics, instrumentation, and practical engineering research.",
-    tags: ["Control Systems", "Electronics", "Research"],
+      "Buoy Tsunami Early Warning System (U-TEWS) with Python monitoring software and DART integration. PUMMA tsunami systems with Node-RED monitoring and microclimate stations across multiple coastal sites.",
+    tags: ["Tsunami", "Node-RED", "Raspberry Pi", "MQTT"],
+    category: ExperienceCategory.EXPERIENCE,
+  },
+  {
+    period: "Jun 2023 - Jun 2024",
+    title: "System Engineer",
+    company: "Freelance",
+    description:
+      "Eddy Station carbon monitoring with Node-RED and TCP/IP communication. Mangrove microclimate monitoring with MQTT transmission and Laravel dashboards for environmental analysis.",
+    tags: ["Node-RED", "MQTT", "Laravel", "TCP/IP"],
+    category: ExperienceCategory.EXPERIENCE,
+  },
+  {
+    period: "Mar 2024 - Aug 2025",
+    title: "Laboratory Assistant",
+    company: "Telecommunication Lab, Universitas Lampung",
+    description:
+      "Assisted students in communication systems and telecommunication network fundamentals through hands-on laboratory sessions.",
+    tags: ["MATLAB", "Networking", "Telecom"],
+    category: ExperienceCategory.EXPERIENCE,
+  },
+  {
+    period: "Jul 2024 - Jan 2025",
+    title: "IBM SkillsBuild for AI & Cybersecurity",
+    company: "Skilvul · Kampus Merdeka Batch 6",
+    description:
+      "Developed Smart Lemon Insight — AI-based quality classification using YOLOv8, TensorFlow, and Keras. Built deep learning pipelines for object detection with image preprocessing and data augmentation.",
+    tags: ["YOLOv8", "TensorFlow", "Deep Learning", "AI"],
+    category: ExperienceCategory.EDUCATION,
+  },
+  {
+    period: "2020 - 2024",
+    title: "B.Eng Electrical Engineering",
+    company: "Universitas Lampung",
+    description:
+      "Specialization in embedded systems, IoT architecture, and telemetry. Thesis on Python-based telemetry transmission for remote ocean monitoring platforms.",
+    tags: ["Embedded Systems", "IoT", "Telemetry", "Research"],
     category: ExperienceCategory.EDUCATION,
   },
 ];

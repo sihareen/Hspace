@@ -8,11 +8,16 @@ const datasheet: { key: string; value: string }[] = [
   { key: "Discipline", value: "Electrical Engineering" },
   { key: "Degree", value: "B.Eng, Universitas Lampung" },
   { key: "Thesis", value: "Python-based telemetry for remote ocean monitoring" },
-  { key: "Focus", value: "IoT · Embedded · Telemetry · Edge AI" },
-  { key: "Domains", value: "Disaster early warning, environmental monitoring, industrial QC" },
+  { key: "Focus", value: "IoT · Embedded · Edge AI · FMS" },
+  { key: "Current", value: "Electrical Engineer at Bhinneka Nusantara Mandiri" },
 ];
 
-const strong = "font-semibold text-ink";
+const highlights = [
+  { label: "PRISCOP smart kiosk & vending system", domain: "Edge Computing" },
+  { label: "Fuel & Engine Monitoring Systems", domain: "Industrial IoT" },
+  { label: "AI-powered lemon quality assessment", domain: "Computer Vision" },
+  { label: "Multi-layer PCB design & power routing", domain: "Hardware Design" },
+];
 
 export function AboutSection() {
   return (
@@ -26,20 +31,31 @@ export function AboutSection() {
       <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
         <Reveal className="min-w-0 max-w-[65ch] space-y-5 text-ink-2">
           <p className="t-lede text-ink">
-            Electrical Engineer specializing in IoT architecture, embedded systems, and telemetry networks. My work
-            spans the complete engineering stack: electronic circuit interfacing, firmware development, communication
-            protocols, instrumentation systems, and edge AI deployment.
+            Electrical Engineer with 3+ years building field-deployed monitoring systems, edge computing solutions,
+            and applied AI. Currently at Bhinneka Nusantara Mandiri working on FMS installation, engine monitoring,
+            and IoT product development.
           </p>
           <p>
-            Projects include <strong className={strong}>tsunami early warning buoy systems</strong>,{" "}
-            <strong className={strong}>emergency VoIP communication networks</strong>,{" "}
-            <strong className={strong}>AI-powered quality control systems</strong>, and autonomous connected devices.
-            Each implementation emphasizes reliable field operation, robust electronic design, and measurable outcomes.
+            Previously at Indomaker Indonesia Mandiri building PRISCOP smart kiosks, local LLM/RAG pipelines,
+            computer vision systems, and multi-layer PCBs. B.Eng from Universitas Lampung with thesis on
+            Python-based telemetry for remote ocean monitoring.
           </p>
-          <p>
-            Bachelor of Electrical Engineering from Universitas Lampung. Thesis focused on Python-based telemetry
-            transmission systems for remote ocean monitoring platforms.
-          </p>
+
+          {/* Highlighted project domains */}
+          <div className="mt-2 grid gap-2 sm:grid-cols-2">
+            {highlights.map((item, i) => (
+              <div
+                key={item.label}
+                className="flex items-start gap-3 rounded-sm border border-line bg-bg p-3 transition-colors duration-(--dur-fast) hover:border-line-strong"
+              >
+                <span className="mt-0.5 shrink-0 font-mono text-xs text-accent">0{i + 1}</span>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-ink">{item.label}</p>
+                  <p className="mt-0.5 font-mono text-[0.625rem] text-ink-3 uppercase tracking-wider">{item.domain}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </Reveal>
 
         <Reveal as="aside" delay={60} className="min-w-0 self-start">

@@ -21,7 +21,6 @@ type ExperienceGalleryProps = {
   items: ExperienceCardItem[];
 };
 
-/** Descriptions longer than this are clamped to 4 lines with an inline "Read more". */
 const CLAMP_THRESHOLD = 280;
 const CURRENT_PATTERN = /\b(present|now|current|sekarang)\b/i;
 
@@ -44,7 +43,7 @@ function TimelineEntry({ item, index }: TimelineEntryProps) {
       delay={Math.min(index, 5) * 60}
       className="relative grid gap-2 pb-10 pl-8 last:pb-0 md:grid-cols-[160px_1fr] md:gap-x-12 md:gap-y-0 md:pl-0"
     >
-      {/* Node on the rail: diamond = work, circle = education, filled + pulse = current */}
+      {/* Node on the rail */}
       <span
         aria-hidden="true"
         className={cn(
@@ -73,14 +72,21 @@ function TimelineEntry({ item, index }: TimelineEntryProps) {
         {isCurrent ? <span className="ml-2 t-eyebrow">· Now</span> : null}
       </p>
 
-      <div className="min-w-0 rounded-sm border border-line bg-bg p-5 transition-[border-color,box-shadow] duration-(--dur-base) hover:border-line-strong hover:shadow-(--shadow-card) md:p-6">
-        <p className="flex items-center gap-3 font-mono text-xs text-ink-3">
-          <span>X-{String(index + 1).padStart(2, "0")}</span>
-          <span className="inline-flex items-center gap-1.5 tracking-[0.08em] uppercase">
-            <CategoryIcon aria-hidden="true" className="size-3.5" />
-            {isEducation ? "Education" : "Work"}
-          </span>
-        </p>
+      <div className="group min-w-0 rounded-sm border border-line bg-bg p-5 transition-[border-color,box-shadow] duration-(--dur-base) hover:border-line-strong hover:shadow-(--shadow-card) md:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <p className="flex items-center gap-3 font-mono text-xs text-ink-3">
+            <span>X-{String(index + 1).padStart(2, "0")}</span>
+            <span className="inline-flex items-center gap-1.5 tracking-[0.08em] uppercase">
+              <CategoryIcon aria-hidden="true" className="size-3.5" />
+              {isEducation ? "Education" : "Work"}
+            </span>
+          </p>
+          {isCurrent ? (
+            <span className="inline-flex h-5 items-center rounded-xs bg-accent/10 px-2 text-[0.625rem] font-semibold text-accent uppercase tracking-wider">
+              Current
+            </span>
+          ) : null}
+        </div>
         <h3 className="mt-2 t-h3 text-pretty wrap-break-word text-ink">{item.title}</h3>
         {item.company ? <p className="mt-1 text-[0.9375rem] font-medium text-accent">{item.company}</p> : null}
 

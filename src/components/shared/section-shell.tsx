@@ -7,21 +7,14 @@ export type SectionTone = "bg" | "band";
 
 type SectionShellProps = {
   id: string;
-  /** Section title, rendered as authored (sentence case) in an h2. */
   title: ReactNode;
-  /** Two-digit section number, e.g. "02". */
   number?: string;
-  /** @deprecated Use `number`. Kept so phase-A call sites still compile. */
+  /** @deprecated Use `number`. */
   sectionNumber?: string;
-  /** Short eyebrow label after the number, e.g. "Work" → "02 / Work". Defaults to `title` when it is a string. */
   eyebrow?: string;
-  /** Optional lede under the title. */
   intro?: ReactNode;
-  /** Optional right-aligned slot on md+ (same baseline as the h2), e.g. "10 projects". */
   meta?: ReactNode;
-  /** "bg" = page background (default); "band" = surface band with top/bottom border. */
   tone?: SectionTone;
-  /** Extra classes on the inner container (e.g. "max-w-[880px]"). */
   containerClassName?: string;
   className?: string;
   children: ReactNode;

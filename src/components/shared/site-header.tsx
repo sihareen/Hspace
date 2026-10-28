@@ -8,7 +8,6 @@ import { cn } from "@/components/ui/cn";
 import { scrollToSection } from "@/components/ui/scroll-to";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
-/** Section ids must match the `id` on each section in page.tsx. */
 const navItems = [
   { number: "02", label: "Projects", id: "projects" },
   { number: "03", label: "Experience", id: "experience" },
@@ -29,17 +28,14 @@ export function SiteHeader() {
   const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  /** Whether closing the menu should return focus to the toggle (false when a link was chosen). */
   const restoreFocusRef = useRef(true);
 
-  // Active section tracking.
   useEffect(() => {
     const sections = observedIds
       .map((id) => document.getElementById(id))
       .filter((section): section is HTMLElement => section !== null);
     if (sections.length === 0) return;
 
-    // A thin "reading line" at 40% of the viewport: the section crossing it is active.
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -55,12 +51,10 @@ export function SiteHeader() {
 
   const closeMenu = useCallback((restoreFocus: boolean) => {
     restoreFocusRef.current = restoreFocus;
-    // Unlock synchronously so a following scroll is not blocked.
     document.documentElement.classList.remove("scroll-locked");
     setMenuOpen(false);
   }, []);
 
-  // Mobile menu: scroll lock, initial focus, Escape, auto-close on md+.
   useEffect(() => {
     if (!menuOpen) return;
 
@@ -92,7 +86,6 @@ export function SiteHeader() {
     };
   }, [menuOpen, closeMenu]);
 
-  // Keep Tab inside the header while the full-screen menu covers the page.
   const handleHeaderKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (!menuOpen || event.key !== "Tab" || !headerRef.current) return;
     const focusables = Array.from(headerRef.current.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
@@ -111,7 +104,6 @@ export function SiteHeader() {
   };
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
-    // Let modified clicks (new tab etc.) behave natively.
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
     event.preventDefault();
     if (menuOpen) closeMenu(false);
@@ -127,8 +119,6 @@ export function SiteHeader() {
         Skip to content
       </a>
 
-      {/* Bar. Note: backdrop-filter creates a containing block for fixed children,
-          so the mobile panel lives outside this element. */}
       <div className="h-16 border-b border-line bg-surface/85 backdrop-blur-md supports-[backdrop-filter]:bg-surface/70">
         <div className="container-page flex h-full items-center justify-between gap-4">
           <a
@@ -138,7 +128,7 @@ export function SiteHeader() {
             aria-label="Rizkan Harin, back to top"
           >
             <span aria-hidden="true" className="font-display font-bold text-ink tracking-tight text-lg">
-              RIZKAN<span className="text-accent">.</span>HARIN
+              RH<span className="text-accent">.</span>
             </span>
           </a>
 
@@ -154,13 +144,13 @@ export function SiteHeader() {
                       aria-current={isActive ? "true" : undefined}
                       className={cn(
                         "relative inline-flex min-h-11 items-center gap-1.5 px-1 text-sm font-medium transition-colors duration-(--dur-fast)",
-                        "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:transition-[transform,opacity] after:duration-(--dur-fast) after:origin-left",
+                        "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:transition-[transform,opacity] after:duration-(--dur-base) after:origin-left",
                         isActive
                           ? "text-ink after:bg-accent after:scale-x-100 after:opacity-100"
-                          : "text-ink-2 hover:text-ink after:bg-accent after:scale-x-0 after:opacity-0",
+                          : "text-ink-3 hover:text-ink after:bg-accent after:scale-x-0 after:opacity-0",
                       )}
                     >
-                      <span aria-hidden="true" className="font-mono text-xs text-ink-3">
+                      <span aria-hidden="true" className={cn("font-mono text-xs", isActive ? "text-accent" : "text-ink-3")}>
                         {item.number}
                       </span>
                       {item.label}
@@ -173,7 +163,6 @@ export function SiteHeader() {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            {/* Wrapper handles visibility: Button already sets display (no class merging). */}
             <div className="hidden lg:block">
               <Button href={CV_HREF} download variant="secondary" size="sm">
                 CV
@@ -184,7 +173,7 @@ export function SiteHeader() {
               ref={toggleRef}
               type="button"
               onClick={() => (menuOpen ? closeMenu(true) : setMenuOpen(true))}
-              className="inline-grid size-11 place-items-center rounded-sm border border-line-strong text-ink transition-colors duration-(--dur-fast) hover:border-ink hover:bg-surface-2 md:hidden"
+              className="inline-grid size-11 place-items-center rounded-sm border border-line text-ink transition-colors duration-(--dur-fast) hover:border-line-strong hover:bg-surface-2 md:hidden"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               aria-controls={MENU_ID}
@@ -203,7 +192,7 @@ export function SiteHeader() {
       >
         <nav aria-label="Mobile" className="container-page flex min-h-full flex-col pt-2 pb-8">
           <ul className="mb-8">
-            {navItems.map((item, index) => {
+            {navItems.map((item) => {
               const isActive = item.id === activeSection;
               return (
                 <li key={item.id} className="border-b border-line">
