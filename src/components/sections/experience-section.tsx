@@ -17,19 +17,19 @@ const fallbackTimelineItems: TimelineItem[] = [
   {
     period: "Jul 2026 - Present",
     title: "Electrical Engineer",
-    company: "Bhinneka Nusantara Mandiri",
+    company: "Bhinneka Nusantara Mandiri · Contract · Jakarta",
     description:
-      "FMS installation & maintenance, Engine Monitoring Systems, sensor/communication diagnostics, sensor testing & calibration, and IoT product development with hardware integration and field testing.",
-    tags: ["FMS", "IoT", "Sensors", "Field Testing"],
+      "Installed, commissioned, troubleshot, and maintained Fuel Monitoring Systems (FMS) for fuel consumption monitoring.\nInstalled, configured, and maintained Engine Monitoring Systems for real-time engine monitoring.\nDiagnosed electrical, sensor, communication, and system integration issues in field-deployed monitoring equipment.\nPerformed sensor testing, calibration, and system validation to ensure measurement accuracy and reliability.\nSupported IoT product development through hardware integration, sensor interfacing, communication systems, and field testing.\nCollaborated with the Development team in developing, testing, debugging, and improving IoT-based products and solutions.",
+    tags: ["FMS", "Engine Monitoring", "IoT", "Sensors", "Field Testing"],
     category: ExperienceCategory.EXPERIENCE,
   },
   {
     period: "Oct 2025 - Apr 2026",
-    title: "Programmer Raspberry Pi & Edge Devices",
-    company: "Indomaker Indonesia Mandiri",
+    title: "Programmer Raspberry Pi, Embedded & Edge Devices",
+    company: "Indomaker Indonesia Mandiri · Bandung",
     description:
-      "Edge computing & IoT (Raspberry Pi, Orange Pi, Docker), local LLM & RAG (Ollama, ChromaDB), PRISCOP smart kiosk, computer vision, multi-layer PCB design in KiCad, and embedded disaster early warning systems.",
-    tags: ["Edge Computing", "Docker", "RAG", "KiCad", "CV"],
+      "Developed edge computing and IoT solutions using Raspberry Pi, Orange Pi, Docker, and AI-based systems.\nBuilt local LLM and Retrieval-Augmented Generation (RAG) systems using Ollama, ChromaDB, Phi-3, and embeddings for offline AI service delivery.\nDeveloped and deployed PRISCOP — a smart kiosk and vending system integrated with QR printing, billing automation, and VoIP softphone services.\nEngineered Python and PHP backend services using Docker Compose to ensure stable 24/7 operation.\nIntegrated computer vision systems for face and document detection using customized ROI processing.\nDesigned multi-layer PCBs in KiCad for motor drivers and controller interfaces.\nPerformed power routing and thermal optimization to improve hardware stability under high electrical loads.\nDeveloped embedded-based disaster early warning systems for floods, landslides, and other hazards with real-time alert mechanisms.",
+    tags: ["Edge Computing", "Docker", "RAG", "KiCad", "CV", "PRISCOP"],
     category: ExperienceCategory.EXPERIENCE,
   },
   {

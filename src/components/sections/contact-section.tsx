@@ -1,58 +1,63 @@
 import type { ReactNode } from "react";
-import { FiDownload, FiGithub, FiInstagram, FiLinkedin, FiMail, FiMessageCircle } from "react-icons/fi";
+import { FiArrowUpRight, FiDownload, FiGithub, FiInstagram, FiLinkedin, FiMail, FiMessageCircle } from "react-icons/fi";
 
 import { CopyEmailButton } from "@/components/sections/copy-email-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/components/ui/cn";
 import { Reveal } from "@/components/ui/reveal";
-import { SignalDot } from "@/components/ui/signal-dot";
 import { availability, contactContent } from "@/data/site-content";
 
 const focusInverse = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-inverse";
-const tileBorder =
-  "rounded-sm border border-on-inverse/20 transition-colors duration-(--dur-fast) dark:border-line-strong";
-const tileHover = "hover:border-on-inverse/40 hover:bg-on-inverse/5";
 
-function TileLabel({ children }: { children: ReactNode }) {
-  return <span className="block t-eyebrow text-on-inverse-2">{children}</span>;
-}
-
-function LinkTile({
+function ChannelCard({
   href,
   label,
-  value,
+  handle,
   icon,
   external,
-  download,
+  accent,
 }: {
   href: string;
   label: string;
-  value: string;
+  handle: string;
   icon: ReactNode;
   external?: boolean;
-  download?: boolean;
+  accent?: boolean;
 }) {
   return (
     <a
       href={href}
-      download={download || undefined}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
       className={cn(
-        "group flex min-h-11 min-w-0 items-center justify-between gap-3 p-4",
-        tileBorder,
-        tileHover,
+        "group relative flex flex-col justify-between gap-4 overflow-hidden rounded-sm p-4 transition-all duration-(--dur-base)",
         focusInverse,
+        accent
+          ? "bg-accent/15 border border-accent/30 hover:bg-accent/20 hover:border-accent/50"
+          : "bg-on-inverse/5 border border-on-inverse/10 hover:bg-on-inverse/10 hover:border-on-inverse/25",
       )}
     >
-      <span className="min-w-0">
-        <TileLabel>{label}</TileLabel>
-        <span className="mt-1 block truncate text-sm font-semibold text-on-inverse">{value}</span>
-        {external ? <span className="sr-only"> (opens in new tab)</span> : null}
-      </span>
-      <span aria-hidden="true" className="shrink-0 text-on-inverse-2 group-hover:text-on-inverse [&_svg]:size-5">
-        {icon}
-      </span>
+      <div className="flex items-start justify-between">
+        <span className={cn(
+          "grid size-10 place-items-center rounded-sm transition-colors duration-(--dur-fast) [&_svg]:size-5",
+          accent
+            ? "bg-accent/20 text-accent group-hover:bg-accent group-hover:text-on-primary"
+            : "bg-on-inverse/10 text-on-inverse/60 group-hover:bg-on-inverse/20 group-hover:text-on-inverse",
+        )}>
+          {icon}
+        </span>
+        <FiArrowUpRight
+          aria-hidden="true"
+          className="size-4 text-on-inverse/30 transition-transform duration-(--dur-fast) group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-on-inverse/60"
+        />
+      </div>
+      <div>
+        <span className="block font-mono text-[0.625rem] uppercase tracking-wider text-on-inverse/40">
+          {label}
+        </span>
+        <span className="mt-0.5 block text-sm font-semibold text-on-inverse truncate">{handle}</span>
+      </div>
+      {external ? <span className="sr-only"> (opens in new tab)</span> : null}
     </a>
   );
 }
@@ -66,100 +71,111 @@ export function ContactSection() {
       <div className="container-page">
         <Reveal>
           <div className="crop-marks rounded-md bg-inverse text-on-inverse [--cm:var(--on-inverse-2)] dark:border dark:border-line-strong">
-            <div className="relative overflow-hidden rounded-md p-6 md:p-12">
+            <div className="relative overflow-hidden rounded-md p-6 md:p-10 lg:p-12">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 bg-blueprint mask-fade-center opacity-[.06] [--grid:var(--on-inverse)]"
               />
 
-              <div className="relative grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-start">
-                {/* Left: headline + CTA */}
-                <div>
+              <div className="relative">
+                {/* Header */}
+                <div className="mb-10">
                   <p className="t-eyebrow text-on-inverse-2">
                     <span className="text-on-inverse">06</span> / Contact
                   </p>
-                  <h2 id="contact-title" className="mt-4 max-w-[22ch] t-h2 text-balance text-on-inverse">
+                  <h2 id="contact-title" className="mt-4 max-w-[28ch] t-h2 text-balance text-on-inverse">
                     Let&apos;s build something that works in the field.
                   </h2>
-                  <p className="mt-4 max-w-[52ch] t-lede text-on-inverse-2">
+                  <p className="mt-3 max-w-[52ch] t-lede text-on-inverse-2">
                     Open to collaboration on IoT, embedded systems and telemetry projects.
+                    {!availability.open ? (
+                      <span className="mt-2 flex items-center gap-2 text-sm text-on-inverse/40">
+                        <span className="inline-block size-1.5 rounded-full bg-on-inverse/30" aria-hidden="true" />
+                        {availability.label}
+                      </span>
+                    ) : null}
                   </p>
+                </div>
 
-                  {availability.open ? (
-                    <p className="mt-6 flex items-center gap-2 t-eyebrow text-on-inverse dark:text-signal">
-                      <SignalDot />
-                      {availability.label}
-                    </p>
-                  ) : null}
-
-                  <div className="mt-8">
-                    <Button href={mailto} variant="inverse">
-                      <FiMail aria-hidden="true" />
-                      Email me
+                {/* Email — featured */}
+                <div className="mb-4 flex flex-col gap-3 rounded-sm border border-on-inverse/15 bg-on-inverse/5 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="grid size-10 shrink-0 place-items-center rounded-sm bg-accent/20 text-accent">
+                      <FiMail aria-hidden="true" className="size-5" />
+                    </span>
+                    <div className="min-w-0">
+                      <span className="block font-mono text-[0.625rem] uppercase tracking-wider text-on-inverse/40">
+                        Email
+                      </span>
+                      <a
+                        href={mailto}
+                        className={cn("block text-sm font-semibold text-on-inverse truncate hover:underline underline-offset-4", focusInverse)}
+                        title={email}
+                      >
+                        {email}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <CopyEmailButton
+                      email={email}
+                      className={cn(
+                        "grid size-10 place-items-center rounded-sm border border-on-inverse/15 text-on-inverse-2",
+                        "transition-colors duration-(--dur-fast) hover:bg-on-inverse/10 hover:text-on-inverse",
+                        focusInverse,
+                      )}
+                    />
+                    <Button href={mailto} variant="inverse" size="sm">
+                      Send email
                     </Button>
                   </div>
                 </div>
 
-                {/* Right: link tiles */}
-                <ul className="grid gap-3">
-                  <li className={cn("flex min-w-0 items-stretch", tileBorder)}>
-                    <a
-                      href={mailto}
-                      className={cn(
-                        "group flex min-h-11 min-w-0 flex-1 items-center gap-3 rounded-sm p-4",
-                        "hover:bg-on-inverse/5",
-                        focusInverse,
-                      )}
-                    >
-                      <span className="min-w-0">
-                        <TileLabel>Email</TileLabel>
-                        <span
-                          title={email}
-                          className="mt-1 block text-sm font-semibold text-on-inverse wrap-anywhere sm:truncate"
-                        >
-                          {email}
-                        </span>
-                      </span>
-                    </a>
-                    <div className="flex shrink-0 items-center border-l border-on-inverse/20 px-1.5 dark:border-line-strong">
-                      <CopyEmailButton
-                        email={email}
-                        className={cn(
-                          "grid size-11 place-items-center rounded-sm text-on-inverse-2",
-                          "transition-colors duration-(--dur-fast) hover:bg-on-inverse/10 hover:text-on-inverse",
-                          focusInverse,
-                        )}
-                      />
-                    </div>
-                  </li>
-                  <li className="min-w-0">
-                    <LinkTile
-                      href={linkedin}
-                      label="LinkedIn"
-                      value="Connect"
-                      icon={<FiLinkedin />}
-                      external
-                    />
-                  </li>
-                  <li className="min-w-0">
-                    <LinkTile href={github} label="GitHub" value={`@${github.replace(/\/+$/, "").split("/").pop()}`} icon={<FiGithub />} external />
-                  </li>
-                  <li className="min-w-0">
-                    <LinkTile href={instagram} label="Instagram" value="@rijkhan_" icon={<FiInstagram />} external />
-                  </li>
-                  <li className="min-w-0">
-                    <LinkTile href={whatsapp} label="WhatsApp" value="Chat" icon={<FiMessageCircle />} external />
-                  </li>
-                  <li className="min-w-0">
-                    <LinkTile
-                      href="/cv.pdf"
-                      label="CV"
-                      value="Download PDF"
-                      icon={<FiDownload />}
-                      download
-                    />
-                  </li>
-                </ul>
+                {/* Channel grid */}
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <ChannelCard
+                    href={whatsapp}
+                    label="WhatsApp"
+                    handle="Chat"
+                    icon={<FiMessageCircle />}
+                    external
+                    accent
+                  />
+                  <ChannelCard
+                    href={linkedin}
+                    label="LinkedIn"
+                    handle="Connect"
+                    icon={<FiLinkedin />}
+                    external
+                  />
+                  <ChannelCard
+                    href={github}
+                    label="GitHub"
+                    handle={`@${github.replace(/\/+$/, "").split("/").pop()}`}
+                    icon={<FiGithub />}
+                    external
+                  />
+                  <ChannelCard
+                    href={instagram}
+                    label="Instagram"
+                    handle="@rijkhan_"
+                    icon={<FiInstagram />}
+                    external
+                  />
+                </div>
+
+                {/* CV download strip */}
+                <div className="mt-4 flex items-center justify-between rounded-sm border border-on-inverse/10 bg-on-inverse/[.03] px-4 py-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <FiDownload aria-hidden="true" className="size-4 shrink-0 text-on-inverse/40" />
+                    <span className="text-sm text-on-inverse/60">
+                      Curriculum Vitae
+                    </span>
+                  </div>
+                  <Button href="/cv.pdf" download variant="inverse" size="sm">
+                    Download CV
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

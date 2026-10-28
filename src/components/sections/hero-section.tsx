@@ -18,7 +18,7 @@ const techStack = [
 ];
 
 const systemInfo = [
-  { key: "name", value: "Rizkan Harin Faza" },
+  { key: "name", value: "Muhammad Rizkan Harin Faza" },
   { key: "role", value: "Electrical Engineer" },
   { key: "at", value: "Bhinneka Nusantara Mandiri" },
   { key: "focus", value: "Embedded · IoT · Edge AI" },
