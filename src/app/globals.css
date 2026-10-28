@@ -356,10 +356,9 @@
 
 @utility table-project-tr {
   transition: background-color var(--dur-fast) var(--ease-out);
-}
-
-@utility table-project-tr:hover {
-  background-color: var(--surface-2);
+  &:hover {
+    background-color: var(--surface-2);
+  }
 }
 
 @layer utilities {
