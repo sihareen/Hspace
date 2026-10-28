@@ -1,30 +1,51 @@
 # Hspace Portfolio
 
-Minimalist dark portfolio website for an Electrical Engineering graduate focused on IoT, Embedded Systems, AI, and Data Science.
+High-contrast, Swiss-style engineering portfolio for an Electrical Engineering graduate specializing in IoT, Embedded Systems, and Telemetry.
 
-## Stack
-- Next.js 16
-- React 19
-- Tailwind CSS 4
-- Prisma + PostgreSQL
+## 🛠 Technical Stack
+- **Framework**: Next.js 16 (App Router)
+- **Library**: React 19
+- **Styling**: Tailwind CSS 4
+- **Database**: Prisma + PostgreSQL
+- **Design**: Minimalist Engineering Datasheet Aesthetic
 
-## Run
+## 🚀 Getting Started
+
+### Installation
 ```bash
 npm install
+```
+
+### Development
+```bash
 npm run dev
 ```
 
-## Build
+### Production Build
 ```bash
 npm run build
 npm run start
 ```
 
-## Admin
-- Login: `/admin/login`
-- Manage projects: `/admin/projects`
-- Manage experience/education: `/admin/experiences`
+## 🔐 Administration
+The site includes a protected admin area for content management.
+- **Login**: `/admin/login`
+- **Project Management**: `/admin/projects`
+- **Experience & Education**: `/admin/experiences`
 
-## Notes
-- Project cover images are read from `public/project-covers`.
-- Hero CV download points to `public/cv.pdf`.
+## 📁 Project Structure
+- `src/app`: Application routes and global styles.
+- `src/components`: Modular UI components.
+  - `/sections`: Main page sections (Hero, Projects, etc.).
+  - `/shared`: Layout elements (Header, Footer).
+  - `/ui`: Atomic design components.
+- `src/data`: Static site configuration.
+- `public`: Static assets.
+  - `/project-covers`: Project thumbnail images.
+  - `/profile`: Profile portrait.
+  - `cv.pdf`: Professional resume.
+
+## 📝 Design Notes
+- **Aesthetic**: Rigid grid-based layout, bold typography, and high-contrast palette.
+- **Accent Color**: `#ff4f00` (Engineering Orange).
+- **Typeface**: Sans-serif for display, Monospace for technical metadata.

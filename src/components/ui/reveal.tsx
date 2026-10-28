@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type CSSProperties, type ReactNode, type RefObject } from "react";
 
-type RevealTag = "div" | "li" | "article" | "section" | "span" | "aside" | "header" | "ul" | "ol";
+type RevealTag = "div" | "li" | "article" | "section" | "span" | "aside" | "header" | "ul" | "ol" | "tr";
 
 type RevealProps = {
   as?: RevealTag;

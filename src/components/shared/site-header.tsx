@@ -10,11 +10,11 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 /** Section ids must match the `id` on each section in page.tsx. */
 const navItems = [
-  { label: "Work", id: "projects" },
-  { label: "Experience", id: "experience" },
-  { label: "Expertise", id: "skills" },
-  { label: "About", id: "about" },
-  { label: "Contact", id: "contact" },
+  { number: "01", label: "Projects", id: "projects" },
+  { number: "02", label: "Experience", id: "experience" },
+  { number: "03", label: "Expertise", id: "skills" },
+  { number: "04", label: "About", id: "about" },
+  { number: "05", label: "Contact", id: "contact" },
 ] as const;
 
 const observedIds = ["hero", ...navItems.map((item) => item.id)];
@@ -137,14 +137,8 @@ export function SiteHeader() {
             className="-ml-1 flex min-h-11 items-center gap-2.5 rounded-sm px-1"
             aria-label="Rizkan Harin, back to top"
           >
-            <span
-              aria-hidden="true"
-              className="grid size-7 place-items-center rounded-xs bg-primary font-mono text-xs font-semibold text-on-primary"
-            >
-              RH
-            </span>
-            <span aria-hidden="true" className="hidden font-display font-semibold text-ink min-[360px]:inline">
-              Rizkan Harin
+            <span aria-hidden="true" className="font-display font-bold text-ink tracking-tight text-lg">
+              RIZKAN HARIN<span className="text-ink-3">___</span>
             </span>
           </a>
 
@@ -159,11 +153,13 @@ export function SiteHeader() {
                       onClick={(event) => handleNavClick(event, item.id)}
                       aria-current={isActive ? "true" : undefined}
                       className={cn(
-                        "relative inline-flex min-h-11 items-center px-1 text-sm font-medium transition-colors duration-(--dur-fast)",
-                        "after:absolute after:inset-x-0 after:-bottom-[10px] after:h-0.5 after:bg-accent after:transition-opacity after:duration-(--dur-fast)",
-                        isActive ? "text-ink after:opacity-100" : "text-ink-2 after:opacity-0 hover:text-ink",
+                        "relative inline-flex min-h-11 items-center gap-1.5 px-1 text-sm font-medium transition-colors duration-(--dur-fast)",
+                        isActive ? "text-ink" : "text-ink-2 hover:text-ink",
                       )}
                     >
+                      <span aria-hidden="true" className="font-mono text-xs text-ink-3">
+                        {item.number}
+                      </span>
                       {item.label}
                     </a>
                   </li>
@@ -218,7 +214,7 @@ export function SiteHeader() {
                     )}
                   >
                     <span aria-hidden="true" className={cn("t-chip", isActive ? "text-accent" : "text-ink-3")}>
-                      {String(index + 1).padStart(2, "0")}
+                      {item.number}
                     </span>
                     {item.label}
                   </a>

@@ -4,35 +4,35 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /* ------------------------------------------------------------------ */
-/* Design tokens: "Field Datasheet" (light) / "Night Bench" (dark)     */
+/* Design tokens: "Column Proof" (light) / "Column Proof Night" (dark) */
 /* ------------------------------------------------------------------ */
 
 :root,
 [data-theme="light"] {
   /* surfaces */
-  --bg: #f4f6fa;
-  --surface: #ffffff;
-  --surface-2: #eaeff6;
-  --inverse: #0e1b30;
+  --bg: #ffffff;
+  --surface: #fbfbfb;
+  --surface-2: #f2f2f2;
+  --inverse: #000000;
   --on-inverse: #ffffff;
-  --on-inverse-2: #a8b6cb;
+  --on-inverse-2: #888888;
   /* ink */
-  --ink: #0e1b30;
-  --ink-2: #41536e;
-  --ink-3: #5a6a82;
+  --ink: #000000;
+  --ink-2: #333333;
+  --ink-3: #666666;
   /* brand / interactive */
-  --primary: #1f365c;
+  --primary: #ff4f00;
   --on-primary: #ffffff;
-  --primary-hover: #2b5797;
-  --accent: #2b5797;
-  --signal: #b9410b;
-  --signal-dot: #e8580c;
+  --primary-hover: #e64600;
+  --accent: #ff4f00;
+  --signal: #ff4f00;
+  --signal-dot: #ff4f00;
   /* lines */
-  --border: #d3dce8;
-  --border-strong: #76879f;
-  --grid: #dce3ec;
-  --focus: #2b5797;
-  /* category labels */
+  --border: #e0e0e0;
+  --border-strong: #000000;
+  --grid: #e0e0e0;
+  --focus: #ff4f00;
+  /* category tokens */
   --cat-iot: #0f6b63;
   --cat-iot-bg: #e3f3f1;
   --cat-ai: #6331b8;
@@ -40,38 +40,38 @@
   --cat-data: #93530a;
   --cat-data-bg: #fbf0df;
   /* elevation */
-  --shadow-card: 0 1px 2px rgb(14 27 48 / 0.06), 0 12px 32px -16px rgb(14 27 48 / 0.22);
-  --shadow-pop: 0 24px 64px -24px rgb(14 27 48 / 0.35);
-  --backdrop: rgb(10 17 29 / 0.7);
+  --shadow-card: 0 0 0 1px #000000;
+  --shadow-pop: 0 24px 64px -24px rgb(0 0 0 / 0.3);
+  --backdrop: rgb(0 0 0 / 0.6);
 }
 
 [data-theme="dark"] {
-  --bg: #0a111d;
-  --surface: #0f1a2b;
-  --surface-2: #15233a;
-  --inverse: #15233a;
-  --on-inverse: #e6edf7;
-  --on-inverse-2: #a8b6cb;
-  --ink: #e6edf7;
-  --ink-2: #a8b6cb;
-  --ink-3: #8494ac;
-  --primary: #8cb8ff;
-  --on-primary: #0a111d;
-  --primary-hover: #b5d0ff;
-  --accent: #8cb8ff;
-  --signal: #ff9b57;
-  --signal-dot: #ff9b57;
-  --border: #22324a;
-  --border-strong: #5a7194;
-  --grid: #142036;
-  --focus: #8cb8ff;
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --surface-2: #1a1a1a;
+  --inverse: #ffffff;
+  --on-inverse: #000000;
+  --on-inverse-2: #888888;
+  --ink: #ffffff;
+  --ink-2: #cccccc;
+  --ink-3: #888888;
+  --primary: #ff4f00;
+  --on-primary: #000000;
+  --primary-hover: #ff6a20;
+  --accent: #ff4f00;
+  --signal: #ff4f00;
+  --signal-dot: #ff4f00;
+  --border: #222222;
+  --border-strong: #ffffff;
+  --grid: #222222;
+  --focus: #ff4f00;
   --cat-iot: #5fd9c8;
   --cat-iot-bg: #0f2a2b;
   --cat-ai: #c2b0ff;
   --cat-ai-bg: #1f1b3a;
   --cat-data: #f2c46b;
   --cat-data-bg: #2a2213;
-  --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.02);
+  --shadow-card: 0 0 0 1px #ffffff;
   --shadow-pop: 0 24px 64px -24px rgb(0 0 0 / 0.7);
   --backdrop: rgb(0 0 0 / 0.72);
 }
@@ -79,18 +79,17 @@
 :root {
   /* layout */
   --header-h: 64px;
-  /* fonts: next/font exposes --font-archivo / --font-plex / --font-jetbrains on <html> */
-  --ff-body: var(--font-plex), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --ff-display: var(--font-archivo), var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  /* fonts: next/font exposes --font-archivo / --font-jetbrains on <html> */
+  --ff-body: var(--font-archivo), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ff-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --ff-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
   /* motion */
   --dur-fast: 120ms;
   --dur-base: 200ms;
   --dur-slow: 320ms;
-  --dur-reveal: 480ms;
+  --dur-reveal: 320ms;
 
-  /* Legacy aliases. Kept so unmigrated sections and /admin keep working.
-     Do not use in new code; use the tokens / utilities above. */
+  /* Legacy aliases kept so /admin screens keep working. */
   --background: var(--bg);
   --secondary: var(--ink-2);
   --text-primary: var(--ink);
@@ -155,7 +154,6 @@
     background: var(--bg);
     color: var(--ink);
     font-family: var(--ff-body);
-    font-feature-settings: "ss01", "ss02";
     font-size: 1rem;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
@@ -181,7 +179,7 @@
 
   ::selection {
     background: var(--accent);
-    color: var(--surface);
+    color: var(--on-primary);
   }
 
   dialog::backdrop {
@@ -203,46 +201,45 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Type scale (usable with variants, e.g. lg:t-h3)                     */
+/* Type scale                                                           */
 /* ------------------------------------------------------------------ */
 
+/* Hero display — heavy, bold Swiss-style headline */
 @utility t-display {
   font-family: var(--ff-display);
-  font-weight: 700;
-  font-stretch: 112%;
-  font-size: clamp(2.5rem, 1.6rem + 4.5vw, 4.75rem);
-  line-height: 1.02;
-  letter-spacing: -0.025em;
+  font-weight: 800;
+  font-size: clamp(2.75rem, 2rem + 5vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
 }
 
 @utility t-h2 {
   font-family: var(--ff-display);
   font-weight: 700;
-  font-stretch: 108%;
-  font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.5rem, 1.25rem + 1.5vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 }
 
 @utility t-h3 {
-  font-family: var(--ff-body);
+  font-family: var(--ff-display);
   font-weight: 600;
-  font-size: 1.25rem;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
   @media (width >= 64rem) {
-    font-size: 1.375rem;
+    font-size: 1.25rem;
   }
 }
 
 @utility t-lede {
-  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
-  line-height: 1.55;
+  font-size: clamp(1rem, 0.875rem + 0.5vw, 1.25rem);
+  line-height: 1.6;
 }
 
 @utility t-small {
   font-size: 0.875rem;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 @utility t-eyebrow {
@@ -250,18 +247,44 @@
   font-weight: 500;
   font-size: 0.75rem;
   line-height: 1;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-variant-numeric: tabular-nums slashed-zero;
 }
 
 @utility t-chip {
   font-family: var(--ff-mono);
-  font-weight: 500;
-  font-size: 0.75rem;
+  font-weight: 400;
+  font-size: 0.6875rem;
   line-height: 1;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums slashed-zero;
+}
+
+/* Hero specific: large label / sub-headline */
+@utility t-hero-sub {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1rem, 0.875rem + 0.6vw, 1.375rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+}
+
+/* Project table text */
+@utility t-table {
+  font-family: var(--ff-body);
+  font-weight: 400;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+@utility t-table-mono {
+  font-family: var(--ff-mono);
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
 }
 
 /* Page container: 1200px, 16px mobile gutter */
@@ -278,22 +301,12 @@
   }
 }
 
-/* Blueprint grid background (hero + contact only) */
-@utility bg-blueprint {
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-@utility mask-fade-hero {
-  -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 30%, transparent 75%);
-  mask-image: radial-gradient(ellipse at 70% 40%, #000 30%, transparent 75%);
-}
-
-@utility mask-fade-center {
-  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 20%, transparent 75%);
-  mask-image: radial-gradient(ellipse at 50% 50%, #000 20%, transparent 75%);
+/* Hero-only 12-column ghost grid. Apply as position:absolute inside hero — never fixed. */
+@utility ghost-grid {
+  background-image: linear-gradient(to right, var(--border) 1px, transparent 1px);
+  background-size: calc(100% / 12) 100%;
+  background-position: 0 0;
+  opacity: 0.25;
 }
 
 @utility sr-only-focusable {
@@ -317,6 +330,38 @@
   }
 }
 
+/* Table utilities */
+@utility table-project {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility table-project-th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--border);
+}
+
+@utility table-project-td {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+@utility table-project-tr {
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+@utility table-project-tr:hover {
+  background-color: var(--surface-2);
+}
+
 @layer utilities {
   .font-mono {
     font-variant-numeric: tabular-nums slashed-zero;
@@ -328,12 +373,12 @@
 /* ------------------------------------------------------------------ */
 
 @layer components {
-  /* Signature detail: 4 corner ticks. Hero photo/spec plate + contact panel ONLY.
-     Wrapper must not clip (overflow-hidden) the ::before at inset -6px; put the
-     clipping on an inner element instead. */
+  /* Signature detail: 4 corner crop-marks.
+     Hero photo ONLY — correction: crop marks appear once, on the hero photo only.
+     Wrapper must not clip (overflow-hidden); put clipping on an inner element. */
   .crop-marks {
     position: relative;
-    --cm: var(--ink-3); /* tick colour; override with [--cm:var(--on-inverse-2)] */
+    --cm: var(--accent);
   }
 
   .crop-marks::before {
@@ -353,7 +398,7 @@
     background-repeat: no-repeat;
   }
 
-  /* Signal LED (see components/ui/signal-dot.tsx) */
+  /* Signal LED */
   .signal-dot {
     position: relative;
     display: inline-block;
@@ -371,11 +416,11 @@
     animation: signal-pulse 1.8s var(--ease-out) infinite;
   }
 
-  /* Reveal on scroll (see components/ui/reveal.tsx).
-     Hidden state only when JS is running (.js set by the theme script). */
+  /* Reveal on scroll. Hidden state only when JS is running (.js set by the theme script).
+     Column Proof: 8px translateY, 320ms. */
   .js [data-reveal] {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(8px);
     transition:
       opacity var(--dur-reveal) var(--ease-out) var(--reveal-delay, 0ms),
       transform var(--dur-reveal) var(--ease-out) var(--reveal-delay, 0ms);
@@ -386,7 +431,17 @@
     transform: none;
   }
 
-  /* ---- Legacy helpers used by not-yet-migrated sections (remove in phase B) ---- */
+  /* Project table row hover tint */
+  .proj-row {
+    border-bottom: 1px solid var(--border);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .proj-row:hover {
+    background-color: var(--surface-2);
+  }
+
+  /* ---- Legacy helpers used by /admin ---- */
   .section-number {
     font-family: var(--ff-mono);
     font-size: 14px;
