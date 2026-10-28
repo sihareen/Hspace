@@ -73,7 +73,7 @@ function TimelineEntry({ item, index }: TimelineEntryProps) {
         {isCurrent ? <span className="ml-2 t-eyebrow">· Now</span> : null}
       </p>
 
-      <div className="min-w-0 rounded-sm border border-line bg-bg p-5 transition-colors duration-(--dur-fast) hover:border-line-strong md:p-6">
+      <div className="min-w-0 rounded-sm border border-line bg-bg p-5 transition-[border-color,box-shadow] duration-(--dur-base) hover:border-line-strong hover:shadow-(--shadow-card) md:p-6">
         <p className="flex items-center gap-3 font-mono text-xs text-ink-3">
           <span>X-{String(index + 1).padStart(2, "0")}</span>
           <span className="inline-flex items-center gap-1.5 tracking-[0.08em] uppercase">

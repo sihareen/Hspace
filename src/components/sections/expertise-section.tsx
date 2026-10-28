@@ -65,9 +65,9 @@ export function ExpertiseSection() {
           const Icon = domain.icon;
           return (
             <Reveal as="li" key={domain.category} delay={Math.min(i, 5) * 60} className={spanFor(i, capabilities.length)}>
-              <article className="flex h-full flex-col gap-4 rounded-sm border border-line bg-surface p-5 md:p-6">
+              <article className="group flex h-full flex-col gap-4 rounded-sm border border-line bg-surface p-5 md:p-6 transition-[border-color,box-shadow] duration-(--dur-base) hover:border-line-strong hover:shadow-(--shadow-card)">
                 <div className="flex items-start justify-between gap-4">
-                  <span className="grid size-10 place-items-center rounded-sm bg-surface-2 text-accent">
+                  <span className="grid size-10 place-items-center rounded-sm bg-surface-2 text-accent transition-colors duration-(--dur-base) group-hover:bg-accent group-hover:text-on-primary">
                     <Icon aria-hidden="true" className="size-5" />
                   </span>
                   <span className="t-chip text-ink-3">M-{String(i + 1).padStart(2, "0")}</span>

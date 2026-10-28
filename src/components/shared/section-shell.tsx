@@ -70,7 +70,10 @@ export function SectionShell({
             {meta ? <div className="mt-3 shrink-0 t-chip text-ink-3 md:mt-0 md:pb-1.5">{meta}</div> : null}
           </div>
           {intro ? <div className="mt-4 max-w-[60ch] t-lede text-ink-2">{intro}</div> : null}
-          <div aria-hidden="true" className="mt-6 h-px w-12 bg-accent" />
+          <div aria-hidden="true" className="mt-6 flex items-center gap-2">
+            <div className="h-px w-8 bg-accent" />
+            <div className="size-1.5 bg-accent" />
+          </div>
         </header>
         {children}
       </div>

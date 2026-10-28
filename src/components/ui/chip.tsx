@@ -10,7 +10,7 @@ export function Chip({ className, ...rest }: ChipProps) {
     <span
       {...rest}
       className={cn(
-        "inline-flex h-6 items-center whitespace-nowrap rounded-xs bg-surface-2 px-2 t-chip text-ink-2",
+        "inline-flex h-6 items-center whitespace-nowrap rounded-xs bg-surface-2 px-2 t-chip text-ink-2 transition-colors duration-(--dur-fast) hover:text-ink hover:bg-surface-2/80",
         className,
       )}
     />

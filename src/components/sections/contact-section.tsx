@@ -63,7 +63,7 @@ export function ContactSection() {
   const mailto = `mailto:${email}`;
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 bg-bg py-20 md:py-28">
+    <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 bg-bg py-20 md:py-32">
       <div className="container-page">
         <Reveal>
           {/* crop-marks wrapper must not clip; the inner frame clips the grid overlay. */}

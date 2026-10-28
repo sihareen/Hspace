@@ -10,11 +10,11 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 /** Section ids must match the `id` on each section in page.tsx. */
 const navItems = [
-  { number: "01", label: "Projects", id: "projects" },
-  { number: "02", label: "Experience", id: "experience" },
-  { number: "03", label: "Expertise", id: "skills" },
-  { number: "04", label: "About", id: "about" },
-  { number: "05", label: "Contact", id: "contact" },
+  { number: "02", label: "Projects", id: "projects" },
+  { number: "03", label: "Experience", id: "experience" },
+  { number: "04", label: "Expertise", id: "skills" },
+  { number: "05", label: "About", id: "about" },
+  { number: "06", label: "Contact", id: "contact" },
 ] as const;
 
 const observedIds = ["hero", ...navItems.map((item) => item.id)];
@@ -138,7 +138,7 @@ export function SiteHeader() {
             aria-label="Rizkan Harin, back to top"
           >
             <span aria-hidden="true" className="font-display font-bold text-ink tracking-tight text-lg">
-              RIZKAN HARIN<span className="text-ink-3">___</span>
+              RIZKAN<span className="text-accent">.</span>HARIN
             </span>
           </a>
 
@@ -154,7 +154,10 @@ export function SiteHeader() {
                       aria-current={isActive ? "true" : undefined}
                       className={cn(
                         "relative inline-flex min-h-11 items-center gap-1.5 px-1 text-sm font-medium transition-colors duration-(--dur-fast)",
-                        isActive ? "text-ink" : "text-ink-2 hover:text-ink",
+                        "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:transition-[transform,opacity] after:duration-(--dur-fast) after:origin-left",
+                        isActive
+                          ? "text-ink after:bg-accent after:scale-x-100 after:opacity-100"
+                          : "text-ink-2 hover:text-ink after:bg-accent after:scale-x-0 after:opacity-0",
                       )}
                     >
                       <span aria-hidden="true" className="font-mono text-xs text-ink-3">
@@ -213,7 +216,7 @@ export function SiteHeader() {
                       isActive ? "text-ink" : "text-ink-2 hover:text-ink",
                     )}
                   >
-                    <span aria-hidden="true" className={cn("t-chip", isActive ? "text-accent" : "text-ink-3")}>
+                    <span aria-hidden="true" className={cn("t-chip w-6", isActive ? "text-accent" : "text-ink-3")}>
                       {item.number}
                     </span>
                     {item.label}

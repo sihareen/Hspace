@@ -2,7 +2,6 @@ import Image from "next/image";
 import { FiArrowDown, FiDownload } from "react-icons/fi";
 
 import { Button } from "@/components/ui/button";
-import { Chip } from "@/components/ui/chip";
 import { SignalDot } from "@/components/ui/signal-dot";
 import { availability } from "@/data/site-content";
 
@@ -15,10 +14,16 @@ export function HeroSection() {
       aria-labelledby="hero-title"
       className="relative scroll-mt-20 overflow-hidden border-b border-line bg-bg"
     >
-      <div className="relative container-page grid gap-12 py-12 sm:py-16 lg:min-h-[calc(100svh-var(--header-h))] lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+      {/* Subtle grid pattern behind content */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 ghost-grid opacity-[0.04]"
+      />
+
+      <div className="relative container-page grid gap-10 py-16 sm:py-20 lg:min-h-[calc(100svh-var(--header-h))] lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16">
         {/* Left: identity + CTAs */}
         <div className="min-w-0">
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 t-eyebrow">
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 t-eyebrow">
             {availability.open ? (
               <span className="inline-flex items-center gap-2 text-signal">
                 <SignalDot />
@@ -31,19 +36,22 @@ export function HeroSection() {
             </span>
           </p>
 
-          <h1 id="hero-title" className="mt-5 t-display text-balance text-ink">
+          <h1 id="hero-title" className="mt-6 t-display text-balance text-ink">
             Instrumentation for the <br className="hidden sm:block" />
             <span className="text-primary">physical</span> world.
           </h1>
 
-          <p className="mt-6 max-w-[45ch] t-hero-sub">
-            I design field-ready IoT, embedded and telemetry systems, from circuit and firmware to the
+          <p className="mt-6 max-w-[48ch] t-hero-sub">
+            I design field-ready IoT, embedded and telemetry systems — from circuit and firmware to the
             dashboard and edge AI.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-x-3 gap-y-2">
+          <div className="mt-8 flex flex-wrap gap-2">
             {techStack.map((tech) => (
-              <span key={tech} className="t-chip font-medium text-ink-3 border border-line px-2 py-0.5 rounded-xs">
+              <span
+                key={tech}
+                className="t-chip text-ink-3 border border-line bg-surface px-2.5 py-1 rounded-xs transition-colors duration-(--dur-fast) hover:border-line-strong hover:text-ink-2"
+              >
                 {tech}
               </span>
             ))}
@@ -73,7 +81,7 @@ export function HeroSection() {
                 sizes="(min-width: 1024px) 440px, (min-width: 452px) 420px, calc(100vw - 32px)"
                 className="object-cover object-[50%_25%] lg:object-[50%_20%]"
               />
-              <span className="absolute left-3 top-3 rounded-xs bg-surface/90 px-2 py-1 t-eyebrow text-ink-2">
+              <span className="absolute left-3 top-3 rounded-xs bg-surface/90 px-2 py-1 t-eyebrow text-ink-2 backdrop-blur-sm">
                 Fig. 01: Feature Profile
               </span>
             </div>

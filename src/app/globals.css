@@ -301,12 +301,25 @@
   }
 }
 
-/* Hero-only 12-column ghost grid. Apply as position:absolute inside hero — never fixed. */
+/* 12-column ghost grid. Apply as position:absolute inside hero — never fixed. */
 @utility ghost-grid {
-  background-image: linear-gradient(to right, var(--border) 1px, transparent 1px);
-  background-size: calc(100% / 12) 100%;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: calc(100% / 12) 80px;
   background-position: 0 0;
-  opacity: 0.25;
+}
+
+/* Blueprint grid for contact section inverse panel */
+@utility bg-blueprint {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+@utility mask-fade-center {
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 80%);
 }
 
 @utility sr-only-focusable {

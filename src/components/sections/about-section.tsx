@@ -43,8 +43,9 @@ export function AboutSection() {
         </Reveal>
 
         <Reveal as="aside" delay={60} className="min-w-0 self-start">
-          <div aria-labelledby="datasheet-title" role="group" className="rounded-sm border border-line bg-bg">
-            <p id="datasheet-title" className="border-b border-line px-5 py-3 t-eyebrow text-ink-3">
+          <div aria-labelledby="datasheet-title" role="group" className="rounded-sm border border-line bg-bg shadow-(--shadow-card)">
+            <p id="datasheet-title" className="flex items-center gap-2 border-b border-line px-5 py-3 t-eyebrow text-ink-3">
+              <span className="inline-block size-2 rounded-full bg-accent" aria-hidden="true" />
               Datasheet: RHF-01
             </p>
             <dl>
